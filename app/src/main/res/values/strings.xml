@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">pext</string>
+    <string name="fa_github_alt">&#xf113;</string>
+    <string name="drawer_open">menu</string>
+    <string name="drawer_close">pext</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
