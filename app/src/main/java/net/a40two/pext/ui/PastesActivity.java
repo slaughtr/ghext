@@ -2,9 +2,7 @@ package net.a40two.pext.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
@@ -35,25 +33,17 @@ public class PastesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pastes);
 
-
         fragToLoad = getIntent().getStringExtra("fragToLoad");
 
         if (fragToLoad.equals("")) {
             Log.d("onCreatePastesActivity", "in empty if");
-
             //go back home, there was a problem
         } else if (fragToLoad.equals("trending")) {
-            FragmentManager fm = getSupportFragmentManager();
             getTrendingPastes();
             Log.d("onCreatePastesActivity", "in trending if");
-            fm.beginTransaction().replace(R.id.viewPager, TrendingPastesFragment.newInstance(mPastes)).commit();
         } else if (fragToLoad.equals("ownPastes")) {
-            FragmentManager fm = getSupportFragmentManager();
             Log.d("onCreatePastesActivity", "in own if");
-
-            fm.beginTransaction().replace(R.id.viewPager, new UserPastesFragment()).commit();
         }
-
     }
 
     private void getTrendingPastes() {
@@ -64,20 +54,13 @@ public class PastesActivity extends AppCompatActivity {
             @Override public void onFailure(Call call, IOException e) { e.printStackTrace(); }
 
             @Override public void onResponse(Call call, Response response) throws IOException {
+
                 mPastes = pblService.processResults("trending", response);
 
-//                PastesActivity.this.runOnUiThread(new Runnable() {
-//
-//                    @Override public void run() {
-//                        mAdapter = new PasteListAdapter(PastesActivity.this, mPastes);
-//                        mRecyclerView.setAdapter(mAdapter);
-//                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(PastesActivity.this);
-//                        mRecyclerView.setLayoutManager(layoutManager);
-//                        mRecyclerView.setHasFixedSize(true);
-//                    }
-//                });
+                    FragmentManager fm = getSupportFragmentManager();
+//                    Log.d("onCreatePastesActivity", "in trending if");
+                    fm.beginTransaction().replace(R.id.fragmentHolder, TrendingPastesFragment.newInstance(mPastes)).commit();
             }
         });
     }
-
 }

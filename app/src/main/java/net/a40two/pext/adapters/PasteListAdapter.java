@@ -18,16 +18,18 @@ import butterknife.ButterKnife;
 
 public class PasteListAdapter extends RecyclerView.Adapter<PasteListAdapter.PasteViewHolder> {
     private ArrayList<Paste> mPastes = new ArrayList<>();
-    private Context mContext;
+//    private Context mContext;
 
-    public PasteListAdapter(Context context, ArrayList<Paste> paste) {
-        mContext = context;
+    public PasteListAdapter(ArrayList<Paste> paste) {
+//        mContext = context;
         mPastes = paste;
     }
 
     @Override public PasteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.d("adapter", "in onCreateViewHolder");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.trending_pastes_item, parent, false);
-        return new PasteViewHolder(view);
+        PasteViewHolder pvh = new PasteViewHolder(view);
+        return pvh;
     }
 
     @Override

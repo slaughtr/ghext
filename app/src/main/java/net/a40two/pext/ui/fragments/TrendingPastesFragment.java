@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,12 +45,12 @@ public class TrendingPastesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.trending_pastes_list, container, false);
         ButterKnife.bind(this, view);
-        mAdapter = new PasteListAdapter(getActivity(), mPastes);
-        mRecyclerView.setAdapter(mAdapter);
+//        mAdapter = new PasteListAdapter(mPastes);
+        mRecyclerView.setAdapter(new PasteListAdapter(mPastes));
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
-
+        Log.d("hmm", view.toString());
         return view;
     }
 

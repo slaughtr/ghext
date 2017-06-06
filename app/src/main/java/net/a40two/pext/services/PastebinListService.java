@@ -4,6 +4,7 @@ import android.util.Log;
 
 import net.a40two.pext.Constants;
 import net.a40two.pext.models.Paste;
+import net.a40two.pext.ui.PastesActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,8 +51,16 @@ public class PastebinListService {
                 .post(formBody)
                 .build();
 
-            Call call = client.newCall(request);
-            call.enqueue(callback);
+//            Call call = client.newCall(request);
+
+            // ensure the response (and underlying response body) is closed
+            try {
+                Response response = client.newCall(request).execute();
+
+            } catch (IOException e) { e.printStackTrace(); }
+//            call.enqueue(callback);
+
+
         }
     }
 
