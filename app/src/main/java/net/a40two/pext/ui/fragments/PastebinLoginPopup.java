@@ -17,15 +17,16 @@ import net.a40two.pext.services.PastebinLoginService;
 
 import java.io.IOException;
 
+import butterknife.BindView;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
 public class PastebinLoginPopup extends DialogFragment {
     User user = new User("", "");
+    @BindView(R.id.pb_login_button) Button mLoginButton;
 
-    public PastebinLoginPopup() {
-    }
+    public PastebinLoginPopup() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +55,7 @@ public class PastebinLoginPopup extends DialogFragment {
                             Constants.CURRENT_USER = user;
                             goodLogin();
                             dismiss();
+                            mLoginButton.setVisibility(View.GONE);
                         }
                     }
                 });

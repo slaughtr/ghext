@@ -23,7 +23,6 @@ import butterknife.ButterKnife;
 public class TrendingPastesFragment extends Fragment {
     public static final String TAG = TrendingPastesFragment.class.getSimpleName();
     public ArrayList<Paste> mPastes = new ArrayList<>();
-    private PasteListAdapter mAdapter;
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
 
     public static TrendingPastesFragment newInstance(ArrayList<Paste> pastes) {
@@ -46,10 +45,9 @@ public class TrendingPastesFragment extends Fragment {
         View view = inflater.inflate(R.layout.trending_pastes_list, container, false);
         ButterKnife.bind(this, view);
         mRecyclerView.setAdapter(new PasteListAdapter(mPastes));
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
-        Log.d("hmm", view.toString());
         return view;
     }
 
