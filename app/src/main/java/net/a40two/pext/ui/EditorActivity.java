@@ -3,6 +3,8 @@ package net.a40two.pext.ui;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 
@@ -61,7 +63,12 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         if (v == mGithubButton) {
             //maybe should have deleted this button. Might find use for it?
         }
+    }
 
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.overflow_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 }

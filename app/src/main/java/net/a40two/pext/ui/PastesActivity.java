@@ -5,6 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 import net.a40two.pext.R;
 import net.a40two.pext.adapters.PasteListAdapter;
@@ -44,6 +46,13 @@ public class PastesActivity extends AppCompatActivity {
         } else if (fragToLoad.equals("ownPastes")) {
             Log.d("onCreatePastesActivity", "in own if");
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.overflow_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     private void getTrendingPastes() {

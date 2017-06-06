@@ -100,6 +100,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return true;
         }
         // Handle your other action bar items...
+        int id = item.getItemId();
+        if (id == R.id.action_login) {
+            FragmentManager fm = getSupportFragmentManager();
+            PastebinLoginPopup plp = new PastebinLoginPopup();
+            plp.show(fm, "Pastebin login popup");
+        } else if (id == R.id.action_logout) {
+            Constants.LOGGED_IN = false;
+            Constants.CURRENT_USER = null;
+            Toast.makeText(MainActivity.this, "You are now logged out!", Toast.LENGTH_LONG).show();
+        } else if (id == R.id.action_settings) {
+            //open settings
+            //TODO: make a settings activity
+        }
+
+
         return super.onOptionsItemSelected(item);
     }
 
