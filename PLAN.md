@@ -36,7 +36,7 @@ Text Editing | Pastebin
 -------------|-------------
 Tab/space preservation | Log in to Pastebin
 ~~Line numbers~~ | Able to delete own Pastes
-Find/find and replace | Get trending Pastes
+Find/find and replace | ~~Get trending Pastes~~
 
 #### Dream Haves
 Text Editing | Pastebin
@@ -69,8 +69,8 @@ Planning
 * ~~Create a data model to store the data.~~
   * ~~Model of user for Pastebin?~~
   * ~~Model for creating a Paste?~~
-* Display a list of information using a RecyclerView, OR use fragments and a PagerAdapter to swipe through views. (You are also welcome to do both.)
-  * RecyclerView with Pastebin info. List of Pastes by user, popular Pastes, etc
+* ~~Display a list of information using a RecyclerView,~~ OR use fragments and a PagerAdapter to swipe through views. (You are also welcome to do both.)
+  * RecyclerView with Pastebin info. List of Pastes by user, ~~popular Pastes~~, etc
 * ~~Incorporate at least one implicit intent; Sending a message or an email, or loading a web page for example.~~
   * ~~This will be on about page. Open github/bitcoin/etc~~
 
