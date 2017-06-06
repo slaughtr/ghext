@@ -1,24 +1,40 @@
 package net.a40two.pext.ui;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import net.a40two.pext.R;
+import net.a40two.pext.adapters.PasteListAdapter;
+import net.a40two.pext.models.Paste;
+import net.a40two.pext.services.PastebinListService;
 import net.a40two.pext.ui.fragments.TrendingPastesFragment;
 import net.a40two.pext.ui.fragments.UserPastesFragment;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class PastesActivity extends AppCompatActivity {
     String fragToLoad = "";
     private TrendingPastesFragment trendingFrag;
+    public ArrayList<Paste> mPastes = new ArrayList<>();
+    private PasteListAdapter mAdapter;
+    @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pastes);
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
         fragToLoad = getIntent().getStringExtra("fragToLoad");
 
@@ -27,19 +43,41 @@ public class PastesActivity extends AppCompatActivity {
 
             //go back home, there was a problem
         } else if (fragToLoad.equals("trending")) {
+            FragmentManager fm = getSupportFragmentManager();
+            getTrendingPastes();
             Log.d("onCreatePastesActivity", "in trending if");
-            trendingFrag = new TrendingPastesFragment();
-
-            ft.add(R.id.viewPager, trendingFrag).commit();
-//            ft.replace(R.id.viewPager, new TrendingPastesFragment());
-//            ft.commit();
+            fm.beginTransaction().replace(R.id.viewPager, TrendingPastesFragment.newInstance(mPastes)).commit();
         } else if (fragToLoad.equals("ownPastes")) {
+            FragmentManager fm = getSupportFragmentManager();
             Log.d("onCreatePastesActivity", "in own if");
 
-            ft.replace(R.id.viewPager, new UserPastesFragment());
-            ft.commit();
+            fm.beginTransaction().replace(R.id.viewPager, new UserPastesFragment()).commit();
         }
 
+    }
+
+    private void getTrendingPastes() {
+        final PastebinListService pblService = new PastebinListService();
+
+        pblService.buildListUrl("trending", new Callback() {
+
+            @Override public void onFailure(Call call, IOException e) { e.printStackTrace(); }
+
+            @Override public void onResponse(Call call, Response response) throws IOException {
+                mPastes = pblService.processResults("trending", response);
+
+//                PastesActivity.this.runOnUiThread(new Runnable() {
+//
+//                    @Override public void run() {
+//                        mAdapter = new PasteListAdapter(PastesActivity.this, mPastes);
+//                        mRecyclerView.setAdapter(mAdapter);
+//                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(PastesActivity.this);
+//                        mRecyclerView.setLayoutManager(layoutManager);
+//                        mRecyclerView.setHasFixedSize(true);
+//                    }
+//                });
+            }
+        });
     }
 
 }
