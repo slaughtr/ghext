@@ -98,7 +98,7 @@ public class PastebinListService {
                 InputStream in = connection.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                 for (String line; (line = reader.readLine()) != null; ) {
-                    html.append(line);
+                    html.append(line+"\n");
                 }
                 in.close();
             } catch (MalformedURLException e) { e.printStackTrace(); }
