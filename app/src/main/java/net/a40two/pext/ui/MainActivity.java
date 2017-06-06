@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -66,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 super.onDrawerClosed(view);
                 getSupportActionBar().setTitle("pext");
             }
-
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -74,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
-
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.addDrawerListener(mDrawerToggle);
 
@@ -159,7 +159,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } else {
                 Toast.makeText(MainActivity.this, "You must be logged in to do this.", Toast.LENGTH_LONG).show();
             }
-
         }
         if (mMenuItems[position] == "Trending Pastes") {
             Intent intent = new Intent(MainActivity.this, PastesActivity.class);
@@ -181,6 +180,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
             finish();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.overflow_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode,
