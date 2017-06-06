@@ -9,16 +9,23 @@ import org.parceler.Parcel;
 @Parcel
 public class Paste {
     String title;
-    String body;
     String url;
-    int date;
-    int expires;
-    int hits;
-    int key;
-    int size;
+    String date;
+    String expires;
+    String hits;
+    String key;
+    String size;
 
-    public Paste(String title) {
+    //this isn't in constructor, as it requires an additional API call
+    String body;
+
+    public Paste(String title, String key, String date, String hits, String size, String expires) {
         this.title = title;
+        this.key = key;
+        this.date = date;
+        this.hits = hits;
+        this.size = size;
+        this.expires = expires;
     }
 
     public Paste() {}
@@ -47,43 +54,43 @@ public class Paste {
         this.url = url;
     }
 
-    public int getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(int date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public int getExpires() {
+    public String getExpires() {
         return expires;
     }
 
-    public void setExpires(int expires) {
+    public void setExpires(String expires) {
         this.expires = expires;
     }
 
-    public int getHits() {
+    public String getHits() {
         return hits;
     }
 
-    public void setHits(int hits) {
+    public void setHits(String hits) {
         this.hits = hits;
     }
 
-    public int getKey() {
+    public String getKey() {
         return key;
     }
 
-    public void setKey(int key) {
+    public void setKey(String key) {
         this.key = key;
     }
 
-    public int getSize() {
+    public String getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(String size) {
         this.size = size;
     }
 }

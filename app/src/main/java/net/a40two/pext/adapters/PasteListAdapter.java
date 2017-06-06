@@ -19,12 +19,11 @@ import butterknife.ButterKnife;
 public class PasteListAdapter extends RecyclerView.Adapter<PasteListAdapter.PasteViewHolder> {
     private ArrayList<Paste> mPastes = new ArrayList<>();
 
-    public PasteListAdapter(ArrayList<Paste> paste) {
-        mPastes = paste;
+    public PasteListAdapter(ArrayList<Paste> pastes) {
+        mPastes = pastes;
     }
 
     @Override public PasteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d("adapter", "in onCreateViewHolder");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.trending_pastes_item, parent, false);
         PasteViewHolder pvh = new PasteViewHolder(view);
         return pvh;
@@ -32,15 +31,14 @@ public class PasteListAdapter extends RecyclerView.Adapter<PasteListAdapter.Past
 
     @Override
     public void onBindViewHolder(PasteViewHolder holder, int position) {
-        Log.d("position", String.format("%d", position));
         holder.bindPaste(mPastes.get(position));
-
     }
 
     @Override public int getItemCount() { return mPastes.size(); }
 
     public class PasteViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.trendingListTitleTextView) TextView mTitleTextView;
+        @BindView(R.id.trendingListBodyTextView) TextView mBodyTextView;
 
         private Context mContext;
 
@@ -52,6 +50,7 @@ public class PasteListAdapter extends RecyclerView.Adapter<PasteListAdapter.Past
 
         public void bindPaste(Paste paste) {
             mTitleTextView.setText(paste.getTitle());
+            mBodyTextView.setText(paste.getBody());
 
         }
     }
