@@ -4,7 +4,6 @@ import android.util.Log;
 
 import net.a40two.pext.Constants;
 import net.a40two.pext.models.Paste;
-import net.a40two.pext.ui.PastesActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;

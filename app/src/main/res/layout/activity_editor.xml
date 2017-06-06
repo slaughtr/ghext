@@ -112,7 +112,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintHorizontal_bias="0.584" />
 
-    <net.a40two.ghext.ui.views.AdvancedEditText
+    <net.a40two.pext.ui.views.AdvancedEditText
         android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
