@@ -18,10 +18,8 @@ import butterknife.ButterKnife;
 
 public class PasteListAdapter extends RecyclerView.Adapter<PasteListAdapter.PasteViewHolder> {
     private ArrayList<Paste> mPastes = new ArrayList<>();
-//    private Context mContext;
 
     public PasteListAdapter(ArrayList<Paste> paste) {
-//        mContext = context;
         mPastes = paste;
     }
 

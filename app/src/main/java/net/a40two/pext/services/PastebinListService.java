@@ -51,16 +51,8 @@ public class PastebinListService {
                 .post(formBody)
                 .build();
 
-//            Call call = client.newCall(request);
-
-            // ensure the response (and underlying response body) is closed
-            try {
-                Response response = client.newCall(request).execute();
-
-            } catch (IOException e) { e.printStackTrace(); }
-//            call.enqueue(callback);
-
-
+            Call call = client.newCall(request);
+            call.enqueue(callback);
         }
     }
 
