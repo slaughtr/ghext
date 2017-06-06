@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import net.a40two.pext.R;
 import net.a40two.pext.models.Paste;
+import net.a40two.pext.ui.PastesActivity;
 
 import java.util.ArrayList;
 

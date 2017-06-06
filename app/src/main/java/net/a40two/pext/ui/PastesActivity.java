@@ -55,6 +55,7 @@ public class PastesActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+
     private void getTrendingPastes() {
         final PastebinListService pblService = new PastebinListService();
 
