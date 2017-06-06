@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v == mJumpToEditorButton) {
             Intent intent = new Intent(MainActivity.this, EditorActivity.class);
             startActivity(intent);
+            finish();
         }
         if (v == mPastebinLoginButton) {
             //popup login fragment
@@ -154,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent = new Intent(MainActivity.this, PastesActivity.class);
                 intent.putExtra("fragToLoad", "ownPastes");
                 startActivity(intent);
+                finish();
             } else {
                 Toast.makeText(MainActivity.this, "You must be logged in to do this.", Toast.LENGTH_LONG).show();
             }
@@ -163,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(MainActivity.this, PastesActivity.class);
             intent.putExtra("fragToLoad", "trending");
             startActivity(intent);
+            finish();
         }
         if (mMenuItems[position] == "Get Pastes") {
             //ask if want to search? might need another item
@@ -171,10 +174,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (mMenuItems[position] == "About") {
             Intent intent = new Intent(MainActivity.this, AboutActivity.class);
             startActivity(intent);
+            finish();
         }
         if (mMenuItems[position] == "Help") {
             Intent intent = new Intent(MainActivity.this, HelpActivity.class);
             startActivity(intent);
+            finish();
         }
     }
 
