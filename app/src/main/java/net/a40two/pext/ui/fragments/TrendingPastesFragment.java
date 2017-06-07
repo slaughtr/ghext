@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
 public class TrendingPastesFragment extends Fragment {
     public static final String TAG = TrendingPastesFragment.class.getSimpleName();
     public ArrayList<Paste> mPastes = new ArrayList<>();
+
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
 
     public static TrendingPastesFragment newInstance(ArrayList<Paste> pastes) {

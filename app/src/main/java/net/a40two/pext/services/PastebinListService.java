@@ -86,11 +86,10 @@ public class PastebinListService {
 
     public static String getTrendingPasteBody(Paste paste) {
         //get the raw body of each paste through a seperate call, as it's not included in the normal api call
-        String url = "http://pastebin.com/raw/"+paste.getKey()+"/";
         StringBuilder html = new StringBuilder();
         try {
             try {
-                URLConnection connection = (new URL(url)).openConnection();
+                URLConnection connection = (new URL("https://pastebin.com/raw/"+paste.getKey()+"/")).openConnection();
                 connection.setConnectTimeout(5000);
                 connection.setReadTimeout(5000);
                 connection.connect();

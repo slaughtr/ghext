@@ -10,7 +10,7 @@ public class Settings {
     /** Show the lines numbers */
     public static boolean SHOW_LINE_NUMBERS = true;
     /** automatic break line to fit one page */
-    public static boolean WORDWRAP = false;
+    public static boolean WORDWRAP = true;
     /** color setting */
 //    public static int COLOR = COLOR_CLASSIC;
 
