@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 getSupportActionBar().setTitle("menu");
-//                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
         // Set the drawer toggle as the DrawerListener

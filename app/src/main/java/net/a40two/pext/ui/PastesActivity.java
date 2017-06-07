@@ -43,8 +43,11 @@ public class PastesActivity extends AppCompatActivity {
         } else if (fragToLoad.equals("trending")) {
             getTrendingPastes();
             Log.d("onCreatePastesActivity", "in trending if");
+            setTitle("Today's Trending Pastes");
         } else if (fragToLoad.equals("ownPastes")) {
             Log.d("onCreatePastesActivity", "in own if");
+            setTitle("Your Pastes");
+
         }
     }
 
