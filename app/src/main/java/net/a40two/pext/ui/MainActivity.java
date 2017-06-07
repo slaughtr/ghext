@@ -25,6 +25,8 @@ import net.a40two.pext.R;
 import net.a40two.pext.services.FileService;
 import net.a40two.pext.ui.fragments.PastebinLoginPopup;
 
+import org.parceler.Parcels;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -143,14 +145,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mDrawerLayout.closeDrawer(mDrawerList);
 
         if (mMenuItems[position] == "New Paste") {
-            //ask if from file on device or blank doc
-            //if from device, use the following
-            //            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-//            intent.addCategory(Intent.CATEGORY_OPENABLE);
-//            intent.setType("text/*");
-//            startActivityForResult(intent, READ_REQUEST_CODE);
+            //ask if from file on device or blank doc via dialog fragment
 
-            //if new, something like the following will be used:
+            //if new, something like the following will be used, but from the editor?:
 //            PastebinPasteService.buildPasteUrl(new Callback() {
 //                @Override
 //                public void onFailure(Call call, IOException e) {
@@ -238,7 +235,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (resultData != null) {
                 uri = resultData.getData();
                 Log.i("onActivityResult", "Uri: " + uri.toString());
-                //this is where I'll call some kind of constructor to pass the URI to the editor activity
+
+                Intent intent = new Intent(MainActivity.this, EditorActivity.class);
+                intent.putExtra("uri", Parcels.wrap(uri));
+                startActivity(intent);
+                finish();
+
             }
         }
     }

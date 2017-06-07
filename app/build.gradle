@@ -58,4 +58,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     annotationProcessor 'org.parceler:parceler:1.1.6'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+    compile group: 'com.googlecode.juniversalchardet', name: 'juniversalchardet', version: '1.0.3'
 }
