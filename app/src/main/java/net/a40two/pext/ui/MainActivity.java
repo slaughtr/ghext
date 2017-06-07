@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,20 +22,20 @@ import android.widget.Toast;
 
 import net.a40two.pext.Constants;
 import net.a40two.pext.R;
+import net.a40two.pext.services.FileService;
 import net.a40two.pext.ui.fragments.PastebinLoginPopup;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private String[] mMenuItems = new String[] {"New Paste", "My Pastes", "Trending Pastes", "Get Pastes", "Help", "About"};
+    private String[] mMenuItems = new String[] {"New Paste", "My Pastes", "Trending Pastes", "Get Pastes", "Open File on Device", "Help", "About"};
     //things for nav drawer
     private ListView mDrawerList;
     private CharSequence mTitle;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
-
 
     private static final int READ_REQUEST_CODE = 42;
 
@@ -194,6 +195,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
             finish();
         }
+        if (mMenuItems[position] == "Open File on Device") {
+            //open file browser
+            Log.d("main", "heard dat click");
+            FileService fs = new FileService();
+            performFileSearch();
+        }
     }
 
     @Override
@@ -203,7 +210,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override public void onActivityResult(int requestCode, int resultCode,
+    //I tried putting this in a service so I could use it anywhere I wanted, but it just doesn't do anything. Logs indicate it runs, but it never seems to invoke the new intent. Any help here is appreciated.
+    public void performFileSearch() {
+        // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
+        // browser.
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        // Filter to only show results that can be "opened", such as a
+        // file (as opposed to a list of contacts or timezones)
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        // Filter to show only text files, using the image MIME data type.
+        intent.setType("text/*");
+
+        startActivityForResult(intent, READ_REQUEST_CODE);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode,
                                  Intent resultData) {
         // The ACTION_OPEN_DOCUMENT intent was sent with the request code
         // READ_REQUEST_CODE. If the request code seen here doesn't match, it's the
@@ -216,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Uri uri = null;
             if (resultData != null) {
                 uri = resultData.getData();
-//                Log.i("onActivityResult", "Uri: " + uri.toString());
+                Log.i("onActivityResult", "Uri: " + uri.toString());
                 //this is where I'll call some kind of constructor to pass the URI to the editor activity
             }
         }
