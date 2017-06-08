@@ -1,6 +1,7 @@
 package net.a40two.pext.ui.fragments;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import net.a40two.pext.Constants;
@@ -58,6 +60,9 @@ public class PastebinPastePopup extends DialogFragment implements AdapterView.On
         syntaxAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSyntaxSpinner.setAdapter(syntaxAdapter);
 
+        mSyntaxSpinner.setOnItemSelectedListener(this);
+        mPrivacySpinner.setOnItemSelectedListener(this);
+        mExpireSpinner.setOnItemSelectedListener(this);
 
         return rootView;
     }
@@ -66,6 +71,7 @@ public class PastebinPastePopup extends DialogFragment implements AdapterView.On
                                int pos, long id) {
         // An item was selected. You can retrieve the selected item using
         // parent.getItemAtPosition(pos)
+        ((TextView) view).setTextColor(Color.RED);
     }
 
     public void onNothingSelected(AdapterView<?> parent) {
