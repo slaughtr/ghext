@@ -25,18 +25,21 @@
         <activity android:name=".ui.AboutActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="net.a40two.pext.ui.MainActivity"></meta-data>
+                android:value="net.a40two.pext.ui.MainActivity">
+            </meta-data>
         </activity>
         <activity android:name=".ui.EditorActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="net.a40two.pext.ui.MainActivity"></meta-data>
+                android:value="net.a40two.pext.ui.MainActivity">
+            </meta-data>
         </activity>
         activity>
         <activity android:name=".ui.HelpActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="net.a40two.pext.ui.MainActivity"></meta-data>
+                android:value="net.a40two.pext.ui.MainActivity">
+            </meta-data>
         </activity>
         <activity android:name=".ui.PastesActivity">
             <meta-data

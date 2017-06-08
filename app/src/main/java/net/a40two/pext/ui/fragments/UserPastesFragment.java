@@ -49,7 +49,7 @@ public class UserPastesFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
-        Log.d("hmm", view.toString());
+        Log.d("upfOnCreateView", view.toString());
         return view;
     }
 

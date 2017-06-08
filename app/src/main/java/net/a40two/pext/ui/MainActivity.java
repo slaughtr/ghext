@@ -1,15 +1,12 @@
 package net.a40two.pext.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,10 +19,7 @@ import android.widget.Toast;
 
 import net.a40two.pext.Constants;
 import net.a40two.pext.R;
-import net.a40two.pext.services.FileService;
 import net.a40two.pext.ui.fragments.PastebinLoginPopup;
-
-import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -122,7 +116,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v == mJumpToEditorButton) {
             Intent intent = new Intent(MainActivity.this, EditorActivity.class);
             startActivity(intent);
-            finish();
         }
         if (v == mPastebinLoginButton) {
             //popup login fragment
@@ -163,7 +156,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent = new Intent(MainActivity.this, PastesActivity.class);
                 intent.putExtra("fragToLoad", "ownPastes");
                 startActivity(intent);
-                finish();
             } else {
                 Toast.makeText(MainActivity.this, "You must be logged in to do this.", Toast.LENGTH_LONG).show();
             }
@@ -172,7 +164,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(MainActivity.this, PastesActivity.class);
             intent.putExtra("fragToLoad", "trending");
             startActivity(intent);
-            finish();
         }
         if (mMenuItems[position] == "Get Pastes") {
             //ask if want to search? might need another item
@@ -181,12 +172,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (mMenuItems[position] == "About") {
             Intent intent = new Intent(MainActivity.this, AboutActivity.class);
             startActivity(intent);
-            finish();
         }
         if (mMenuItems[position] == "Help") {
             Intent intent = new Intent(MainActivity.this, HelpActivity.class);
             startActivity(intent);
-            finish();
         }
     }
 

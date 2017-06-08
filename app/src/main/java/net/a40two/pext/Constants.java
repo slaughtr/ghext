@@ -25,13 +25,14 @@ public class Constants {
     public static final String PASTE_PRIVATE_PARAM = "api_paste_private";
     public static final String PASTE_EXPIRE_PARAM = "api_paste_expire_date";
     public static final String RESULTS_LIMIT_PARAM = "api_results_limit";
-    public static final String PASTE_KEY = "api_paste_key";
+    public static final String PASTE_KEY_PARAM = "api_paste_key";
     //above is used for getting paste to fetch
 
     //logging in, pasting as user
     public static boolean LOGGED_IN = false;
     public static final String USERNAME_PARAM = "api_user_name";
     public static final String PASSWORD_PARAM = "api_user_password";
+    public static final String USER_API_KEY_PARAM = "api_user_key";
     public static User CURRENT_USER;
     public static String USER_NAME = "";
     public static String USER_PASSWORD = "";
