@@ -1,5 +1,8 @@
 package net.a40two.pext.ui;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -28,9 +31,12 @@ import java.net.URISyntaxException;
 import org.mozilla.universalchardet.UniversalDetector;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
 public class EditorActivity extends AppCompatActivity implements View.OnClickListener {
     @BindView(R.id.save_button) Button mSaveButton;
@@ -75,9 +81,33 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         }
         if (v == mCopyButton) {
             //copy selection to clipboard
+            String copiedString = mEditText.getText().toString();
+            copiedString = copiedString.substring(mEditText.getSelectionStart(), mEditText.getSelectionEnd());
+            android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text From pext", copiedString);
+            clipboard.setPrimaryClip(clip);
+            Log.d("copy", clip.toString());
         }
         if (v == mPasteButton) {
             //paste clipboard to location
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+
+            String pasteData = "";
+            if (!(clipboard.hasPrimaryClip())) {
+                //nothing on the clipboard
+                Toast.makeText(this, "Nothing on clipboard to paste!", Toast.LENGTH_SHORT).show();
+            } else if (!(clipboard.getPrimaryClipDescription().hasMimeType(MIMETYPE_TEXT_PLAIN))) {
+                // since the clipboard has data but it is not plain text
+                Toast.makeText(this, "Item on clipboard is not plain text!", Toast.LENGTH_SHORT).show();
+            } else {
+                //since the clipboard contains plain text.
+                ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
+                // Gets the clipboard as text.
+                pasteData = item.getText().toString();
+            }
+
+            //put paste at current selection
+            mEditText.getText().insert(mEditText.getSelectionStart(), pasteData);
         }
         if (v == mBracketsButton) {
             //popup brackets etc menu

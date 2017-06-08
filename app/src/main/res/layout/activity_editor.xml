@@ -9,7 +9,7 @@
 
     <Button
         android:id="@+id/save_button"
-        android:layout_width="88dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_margin="0dp"
         android:text="save"
@@ -20,7 +20,7 @@
 
     <Button
         android:id="@+id/cut_button"
-        android:layout_width="88dp"
+        android:layout_width="50dp"
         android:layout_height="48dp"
         android:layout_margin="0dp"
         android:text="cut"
@@ -32,7 +32,7 @@
 
     <Button
         android:id="@+id/copy_button"
-        android:layout_width="88dp"
+        android:layout_width="50dp"
         android:layout_height="48dp"
         android:layout_margin="0dp"
         android:text="copy"
@@ -44,7 +44,7 @@
 
     <Button
         android:id="@+id/paste_button"
-        android:layout_width="88dp"
+        android:layout_width="50dp"
         android:layout_height="48dp"
         android:layout_margin="0dp"
         android:text="paste"
@@ -56,7 +56,7 @@
 
     <Button
         android:id="@+id/brackets_button"
-        android:layout_width="88dp"
+        android:layout_width="50dp"
         android:layout_height="48dp"
         android:layout_margin="0dp"
         android:text="\u005B\u005D \u007B\u007D \u003C\u003E"
@@ -68,14 +68,14 @@
 
     <Button
         android:id="@+id/github_button"
-        android:layout_width="88dp"
+        android:layout_width="50dp"
         android:layout_height="48dp"
         android:layout_margin="0dp"
         android:text="@string/fa_github_alt"
+        app:layout_constraintHorizontal_bias="0.584"
         app:layout_constraintLeft_toRightOf="@+id/brackets_button"
-        app:layout_constraintTop_toTopOf="@+id/brackets_button"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.584" />
+        app:layout_constraintTop_toTopOf="@+id/brackets_button" />
 
     <net.a40two.pext.ui.views.AdvancedEditText
         android:id="@+id/editorAdvancedTextView"
@@ -98,7 +98,7 @@
 
     <Button
         android:id="@+id/pastebin_button"
-        android:layout_width="88dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_margin="0dp"
         android:text="pastebin"
