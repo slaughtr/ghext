@@ -22,10 +22,10 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class PastebinLoginPopup extends DialogFragment {
+public class PastebinPastePopup extends DialogFragment {
     User user = new User("", "");
 
-    public PastebinLoginPopup() {}
+    public PastebinPastePopup() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

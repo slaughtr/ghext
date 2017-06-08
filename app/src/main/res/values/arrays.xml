@@ -1,8 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">pext</string>
-    <string name="fa_github_alt">&#xf113;</string>
-    <string name="drawer_open">menu</string>
-    <string name="drawer_close">pext</string>
 
     <string-array name="expire_date_select">
         <item>Never</item>
@@ -271,4 +268,5 @@
         <item>Z80 Assembler</item>
         <item>ZXBasic</item>
     </string-array>
+
 </resources>
