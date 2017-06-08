@@ -31,7 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private String[] mMenuItems = new String[] {"New Paste", "My Pastes", "Trending Pastes", "Get Pastes", "Open File on Device", "Help", "About"};
+    private String[] mMenuItems = new String[] {"New Paste", "My Pastes", "Trending Pastes", "Get Pastes", "Help", "About"};
     //things for nav drawer
     private ListView mDrawerList;
     private CharSequence mTitle;
@@ -115,8 +115,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //open settings
             //TODO: make a settings activity
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -145,9 +143,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mDrawerLayout.closeDrawer(mDrawerList);
 
         if (mMenuItems[position] == "New Paste") {
-            //ask if from file on device or blank doc via dialog fragment
-
-            //if new, something like the following will be used, but from the editor?:
+            //something like the following will be used, but from the editor?:
 //            PastebinPasteService.buildPasteUrl(new Callback() {
 //                @Override
 //                public void onFailure(Call call, IOException e) {
@@ -192,12 +188,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
             finish();
         }
-        if (mMenuItems[position] == "Open File on Device") {
-            //open file browser
-            Log.d("main", "heard dat click");
-            FileService fs = new FileService();
-            performFileSearch();
-        }
     }
 
     @Override
@@ -205,43 +195,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.overflow_menu, menu);
         return super.onCreateOptionsMenu(menu);
-    }
-
-    //I tried putting this in a service so I could use it anywhere I wanted, but it just doesn't do anything. Logs indicate it runs, but it never seems to invoke the new intent. Any help here is appreciated.
-    public void performFileSearch() {
-        // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
-        // browser.
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        // Filter to only show results that can be "opened", such as a
-        // file (as opposed to a list of contacts or timezones)
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        // Filter to show only text files, using the image MIME data type.
-        intent.setType("text/*");
-
-        startActivityForResult(intent, READ_REQUEST_CODE);
-    }
-
-    public void onActivityResult(int requestCode, int resultCode,
-                                 Intent resultData) {
-        // The ACTION_OPEN_DOCUMENT intent was sent with the request code
-        // READ_REQUEST_CODE. If the request code seen here doesn't match, it's the
-        // response to some other intent, and the code below shouldn't run at all.
-        if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            // The document selected by the user won't be returned in the intent.
-            // Instead, a URI to that document will be contained in the return intent
-            // provided to this method as a parameter.
-            // Pull that URI using resultData.getData().
-            Uri uri = null;
-            if (resultData != null) {
-                uri = resultData.getData();
-                Log.i("onActivityResult", "Uri: " + uri.toString());
-
-                Intent intent = new Intent(MainActivity.this, EditorActivity.class);
-                intent.putExtra("uri", Parcels.wrap(uri));
-                startActivity(intent);
-                finish();
-
-            }
-        }
     }
 }
