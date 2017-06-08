@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 
 import net.a40two.pext.R;
+import net.a40two.pext.ui.fragments.PastebinPastePopup;
 import net.a40two.pext.ui.views.AdvancedEditText;
 
 import org.mozilla.universalchardet.UniversalDetector;
@@ -75,6 +77,9 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         }
         if (v == mPastebinButton) {
             //open menu for pushing to pastebin
+            FragmentManager fm = getSupportFragmentManager();
+            PastebinPastePopup ppp = new PastebinPastePopup();
+            ppp.show(fm, "Pastebin paste popup");
         }
         if (v == mCutButton) {
             //cut selection from view
@@ -110,71 +115,6 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         if (v == mGithubButton) {
             //maybe should have deleted this button. Might find use for it?
         }
-    }
-
-    public static String readTextFile(File file) {
-        InputStreamReader reader;
-        BufferedReader in;
-        StringBuffer text = new StringBuffer();
-        int c;
-        try {
-            reader = new InputStreamReader(new FileInputStream(file),
-                    detectCharSet(file.getAbsolutePath()));
-            in = new BufferedReader(reader);
-            do {
-                c = in.read();
-                if (c != -1) {
-                    text.append((char) c);
-                }
-            } while (c != -1);
-            in.close();
-        } catch (IOException e) {
-            Log.w(TAG, "Can't read file " + file.getName(), e);
-            return null;
-        } catch (OutOfMemoryError e) {
-            Log.w(TAG, "File is to big to read", e);
-            return null;
-        }
-
-        // detect end of lines
-        String content = text.toString();
-        int windows = content.indexOf("\r\n");
-        int macos = content.indexOf("\r");
-
-        if (windows != -1) {
-//            Settings.END_OF_LINE = EOL_WINDOWS;
-            content = content.replaceAll("\r\n", "\n");
-        } else {
-            if (macos != -1) {
-//                Settings.END_OF_LINE = EOL_MAC;
-                content = content.replaceAll("\r", "\n");
-            } else {
-//                Settings.END_OF_LINE = EOL_LINUX;
-            }
-        }
-
-//        if (BuildConfig.DEBUG) {
-//            Log.d(TAG, "Using End of Line : " + Settings.END_OF_LINE);
-//        }
-        return content;
-    }
-
-    public static String detectCharSet(String fileName) throws IOException {
-        byte[] buf = new byte[4096];
-        FileInputStream fis = new FileInputStream(fileName);
-
-        UniversalDetector detector = new UniversalDetector(null);
-
-        int nread;
-        while ((nread = fis.read(buf)) > 0 && !detector.isDone()) {
-            detector.handleData(buf, 0, nread);
-        }
-        detector.dataEnd();
-
-        String encoding = detector.getDetectedCharset();
-
-        detector.reset();
-        return encoding;
     }
 
     @Override
