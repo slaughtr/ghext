@@ -78,34 +78,29 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         }
         if (v == mCutButton) {
             //cut selection from view
+            copyOrCutSelection(true);
         }
         if (v == mCopyButton) {
             //copy selection to clipboard
-            String copiedString = mEditText.getText().toString();
-            copiedString = copiedString.substring(mEditText.getSelectionStart(), mEditText.getSelectionEnd());
-            android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text From pext", copiedString);
-            clipboard.setPrimaryClip(clip);
-            Log.d("copy", clip.toString());
+            copyOrCutSelection(false);
         }
         if (v == mPasteButton) {
             //paste clipboard to location
+            //leave this here as I only need it once
             ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-
             String pasteData = "";
             if (!(clipboard.hasPrimaryClip())) {
                 //nothing on the clipboard
                 Toast.makeText(this, "Nothing on clipboard to paste!", Toast.LENGTH_SHORT).show();
             } else if (!(clipboard.getPrimaryClipDescription().hasMimeType(MIMETYPE_TEXT_PLAIN))) {
-                // since the clipboard has data but it is not plain text
+                // the clipboard has data but it is not plain text
                 Toast.makeText(this, "Item on clipboard is not plain text!", Toast.LENGTH_SHORT).show();
             } else {
-                //since the clipboard contains plain text.
+                //the clipboard contains plain text.
                 ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
                 // Gets the clipboard as text.
                 pasteData = item.getText().toString();
             }
-
             //put paste at current selection
             mEditText.getText().insert(mEditText.getSelectionStart(), pasteData);
         }
@@ -188,4 +183,27 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         inflater.inflate(R.menu.overflow_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
+    private void copyOrCutSelection(boolean cut) {
+        String copiedString = mEditText.getText().toString();
+        int start = mEditText.getSelectionStart();
+        int end = mEditText.getSelectionEnd();
+        //do check, since if you start your selection on the right and highlight to the left, your selectionStart index will be greater than your selectionEnd index and things will break
+        if (mEditText.getSelectionStart() > mEditText.getSelectionEnd()) {
+            start = mEditText.getSelectionEnd();
+            end = mEditText.getSelectionStart();
+        }
+
+        copiedString = copiedString.substring(start, end);
+        android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text From pext", copiedString);
+        clipboard.setPrimaryClip(clip);
+
+        if (cut) {
+            String allText = mEditText.getText().toString();
+            String newText = allText.substring(0, start)+allText.substring(end, allText.length());
+            mEditText.setText(newText);
+        }
+    }
+
 }
