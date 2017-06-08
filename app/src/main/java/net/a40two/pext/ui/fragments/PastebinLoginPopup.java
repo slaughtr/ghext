@@ -3,6 +3,7 @@ package net.a40two.pext.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,12 +48,13 @@ public class PastebinLoginPopup extends DialogFragment {
                     @Override public void onResponse(Call call, Response response) throws IOException {
                         String userApiKey = PastebinLoginService.processResult(response);
 
-                        if (Constants.USER_API_KEY.contains("invalid")) { badLogin(); }
+                        if (userApiKey.contains("invalid")) { badLogin(); }
                         else {
                             user.setUsername(loginName);
                             user.setUserApiKey(userApiKey);
                             Constants.CURRENT_USER = user;
                             goodLogin();
+                            Log.d("userapikeyafterlogin", Constants.CURRENT_USER.getUserApiKey());
                             dismiss();
                         }
                     }

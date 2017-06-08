@@ -8,6 +8,7 @@ import net.a40two.pext.models.Paste;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -45,11 +46,13 @@ public class PastebinListService {
             Call call = client.newCall(request);
             call.enqueue(callback);
 
-        } else if (type.equals("user")) {
+        } else if (type.equals("ownPastes")) {
+            Log.d("listService", "userAPIkey: "+Constants.CURRENT_USER.getUserApiKey());
             RequestBody formBody = new FormBody.Builder()
-                    .add(Constants.DEV_API_KEY_PARAM, Constants.DEV_API_KEY)
+                    .add(Constants.API_OPTION, "list")
                     .add(Constants.USER_API_KEY, Constants.CURRENT_USER.getUserApiKey())
-                    .add(Constants.RESULTS_LIMIT_PARAM, "50")
+                    .add(Constants.DEV_API_KEY_PARAM, Constants.DEV_API_KEY)
+//                    .add(Constants.RESULTS_LIMIT_PARAM, "50")
                     .build();
             Request request = new Request.Builder()
                     .url(Constants.BASE_URL)
@@ -64,8 +67,9 @@ public class PastebinListService {
     public static ArrayList<Paste> processResults(String type, Response response) {
         ArrayList<Paste> pastes = new ArrayList<>();
 
-        try {
             //turn response body (XML) to string, build to JSON from that
+            Log.d("listService", response.body().toString());
+            try {
             XmlToJson resultJSON = new XmlToJson.Builder(response.body().string()).build();
             JSONObject resultJSONObject = new JSONObject(resultJSON.toString());
             Log.d("test", resultJSONObject.toString());
@@ -75,7 +79,12 @@ public class PastebinListService {
                 JSONObject eachPaste = resultsJSONArray.getJSONObject(i);
                 final Paste paste = new Paste(eachPaste.optString("paste_title", "Untitled"), eachPaste.optString("paste_key", "No key"), eachPaste.optString("paste_date", "No date"), eachPaste.optString("paste_hits", "No hit count"), eachPaste.optString("paste_size", "No size"), eachPaste.optString("paste_expire_date", "No expire date"));
 
-                paste.setBody(getTrendingPasteBody(paste));
+                if (type.equals("trending")) {
+                    paste.setBody(getTrendingPasteBody(paste));
+                } else if (type.equals("ownPastes")) {
+                    paste.setBody(getOwnPasteBody(paste));
+                } else { Log.d("listService", "Something went wrong!"); }
+
                 pastes.add(paste);
             }
         } catch (JSONException e) { e.printStackTrace(); }
@@ -103,7 +112,28 @@ public class PastebinListService {
             } catch (MalformedURLException e) { e.printStackTrace(); }
         } catch (IOException e) { e.printStackTrace(); }
 
-
         return html.toString();
+    }
+
+    public static String getOwnPasteBody(Paste paste) {
+        String pasteBody = "";
+        try {
+            OkHttpClient client = new OkHttpClient();
+
+            RequestBody formBody = new FormBody.Builder()
+                    .add(Constants.DEV_API_KEY_PARAM, Constants.DEV_API_KEY)
+                    .add(Constants.USER_API_KEY_PARAM, Constants.CURRENT_USER.getUserApiKey())
+                    .add(Constants.PASTE_KEY_PARAM, paste.getKey())
+                    .add(Constants.API_OPTION, "show_paste")
+                    .build();
+            Request request = new Request.Builder()
+                    .url(Constants.RAW_OUTPUT_URL)
+                    .post(formBody)
+                    .build();
+
+            pasteBody = client.newCall(request).execute().body().string();
+        } catch (IOException e) { e.printStackTrace(); }
+
+        return pasteBody;
     }
 }

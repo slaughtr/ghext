@@ -1,5 +1,7 @@
 package net.a40two.pext.services;
 
+import android.util.Log;
+
 import net.a40two.pext.Constants;
 
 import java.io.IOException;
@@ -19,8 +21,8 @@ public class PastebinLoginService {
 
         RequestBody formBody = new FormBody.Builder()
                 .add(Constants.DEV_API_KEY_PARAM, Constants.DEV_API_KEY)
-                .add(Constants.USERNAME_PARAM, Constants.USER_NAME)
-                .add(Constants.PASSWORD_PARAM, Constants.USER_PASSWORD)
+                .add(Constants.USERNAME_PARAM, username)
+                .add(Constants.PASSWORD_PARAM, password)
                 .build();
         Request request = new Request.Builder()
                 .url(Constants.NEW_USER_KEY_URL)
@@ -35,6 +37,7 @@ public class PastebinLoginService {
         String respBody = "";
         try {
             respBody = response.body().string();
+            Log.d("loginServiceProcess", respBody);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -45,6 +45,7 @@ public class PastesActivity extends AppCompatActivity {
             Log.d("onCreatePastesActivity", "in trending if");
             setTitle("Today's Trending Pastes");
         } else if (fragToLoad.equals("ownPastes")) {
+            getOwnPastes();
             Log.d("onCreatePastesActivity", "in own if");
             setTitle("Your Pastes");
 
@@ -70,8 +71,23 @@ public class PastesActivity extends AppCompatActivity {
 
                 mPastes = pblService.processResults("trending", response);
                     FragmentManager fm = getSupportFragmentManager();
-//                    Log.d("onCreatePastesActivity", "in trending if");
                     fm.beginTransaction().replace(R.id.fragmentHolder, TrendingPastesFragment.newInstance(mPastes)).commit();
+            }
+        });
+    }
+
+    private void getOwnPastes() {
+        final PastebinListService pblService = new PastebinListService();
+
+        pblService.buildListUrl("ownPastes", new Callback() {
+
+            @Override public void onFailure(Call call, IOException e) { e.printStackTrace(); }
+
+            @Override public void onResponse(Call call, Response response) throws IOException {
+
+                mPastes = pblService.processResults("trending", response);
+                FragmentManager fm = getSupportFragmentManager();
+                fm.beginTransaction().replace(R.id.fragmentHolder, UserPastesFragment.newInstance(mPastes)).commit();
             }
         });
     }
