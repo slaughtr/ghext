@@ -77,8 +77,11 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         }
         if (v == mPastebinButton) {
             //open menu for pushing to pastebin
+            Bundle args = new Bundle();
+            args.putString("body", mEditText.getText().toString());
             FragmentManager fm = getSupportFragmentManager();
             PastebinPastePopup ppp = new PastebinPastePopup();
+            ppp.setArguments(args);
             ppp.show(fm, "Pastebin paste popup");
         }
         if (v == mCutButton) {

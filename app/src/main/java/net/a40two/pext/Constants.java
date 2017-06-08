@@ -17,6 +17,7 @@ public class Constants {
     /*the above is somewhat confusing. It's used for several things, including pasting, getting lists, etc
     "paste" = make a new paste
     "show_paste" = get logged in user's raw paste (also need paste key)
+    "list" = get list of logged in user's pastes
     */
     public static final String PASTE_BODY_PARAM = "api_paste_code";
     public static final String PASTE_NAME_PARAM = "api_paste_name";

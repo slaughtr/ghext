@@ -8,7 +8,7 @@ import net.a40two.pext.models.Paste;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xmlpull.v1.XmlPullParserException;
+//import org.json.XML;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,12 +47,15 @@ public class PastebinListService {
             call.enqueue(callback);
 
         } else if (type.equals("ownPastes")) {
-            Log.d("listService", "userAPIkey: "+Constants.CURRENT_USER.getUserApiKey());
+//            Log.d("listService", "userAPIkey: "+Constants.CURRENT_USER.getUserApiKey());
+            String userApiKey = Constants.CURRENT_USER.getUserApiKey();
+//            Log.d("userApiKey", userApiKey);
+//            Log.d("listService", "devKey: "+Constants.DEV_API_KEY);
             RequestBody formBody = new FormBody.Builder()
-                    .add(Constants.API_OPTION, "list")
-                    .add(Constants.USER_API_KEY, Constants.CURRENT_USER.getUserApiKey())
                     .add(Constants.DEV_API_KEY_PARAM, Constants.DEV_API_KEY)
-//                    .add(Constants.RESULTS_LIMIT_PARAM, "50")
+                    .add(Constants.API_OPTION, "list")
+                    .add(Constants.RESULTS_LIMIT_PARAM, "50")
+                    .add(Constants.USER_API_KEY_PARAM, userApiKey)
                     .build();
             Request request = new Request.Builder()
                     .url(Constants.BASE_URL)
@@ -68,11 +71,13 @@ public class PastebinListService {
         ArrayList<Paste> pastes = new ArrayList<>();
 
             //turn response body (XML) to string, build to JSON from that
-            Log.d("listService", response.body().toString());
             try {
-            XmlToJson resultJSON = new XmlToJson.Builder(response.body().string()).build();
-            JSONObject resultJSONObject = new JSONObject(resultJSON.toString());
-            Log.d("test", resultJSONObject.toString());
+                Log.d("returnedXML", response.body().string());
+                String returnedXML = response.body().string();
+                XmlToJson resultJSON = new XmlToJson.Builder(returnedXML).build();
+                Log.d("xmltojson result", resultJSON.toString());
+                JSONObject resultJSONObject = new JSONObject(resultJSON.toString());
+//                JSONObject resultJSONObject = XML.toJSONObject(response.body().string());
             JSONArray resultsJSONArray = resultJSONObject.getJSONArray("paste");
 
             for (int i = 0; i < resultsJSONArray.length(); i++) {
@@ -116,6 +121,7 @@ public class PastebinListService {
     }
 
     public static String getOwnPasteBody(Paste paste) {
+        Log.d("getOwnPasteBody", "hurr");
         String pasteBody = "";
         try {
             OkHttpClient client = new OkHttpClient();
