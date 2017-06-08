@@ -68,12 +68,9 @@ public class PastebinListService {
 
             //turn response body (XML) to string, build to JSON from that
             try {
-//                Log.d("returnedXML", response.body().string());
-//                String returnedXML = response.body().string();
                 XmlToJson resultJSON = new XmlToJson.Builder(response.body().string()).build();
                 Log.d("xmltojson result", resultJSON.toString());
                 JSONObject resultJSONObject = new JSONObject(resultJSON.toString());
-//                JSONObject resultJSONObject = XML.toJSONObject(response.body().string());
             JSONArray resultsJSONArray = resultJSONObject.getJSONArray("paste");
 
             for (int i = 0; i < resultsJSONArray.length(); i++) {
