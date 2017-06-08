@@ -56,31 +56,6 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         mPasteButton.setOnClickListener(this);
         mBracketsButton.setOnClickListener(this);
         mGithubButton.setOnClickListener(this);
-//        try {
-//            Intent intent = getIntent();
-//            File file;
-//            Uri uri = Parcels.unwrap(intent.getParcelableExtra("uri"));
-//
-//            URI newUri = new URI("file://"+uri.toString());
-//            Log.d("uri", uri.toString());
-//            Log.d("newUri", newUri.toString());
-//            file = new File(newUri);
-//            if (intent != null) {
-//
-//                Log.d("uriPath", uri.toString());
-//                if (uri != null) {
-//
-//                    file = new File(uri.getPath());
-//                    String text = readTextFile(file);
-//                    if (text != null) {
-//                        Log.d("in if text not null", text);
-//                        mEditText.setText(text);
-//                    }
-////        mEditText.setText(readTextFile(file));
-//                }
-//            }
-//        }
-//        catch(URISyntaxException e) { e.printStackTrace(); }
         //to set github button to use icon
         Typeface githubBottonFont = Typeface.createFromAsset( getAssets(), "fontawesome-webfont.ttf" );
         Button button = (Button)findViewById(R.id.github_button);
