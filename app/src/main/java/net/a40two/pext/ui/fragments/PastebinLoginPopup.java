@@ -18,7 +18,6 @@ import net.a40two.pext.services.PastebinLoginService;
 
 import java.io.IOException;
 
-import butterknife.BindView;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -31,7 +30,7 @@ public class PastebinLoginPopup extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_pastebin_login_popup, container, false);
+        View rootView = inflater.inflate(R.layout.pastebin_login_popup, container, false);
         final EditText mUsernameField = (EditText) rootView.findViewById(R.id.username_field);
         final EditText mPasswordField = (EditText) rootView.findViewById(R.id.password_field);
         final Button mLoginButton = (Button) rootView.findViewById(R.id.login_button);
