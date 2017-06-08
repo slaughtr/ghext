@@ -47,7 +47,7 @@ public class UserPastesFragment extends Fragment {
         View view = inflater.inflate(R.layout.trending_pastes_list, container, false);
         ButterKnife.bind(this, view);
         mRecyclerView.setAdapter(new PasteListAdapter(mPastes));
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
         SnapHelper helper = new LinearSnapHelper();
