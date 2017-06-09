@@ -1,6 +1,7 @@
 package net.a40two.pext.ui.fragments;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -37,13 +38,14 @@ import okhttp3.Response;
 
 public class PastebinPastePopup extends DialogFragment implements AdapterView.OnItemSelectedListener {
         String pasteReturnedURL = "";
+    Activity activity;
 
     public PastebinPastePopup() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        activity = getActivity();
 
         View rootView = inflater.inflate(R.layout.pastebin_paste_popup, container, false);
         getDialog().setTitle("Paste options");
@@ -91,10 +93,8 @@ public class PastebinPastePopup extends DialogFragment implements AdapterView.On
                         pasteReturnedURL = ppService.processResult(response);
                         Log.d("returnedURL", pasteReturnedURL);
 
-                        android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                        android.content.ClipData clip = android.content.ClipData.newPlainText("New Paste URL", pasteReturnedURL);
-                        clipboard.setPrimaryClip(clip);
-                        Toast.makeText(getContext(), "New paste URL copied to clipboard", Toast.LENGTH_SHORT).show();
+                        showResultToast();
+
                     }
                 });
         dismiss();
@@ -102,6 +102,7 @@ public class PastebinPastePopup extends DialogFragment implements AdapterView.On
         });
         return rootView;
     }
+
 
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
@@ -137,5 +138,24 @@ public class PastebinPastePopup extends DialogFragment implements AdapterView.On
         else if (expires.equals("1 Month")) { fixedExpires = "1M"; }
 
         return fixedExpires;
+    }
+
+    public void showResultToast() {
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                if (pasteReturnedURL != null) {
+                    if (pasteReturnedURL.contains("pastebin.com")) {
+                        //if we get a URL, set it to the clipboard
+                        android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                        android.content.ClipData clip = android.content.ClipData.newPlainText("New Paste URL", pasteReturnedURL);
+                        clipboard.setPrimaryClip(clip);
+                        Toast.makeText(activity.getApplicationContext(), "New paste URL copied to clipboard\n" + pasteReturnedURL, Toast.LENGTH_SHORT).show();
+                    } else {
+                        //if something went wrong, let the user know (the returnedURL in this case would hold the error IE hit limit
+                        Toast.makeText(activity.getApplicationContext(), "Something went wrong:\n"+pasteReturnedURL, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
     }
 }
