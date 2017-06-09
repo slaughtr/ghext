@@ -3,6 +3,11 @@ pext
 
 #### By [Dallas Slaughter](https://www.linkedin.com/in/dallas-slaughter) -  [email](mailto:dslaughtr@gmail.com)
 
+
+With pext, I plan to make a mobile text editor with Pastebin integration. The general idea would be that you can quickly edit and share files of a variety of types. This will be especially useful for developers on the go, as Pastebin features syntax highlighting and easy sharing, as well as timed deletion of files.
+
+While you don't NEED a [Pastebin](https://www.pastebin.com) account to use this app, most features won't work unless you login. Without logging in, you can still submit new pastes and see the list of trending pastes. When logged in, you can see all of your own pastes and have many more options when submitting a paste.
+
 ## Setup/Installation Requirements
 
 * _Clone this repo to your local machine_
@@ -11,7 +16,7 @@ pext
 
 ## Known Bugs
 
-_None yet, give me time :) _
+_ Occasionally the login popup will cause the app to crash when you click login. The fragment just can't getActivity occasionally. I have no idea why. _
 
 ## Support and contact details
 
@@ -19,7 +24,7 @@ _If you have any issues or questions (or even suggestions!), email me at the add
 
 ## Technologies Used
 
-_Android Studio, Java, XML_
+_Android Studio, Java, XML, JSON_
 
 ### License
 
