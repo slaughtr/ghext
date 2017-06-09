@@ -47,7 +47,7 @@ public class TrendingPastesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.trending_pastes_list, container, false);
         ButterKnife.bind(this, view);
-        mRecyclerView.setAdapter(new PasteListAdapter(mPastes));
+        mRecyclerView.setAdapter(new PasteListAdapter(getContext(), mPastes));
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);

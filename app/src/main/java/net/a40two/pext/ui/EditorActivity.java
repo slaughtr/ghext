@@ -56,6 +56,9 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
+        //get intent with the body of the paste you want to edit, if it's not null (might be, if you're coming from main activity or something went wrong), then set the AdvancedEditText text to that.
+
+
         ButterKnife.bind(this);
         mSaveButton.setOnClickListener(this);
         mPastebinButton.setOnClickListener(this);
@@ -66,9 +69,17 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         mGithubButton.setOnClickListener(this);
         //to set github button to use icon
         Typeface githubBottonFont = Typeface.createFromAsset( getAssets(), "fontawesome-webfont.ttf" );
-        Button button = (Button)findViewById(R.id.github_button);
-        button.setTypeface(githubBottonFont);
+        mGithubButton.setTypeface(githubBottonFont);
+    }
 
+    @Override public void onStart() {
+        super.onStart();
+        Intent intent = getIntent();
+        String editPasteBody = Parcels.unwrap(intent.getParcelableExtra("editPasteBody"));
+
+        if (editPasteBody != null && editPasteBody.length() > 0) {
+            mEditText.setText(editPasteBody);
+        }
     }
 
     @Override public void onClick(View v) {

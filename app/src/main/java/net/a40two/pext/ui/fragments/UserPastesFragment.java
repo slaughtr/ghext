@@ -1,6 +1,7 @@
 package net.a40two.pext.ui.fragments;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
@@ -46,7 +47,7 @@ public class UserPastesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.trending_pastes_list, container, false);
         ButterKnife.bind(this, view);
-        mRecyclerView.setAdapter(new PasteListAdapter(mPastes));
+        mRecyclerView.setAdapter(new PasteListAdapter(getContext(), mPastes));
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);

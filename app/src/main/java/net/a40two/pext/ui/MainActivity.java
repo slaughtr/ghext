@@ -55,15 +55,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (mUserApiKey != null) {
             Constants.LOGGED_IN = true;
             Constants.USER_API_KEY = mUserApiKey;
+            //TODO: make the toast not show every time you return to this activity, also move it?
             Toast.makeText(this, "You're already logged in! Only login again if you're having issues.", Toast.LENGTH_LONG).show();
-            Log.d("Shared Pref API key", mUserApiKey);
         }
-
 
         mDrawerList = (ListView) findViewById(R.id.main_drawer);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        // Set the adapter for the list view
+        // Set the adapter for the list view (drawer nav)
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.drawer_list_item, mMenuItems));
         // Set the list's click listener

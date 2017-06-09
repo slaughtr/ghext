@@ -50,7 +50,7 @@ public class PastebinListService {
             RequestBody formBody = new FormBody.Builder()
                     .add(Constants.DEV_API_KEY_PARAM, Constants.DEV_API_KEY)
                     .add(Constants.API_OPTION, "list")
-                    .add(Constants.RESULTS_LIMIT_PARAM, "50")
+                    .add(Constants.RESULTS_LIMIT_PARAM, "50") //TODO: make this user-changeable?
                     .add(Constants.USER_API_KEY_PARAM, userApiKey)
                     .build();
             Request request = new Request.Builder()
@@ -66,14 +66,13 @@ public class PastebinListService {
     public static ArrayList<Paste> processResults(String type, Response response) {
         ArrayList<Paste> pastes = new ArrayList<>();
 
-            //turn response body (XML) to string, build to JSON from that
-            try {
-                String withRoot =  "<pastelist>"+response.body().string()+"</pastelist>";
-                    Log.d("API response", withRoot);
-                XmlToJson resultJSON = new XmlToJson.Builder(withRoot).build();
-//                Log.d("xmltojson result", resultJSON.toString());
-                JSONObject resultJSONObject = new JSONObject(resultJSON.toString());
-                JSONObject resultJSONObjectChildren = resultJSONObject.getJSONObject("pastelist");
+        //turn response body (XML) to string, build to JSON from that
+        try {
+            //have to add a root to xml or it's invalid, so add <pastelist></pastelist> around the response
+            String withRoot =  "<pastelist>"+response.body().string()+"</pastelist>";
+            XmlToJson resultJSON = new XmlToJson.Builder(withRoot).build();
+            JSONObject resultJSONObject = new JSONObject(resultJSON.toString());
+            JSONObject resultJSONObjectChildren = resultJSONObject.getJSONObject("pastelist");
             JSONArray resultsJSONArray = resultJSONObjectChildren.getJSONArray("paste");
 
             for (int i = 0; i < resultsJSONArray.length(); i++) {
