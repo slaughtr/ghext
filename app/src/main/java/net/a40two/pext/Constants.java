@@ -30,6 +30,7 @@ public class Constants {
     //above is used for getting paste to fetch
 
     //logging in, pasting as user
+    public static final String PREFERENCES_USER_API_KEY = "userApiKey";
     public static boolean LOGGED_IN = false;
     public static final String USERNAME_PARAM = "api_user_name";
     public static final String PASSWORD_PARAM = "api_user_password";

@@ -1,7 +1,9 @@
 package net.a40two.pext.ui.fragments;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,7 +25,11 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class PastebinLoginPopup extends DialogFragment {
+    private SharedPreferences mSharedPreferences;
+    private SharedPreferences.Editor mEditor;
+
     User user = new User("", "");
+
 
     public PastebinLoginPopup() {}
 
@@ -35,6 +41,9 @@ public class PastebinLoginPopup extends DialogFragment {
         final EditText mPasswordField = (EditText) rootView.findViewById(R.id.password_field);
         final Button mLoginButton = (Button) rootView.findViewById(R.id.login_button);
         getDialog().setTitle("Login popup");
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        mEditor = mSharedPreferences.edit();
 
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,7 +60,10 @@ public class PastebinLoginPopup extends DialogFragment {
                         else {
                             user.setUsername(loginName);
                             user.setUserApiKey(userApiKey);
+                            addToSharedPreferences(userApiKey);
+                            Constants.LOGGED_IN = true;
                             Constants.CURRENT_USER = user;
+                            Constants.USER_API_KEY = userApiKey;
                             goodLogin();
                             Log.d("userapikeyafterlogin", Constants.CURRENT_USER.getUserApiKey());
                             dismiss();
@@ -80,7 +92,10 @@ public class PastebinLoginPopup extends DialogFragment {
                 Toast.makeText(getActivity(), "You are now logged in as " + user.getUsername(), Toast.LENGTH_LONG).show();
             }
         });
+    }
 
+    private void addToSharedPreferences(String userKey) {
+        mEditor.putString(Constants.PREFERENCES_USER_API_KEY, userKey).apply();
     }
 
 }

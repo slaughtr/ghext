@@ -1,6 +1,7 @@
 package net.a40two.pext.ui.fragments;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -76,7 +77,6 @@ public class PastebinPastePopup extends DialogFragment implements AdapterView.On
 
         mSubmitPasteButton.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                Log.d("clickListenerer", "heard that");
                 final PastebinPasteService ppService = new PastebinPasteService();
                 ppService.buildPasteUrl(pasteBody,
                         mTitleText.getText().toString(),
@@ -89,13 +89,17 @@ public class PastebinPastePopup extends DialogFragment implements AdapterView.On
                     @Override public void onResponse(Call call, Response response) throws IOException {
 
                         pasteReturnedURL = ppService.processResult(response);
-                        dismiss();
                         Log.d("returnedURL", pasteReturnedURL);
+
+                        android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                        android.content.ClipData clip = android.content.ClipData.newPlainText("New Paste URL", pasteReturnedURL);
+                        clipboard.setPrimaryClip(clip);
+                        Toast.makeText(getContext(), "New paste URL copied to clipboard", Toast.LENGTH_SHORT).show();
                     }
                 });
+        dismiss();
             }
         });
-
         return rootView;
     }
 

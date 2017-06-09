@@ -46,7 +46,7 @@ public class PastebinListService {
             call.enqueue(callback);
 
         } else if (type.equals("ownPastes")) {
-            String userApiKey = Constants.CURRENT_USER.getUserApiKey();
+            String userApiKey = Constants.USER_API_KEY;
             RequestBody formBody = new FormBody.Builder()
                     .add(Constants.DEV_API_KEY_PARAM, Constants.DEV_API_KEY)
                     .add(Constants.API_OPTION, "list")
@@ -68,10 +68,13 @@ public class PastebinListService {
 
             //turn response body (XML) to string, build to JSON from that
             try {
-                XmlToJson resultJSON = new XmlToJson.Builder(response.body().string()).build();
-                Log.d("xmltojson result", resultJSON.toString());
+                String withRoot =  "<pastelist>"+response.body().string()+"</pastelist>";
+                    Log.d("API response", withRoot);
+                XmlToJson resultJSON = new XmlToJson.Builder(withRoot).build();
+//                Log.d("xmltojson result", resultJSON.toString());
                 JSONObject resultJSONObject = new JSONObject(resultJSON.toString());
-            JSONArray resultsJSONArray = resultJSONObject.getJSONArray("paste");
+                JSONObject resultJSONObjectChildren = resultJSONObject.getJSONObject("pastelist");
+            JSONArray resultsJSONArray = resultJSONObjectChildren.getJSONArray("paste");
 
             for (int i = 0; i < resultsJSONArray.length(); i++) {
                 JSONObject eachPaste = resultsJSONArray.getJSONObject(i);
@@ -104,6 +107,7 @@ public class PastebinListService {
                 InputStream in = connection.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                 for (String line; (line = reader.readLine()) != null; ) {
+                    //add an escaped new line after each line
                     html.append(line+"\n");
                 }
                 in.close();
@@ -114,14 +118,13 @@ public class PastebinListService {
     }
 
     public static String getOwnPasteBody(Paste paste) {
-        Log.d("getOwnPasteBody", "hurr");
         String pasteBody = "";
         try {
             OkHttpClient client = new OkHttpClient();
 
             RequestBody formBody = new FormBody.Builder()
                     .add(Constants.DEV_API_KEY_PARAM, Constants.DEV_API_KEY)
-                    .add(Constants.USER_API_KEY_PARAM, Constants.CURRENT_USER.getUserApiKey())
+                    .add(Constants.USER_API_KEY_PARAM, Constants.USER_API_KEY)
                     .add(Constants.PASTE_KEY_PARAM, paste.getKey())
                     .add(Constants.API_OPTION, "show_paste")
                     .build();
