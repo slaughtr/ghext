@@ -2,9 +2,12 @@ package net.a40two.pext.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -21,7 +24,6 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
     @BindView(R.id.my_github_button) Button myGithubButton;
     @BindView(R.id.bitcoin_button) Button myBitcoinButton;
     @BindView(R.id.linkedin_button) Button myLinkedinButton;
-
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

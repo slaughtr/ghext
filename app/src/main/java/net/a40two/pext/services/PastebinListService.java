@@ -8,7 +8,6 @@ import net.a40two.pext.models.Paste;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,12 +46,12 @@ public class PastebinListService {
             call.enqueue(callback);
 
         } else if (type.equals("ownPastes")) {
-            Log.d("listService", "userAPIkey: "+Constants.CURRENT_USER.getUserApiKey());
+            String userApiKey = Constants.USER_API_KEY;
             RequestBody formBody = new FormBody.Builder()
-                    .add(Constants.API_OPTION, "list")
-                    .add(Constants.USER_API_KEY, Constants.CURRENT_USER.getUserApiKey())
                     .add(Constants.DEV_API_KEY_PARAM, Constants.DEV_API_KEY)
-//                    .add(Constants.RESULTS_LIMIT_PARAM, "50")
+                    .add(Constants.API_OPTION, "list")
+                    .add(Constants.RESULTS_LIMIT_PARAM, "50") //TODO: make this user-changeable?
+                    .add(Constants.USER_API_KEY_PARAM, userApiKey)
                     .build();
             Request request = new Request.Builder()
                     .url(Constants.BASE_URL)
@@ -67,13 +66,14 @@ public class PastebinListService {
     public static ArrayList<Paste> processResults(String type, Response response) {
         ArrayList<Paste> pastes = new ArrayList<>();
 
-            //turn response body (XML) to string, build to JSON from that
-            Log.d("listService", response.body().toString());
-            try {
-            XmlToJson resultJSON = new XmlToJson.Builder(response.body().string()).build();
+        //turn response body (XML) to string, build to JSON from that
+        try {
+            //have to add a root to xml or it's invalid, so add <pastelist></pastelist> around the response
+            String withRoot =  "<pastelist>"+response.body().string()+"</pastelist>";
+            XmlToJson resultJSON = new XmlToJson.Builder(withRoot).build();
             JSONObject resultJSONObject = new JSONObject(resultJSON.toString());
-            Log.d("test", resultJSONObject.toString());
-            JSONArray resultsJSONArray = resultJSONObject.getJSONArray("paste");
+            JSONObject resultJSONObjectChildren = resultJSONObject.getJSONObject("pastelist");
+            JSONArray resultsJSONArray = resultJSONObjectChildren.getJSONArray("paste");
 
             for (int i = 0; i < resultsJSONArray.length(); i++) {
                 JSONObject eachPaste = resultsJSONArray.getJSONObject(i);
@@ -106,6 +106,7 @@ public class PastebinListService {
                 InputStream in = connection.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                 for (String line; (line = reader.readLine()) != null; ) {
+                    //add an escaped new line after each line
                     html.append(line+"\n");
                 }
                 in.close();
@@ -122,7 +123,7 @@ public class PastebinListService {
 
             RequestBody formBody = new FormBody.Builder()
                     .add(Constants.DEV_API_KEY_PARAM, Constants.DEV_API_KEY)
-                    .add(Constants.USER_API_KEY_PARAM, Constants.CURRENT_USER.getUserApiKey())
+                    .add(Constants.USER_API_KEY_PARAM, Constants.USER_API_KEY)
                     .add(Constants.PASTE_KEY_PARAM, paste.getKey())
                     .add(Constants.API_OPTION, "show_paste")
                     .build();

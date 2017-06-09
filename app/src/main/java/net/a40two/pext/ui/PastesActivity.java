@@ -85,7 +85,7 @@ public class PastesActivity extends AppCompatActivity {
 
             @Override public void onResponse(Call call, Response response) throws IOException {
 
-                mPastes = pblService.processResults("trending", response);
+                mPastes = pblService.processResults("ownPastes", response);
                 FragmentManager fm = getSupportFragmentManager();
                 fm.beginTransaction().replace(R.id.fragmentHolder, UserPastesFragment.newInstance(mPastes)).commit();
             }

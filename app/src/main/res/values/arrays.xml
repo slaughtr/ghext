@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="expire_date_select">
+        <item>Never</item>
+        <item>10 Minutes</item>
+        <item>1 Hour</item>
+        <item>1 Day</item>
+        <item>1 Week</item>
+        <item>2 Weeks</item>
+        <item>1 Month</item>
+    </string-array>
+
+    <string-array name="private_select">
+        <item>Public</item>
+        <item>Unlisted</item>
+        <item>Private</item>
+    </string-array>
+
+
+    <string-array name="syntax_highlight_select">
+        <item>None</item>
+        <item>CSS</item>
+        <item>HTML 5</item>
+        <item>Java</item>
+        <item>JavaScript</item>
+        <item>JSON</item>
+        <item>PHP</item>
+        <item>Python</item>
+        <item>Ruby</item>
+        <item>XML</item>
+
+        <item>ActionScript</item>
+        <item>AppleScript</item>
+        <item>autoconf</item>
+        <item>Autohotkey</item>
+        <item>Bash</item>
+        <item>Batch</item>
+        <item>BrainFuck</item>
+        <item>C</item>
+        <item>C#</item>
+        <item>C++</item>
+        <item>Clojure</item>
+        <item>CMake</item>
+        <item>COBOL</item>
+        <item>CoffeeScript</item>
+        <item>Dart</item>
+        <item>Delphi</item>
+        <item>ECMAScript</item>
+        <item>Email</item>
+        <item>Erlang</item>
+        <item>Fortran</item>
+        <item>Game Maker</item>
+        <item>Go</item>
+        <item>Groovy</item>
+        <item>Haskell</item>
+        <item>HTML</item>
+        <item>INI file</item>
+        <item>J</item>
+
+        <item>jQuery</item>
+        <item>Kotlin</item>
+        <item>Latex</item>
+        <item>Lisp</item>
+        <item>LOL Code</item>
+        <item>Lua</item>
+        <item>Make</item>
+        <item>Markdown</item>
+        <item>MatLab</item>
+        <item>mIRC</item>
+        <item>MySQL</item>
+        <item>Nginx</item>
+        <item>Objective C</item>
+        <item>Pascal</item>
+        <item>Perl</item>
+        <item>PostgreSQL</item>
+        <item>PostScript</item>
+        <item>Power Shell</item>
+        <item>R</item>
+        <item>Rails</item>
+        <item>Rust</item>
+        <item>Scala</item>
+        <item>SQL</item>
+        <item>Swift</item>
+        <item>VB.NET</item>
+        <item>VIM</item>
+        <item>VisualBasic</item>
+        <item>WHOIS</item>
+    </string-array>
+
+</resources>

@@ -1,7 +1,9 @@
 package net.a40two.pext.ui.fragments;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,24 +20,30 @@ import net.a40two.pext.services.PastebinLoginService;
 
 import java.io.IOException;
 
-import butterknife.BindView;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
 public class PastebinLoginPopup extends DialogFragment {
+    private SharedPreferences mSharedPreferences;
+    private SharedPreferences.Editor mEditor;
+
     User user = new User("", "");
+
 
     public PastebinLoginPopup() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_pastebin_login_popup, container, false);
+        View rootView = inflater.inflate(R.layout.pastebin_login_popup, container, false);
         final EditText mUsernameField = (EditText) rootView.findViewById(R.id.username_field);
         final EditText mPasswordField = (EditText) rootView.findViewById(R.id.password_field);
         final Button mLoginButton = (Button) rootView.findViewById(R.id.login_button);
         getDialog().setTitle("Login popup");
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        mEditor = mSharedPreferences.edit();
 
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,7 +60,10 @@ public class PastebinLoginPopup extends DialogFragment {
                         else {
                             user.setUsername(loginName);
                             user.setUserApiKey(userApiKey);
+                            addToSharedPreferences(userApiKey);
+                            Constants.LOGGED_IN = true;
                             Constants.CURRENT_USER = user;
+                            Constants.USER_API_KEY = userApiKey;
                             goodLogin();
                             Log.d("userapikeyafterlogin", Constants.CURRENT_USER.getUserApiKey());
                             dismiss();
@@ -81,7 +92,10 @@ public class PastebinLoginPopup extends DialogFragment {
                 Toast.makeText(getActivity(), "You are now logged in as " + user.getUsername(), Toast.LENGTH_LONG).show();
             }
         });
+    }
 
+    private void addToSharedPreferences(String userKey) {
+        mEditor.putString(Constants.PREFERENCES_USER_API_KEY, userKey).apply();
     }
 
 }
