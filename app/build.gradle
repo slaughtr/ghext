@@ -60,3 +60,5 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
     compile group: 'com.googlecode.juniversalchardet', name: 'juniversalchardet', version: '1.0.3'
 }
+
+apply plugin: 'com.google.gms.google-services'
