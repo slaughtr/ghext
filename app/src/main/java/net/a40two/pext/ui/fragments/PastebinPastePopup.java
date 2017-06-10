@@ -112,7 +112,7 @@ public class PastebinPastePopup extends DialogFragment implements AdapterView.On
 
                     if (pasteCallResponse.contains("pastebin.com")) {
                         //if we get a URL, set it to the clipboard
-                        android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                        android.content.ClipboardManager clipboard = (android.content.ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
                         android.content.ClipData clip = android.content.ClipData
                                 .newPlainText("New Paste URL", pasteCallResponse);
                         clipboard.setPrimaryClip(clip);
