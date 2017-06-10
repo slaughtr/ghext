@@ -26,9 +26,6 @@ public class PastebinPasteService {
 
 
         if (Constants.LOGGED_IN) {
-            Log.d("ppServiceLOGGEDIN", "logged in");
-            Log.d("ppServiceLOGGEDINApiKey", userApiKey);
-
             RequestBody formBody = new FormBody.Builder()
                     .add(Constants.DEV_API_KEY_PARAM, Constants.DEV_API_KEY)
                     .add(Constants.API_OPTION, "paste")
@@ -47,8 +44,6 @@ public class PastebinPasteService {
             Call call = client.newCall(request);
             call.enqueue(callback);
         } else {
-            Log.d("ppServiceNOTLOGGEDIN", "not logged in");
-
             // if not logged in, submit new paste without user api key/privacy (is there a way to include an if in the middle of all the .add methods?)
             RequestBody formBody = new FormBody.Builder()
                     .add(Constants.DEV_API_KEY_PARAM, Constants.DEV_API_KEY)
@@ -76,7 +71,7 @@ public class PastebinPasteService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //this should return the URL to the new paste
+        //this should return the URL to the new paste, or a possible bad api call
         return respBody;
     }
 }

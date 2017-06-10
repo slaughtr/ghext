@@ -3,47 +3,36 @@ package net.a40two.pext.ui.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import net.a40two.pext.Constants;
 import net.a40two.pext.R;
-import net.a40two.pext.adapters.PasteSyntaxHelper;
-import net.a40two.pext.models.User;
-import net.a40two.pext.services.PastebinLoginService;
+import net.a40two.pext.adapters.PasteHelper;
 import net.a40two.pext.services.PastebinPasteService;
-
-import org.parceler.Parcels;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 
-import butterknife.BindView;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
 public class PastebinPastePopup extends DialogFragment implements AdapterView.OnItemSelectedListener {
-        String pasteReturnedURL = "";
+    String pasteCallResponse = "";
     Activity activity;
 
     public PastebinPastePopup() {}
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         activity = getActivity();
 
@@ -53,6 +42,7 @@ public class PastebinPastePopup extends DialogFragment implements AdapterView.On
         final Button mSubmitPasteButton = (Button) rootView.findViewById(R.id.submitPasteButton);
         final TextView mTitleText = (TextView) rootView.findViewById(R.id.pasteTitleField);
 
+        //set all the spinners
         final Spinner mExpireSpinner = (Spinner) rootView.findViewById(R.id.expireSpinner);
         ArrayAdapter<CharSequence> expireAdapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.expire_date_select, android.R.layout.simple_spinner_item);
@@ -70,34 +60,32 @@ public class PastebinPastePopup extends DialogFragment implements AdapterView.On
                 R.array.syntax_highlight_select, android.R.layout.simple_spinner_item);
         syntaxAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSyntaxSpinner.setAdapter(syntaxAdapter);
-
+        //set spinner click listeners
         mSyntaxSpinner.setOnItemSelectedListener(this);
         mPrivacySpinner.setOnItemSelectedListener(this);
         mExpireSpinner.setOnItemSelectedListener(this);
 
+        //get the body of the editText so it can be submitted to pastebin
         final String pasteBody = getArguments().getString("body");
 
         mSubmitPasteButton.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 final PastebinPasteService ppService = new PastebinPasteService();
+
                 ppService.buildPasteUrl(pasteBody,
                         mTitleText.getText().toString(),
-                        getExpire(mExpireSpinner.getSelectedItem().toString()),
-                        getPrivacy(mPrivacySpinner.getSelectedItem().toString()),
-                        PasteSyntaxHelper.getSyntax(mSyntaxSpinner.getSelectedItem().toString()), new Callback() {
+                        PasteHelper.getExpire(mExpireSpinner.getSelectedItem().toString()),
+                        PasteHelper.getPrivacy(mPrivacySpinner.getSelectedItem().toString()),
+                        PasteHelper.getSyntax(mSyntaxSpinner.getSelectedItem().toString()), new Callback() {
 
-                    @Override public void onFailure(Call call, IOException e) { e.printStackTrace(); }
+                            @Override public void onFailure(Call call, IOException e) { e.printStackTrace(); }
 
-                    @Override public void onResponse(Call call, Response response) throws IOException {
-
-                        pasteReturnedURL = ppService.processResult(response);
-                        Log.d("returnedURL", pasteReturnedURL);
-
-                        showResultToast();
-
-                    }
-                });
-        dismiss();
+                            @Override public void onResponse(Call call, Response response) throws IOException {
+                                pasteCallResponse = ppService.processResult(response);
+                                showResultToast();
+                            }
+                        });
+                dismiss();
             }
         });
         return rootView;
@@ -113,46 +101,32 @@ public class PastebinPastePopup extends DialogFragment implements AdapterView.On
 
     public void onNothingSelected(AdapterView<?> parent) {
         // Another interface callback
-    }
-
-    public String getPrivacy(String privacy) {
-        String fixedPrivacy = "0";
-
-        if (privacy.equals("Public")) { fixedPrivacy = "0"; }
-        else if (privacy.equals("Unlisted")) { fixedPrivacy = "1"; }
-        else if (privacy.equals("Private")) { fixedPrivacy = "2"; }
-
-        return fixedPrivacy;
-    }
-
-
-    public String getExpire(String expires) {
-        String fixedExpires = "N";
-
-        if (expires.equals("Never")) { fixedExpires = "N"; }
-        else if (expires.equals("10 Minutes")) { fixedExpires = "10m"; }
-        else if (expires.equals("1 Hour")) { fixedExpires = "1H"; }
-        else if (expires.equals("1 Day")) { fixedExpires = "1D"; }
-        else if (expires.equals("1 Week")) { fixedExpires = "1W"; }
-        else if (expires.equals("2 Weeks")) { fixedExpires = "2W"; }
-        else if (expires.equals("1 Month")) { fixedExpires = "1M"; }
-
-        return fixedExpires;
+        //TODO: can I use this method to set the spinner to the last value set by user?
     }
 
     public void showResultToast() {
         activity.runOnUiThread(new Runnable() {
             public void run() {
-                if (pasteReturnedURL != null) {
-                    if (pasteReturnedURL.contains("pastebin.com")) {
+
+                if (pasteCallResponse != null) {
+
+                    if (pasteCallResponse.contains("pastebin.com")) {
                         //if we get a URL, set it to the clipboard
-                        android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                        android.content.ClipData clip = android.content.ClipData.newPlainText("New Paste URL", pasteReturnedURL);
+                        android.content.ClipboardManager clipboard = (android.content.ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
+                        android.content.ClipData clip = android.content.ClipData
+                                .newPlainText("New Paste URL", pasteCallResponse);
                         clipboard.setPrimaryClip(clip);
-                        Toast.makeText(activity.getApplicationContext(), "New paste URL copied to clipboard\n" + pasteReturnedURL, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity.getApplicationContext(),
+                                "New paste URL copied to clipboard\n" + pasteCallResponse,
+                                Toast.LENGTH_SHORT).show();
+                        //TODO: option to share paste URL to other apps
+
                     } else {
-                        //if something went wrong, let the user know (the returnedURL in this case would hold the error IE hit limit
-                        Toast.makeText(activity.getApplicationContext(), "Something went wrong:\n"+pasteReturnedURL, Toast.LENGTH_SHORT).show();
+                        //if something went wrong, let the user know (the returnedURL in this case
+                        // would hold the error (I.E. hit daily limit on pastes)
+                        Toast.makeText(activity.getApplicationContext(),
+                                "Something went wrong:\n"+pasteCallResponse,
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
             }

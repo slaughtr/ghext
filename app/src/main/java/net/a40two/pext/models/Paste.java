@@ -2,10 +2,6 @@ package net.a40two.pext.models;
 
 import org.parceler.Parcel;
 
-/**
- * Created by slaughtr on 6/2/17.
- */
-
 @Parcel
 public class Paste {
     String title;

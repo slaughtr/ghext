@@ -1,8 +1,6 @@
 General Plan
 ======
 
-With pext, I plan to make a mobile text editor with Pastebin integration. The general idea would be that you can quickly edit and share files of a variety of types. This will be especially useful for developers on the go, as Pastebin features syntax highlighting and easy sharing, as well as timed deletion of files.
-
 
 ### User Stories
 * ~~As a user, I want to be able to open a text file with any extension~~ NOPE
@@ -11,7 +9,7 @@ With pext, I plan to make a mobile text editor with Pastebin integration. The ge
 * As a user, I want tabs and spaces to be preserved in a text file
 * ~~As a user, I want to see line numbers in a text file~~
 * ~~As a user, I want to be able to login to my account on  Pastebin~~
-* As a user, I want to be able to open an existing Paste
+* ~~As a user, I want to be able to open an existing Paste~~
 * ~~As a user, I want to be able to make new Pastes anonymously~~
 * ~~As a user, I want to be able to make new Pastes~~
 * As a user, I want to be able to delete my own Paste
@@ -28,13 +26,13 @@ Text Editing | Pastebin
 -------------|-------------
 ~~Open a file~~ | ~~Create a paste~~
 ~~Edit a file~~ | ~~w/ options (Private, deletion time, etc)~~
-Save a file | Load RAW Paste body into editor
-Create a file |  ~~Get all Pastes by user~~
+Save a file | ~~Load RAW Paste body into editor~~
+~~Create a file~~ |  ~~Get all Pastes by user~~
 
 #### Should Haves
 Text Editing | Pastebin
 -------------|-------------
-Tab/space preservation | Log in to Pastebin
+~~Tab/space preservation~~ | ~~Log in to Pastebin~~
 ~~Line numbers~~ | Able to delete own Pastes
 Find/find and replace | ~~Get trending Pastes~~
 
@@ -78,8 +76,8 @@ Planning
 * ~~Implement Firebase user authentication.~~
 * Save and retrieve data using Firebase, making sure to structure your data according to Firebase guidelines.
 * Employ the Firebase-RecyclerAdapter to display from your database.
-* Use SharedPreferences to save an important piece of data in your app.
+* ~~Use SharedPreferences to save an important piece of data in your app.~~
 * ~~Utilize dialogs to inform users of login status, etc.~~
-* Use a SearchView widget to gather user input.
+
 
 #### Week 4

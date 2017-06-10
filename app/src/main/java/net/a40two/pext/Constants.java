@@ -31,10 +31,10 @@ public class Constants {
 
     //logging in, pasting as user
     public static final String PREFERENCES_USER_API_KEY = "userApiKey";
-    public static boolean LOGGED_IN = false;
     public static final String USERNAME_PARAM = "api_user_name";
     public static final String PASSWORD_PARAM = "api_user_password";
     public static final String USER_API_KEY_PARAM = "api_user_key";
+    public static boolean LOGGED_IN = false;
     public static User CURRENT_USER;
     public static String USER_NAME = "";
     public static String USER_PASSWORD = "";
@@ -44,4 +44,9 @@ public class Constants {
     public static final String MY_GITHUB = "https://github.com/slaughtr";
     public static final String MY_LINKEDIN = "https://linkedin.com/in/dallas-slaughter";
     public static final String MY_BITCOIN = "1H2MTgcP7UDrjAy4Kk6PcDFsWvnwfRkKNt";
+
+    //Firebase
+    public static final String FIREBASE_CHILD_SAVED_EDITOR_STATE = "savedFromEditor";
+    //TODO: this should probably be an array of things saved/clipboard items,
+    //so that it can be used in the "new paste" menu and maybe eventually in the paste functionality
 }

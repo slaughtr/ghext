@@ -77,7 +77,12 @@ public class PastebinListService {
 
             for (int i = 0; i < resultsJSONArray.length(); i++) {
                 JSONObject eachPaste = resultsJSONArray.getJSONObject(i);
-                final Paste paste = new Paste(eachPaste.optString("paste_title", "Untitled"), eachPaste.optString("paste_key", "No key"), eachPaste.optString("paste_date", "No date"), eachPaste.optString("paste_hits", "No hit count"), eachPaste.optString("paste_size", "No size"), eachPaste.optString("paste_expire_date", "No expire date"));
+                final Paste paste = new Paste(eachPaste.optString("paste_title", "Untitled"),
+                        eachPaste.optString("paste_key", "No key"),
+                        eachPaste.optString("paste_date", "No date"),
+                        eachPaste.optString("paste_hits", "No hit count"),
+                        eachPaste.optString("paste_size", "No size"),
+                        eachPaste.optString("paste_expire_date", "No expire date"));
 
                 if (type.equals("trending")) {
                     paste.setBody(getTrendingPasteBody(paste));
@@ -94,11 +99,13 @@ public class PastebinListService {
     }
 
     public static String getTrendingPasteBody(Paste paste) {
-        //get the raw body of each paste through a seperate call, as it's not included in the normal api call
+        //get the raw body of each paste in the trending list through a seperate call, as it's not included in the normal api call
         StringBuilder html = new StringBuilder();
         try {
             try {
-                URLConnection connection = (new URL("https://pastebin.com/raw/"+paste.getKey()+"/")).openConnection();
+                URLConnection connection = (new URL("https://pastebin.com/raw/"+paste.getKey()+"/"))
+                        .openConnection();
+
                 connection.setConnectTimeout(5000);
                 connection.setReadTimeout(5000);
                 connection.connect();

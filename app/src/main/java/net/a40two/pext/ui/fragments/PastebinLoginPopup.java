@@ -58,14 +58,14 @@ public class PastebinLoginPopup extends DialogFragment {
 
                         if (userApiKey.contains("invalid")) { badLogin(); }
                         else {
-                            user.setUsername(loginName);
-                            user.setUserApiKey(userApiKey);
-                            addToSharedPreferences(userApiKey);
                             Constants.LOGGED_IN = true;
                             Constants.CURRENT_USER = user;
                             Constants.USER_API_KEY = userApiKey;
+
+                            user.setUsername(loginName);
+                            user.setUserApiKey(userApiKey);
+                            addToSharedPreferences(userApiKey);
                             goodLogin();
-                            Log.d("userapikeyafterlogin", Constants.CURRENT_USER.getUserApiKey());
                             dismiss();
                         }
                     }

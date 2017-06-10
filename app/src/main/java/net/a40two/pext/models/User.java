@@ -1,9 +1,5 @@
 package net.a40two.pext.models;
 
-/**
- * Created by slaughtr on 6/2/17.
- */
-
 public class User {
     String username;
     String userApiKey;
