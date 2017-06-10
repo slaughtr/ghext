@@ -8,7 +8,6 @@ import net.a40two.pext.models.Paste;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-//import org.json.XML;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,14 +46,11 @@ public class PastebinListService {
             call.enqueue(callback);
 
         } else if (type.equals("ownPastes")) {
-//            Log.d("listService", "userAPIkey: "+Constants.CURRENT_USER.getUserApiKey());
-            String userApiKey = Constants.CURRENT_USER.getUserApiKey();
-//            Log.d("userApiKey", userApiKey);
-//            Log.d("listService", "devKey: "+Constants.DEV_API_KEY);
+            String userApiKey = Constants.USER_API_KEY;
             RequestBody formBody = new FormBody.Builder()
                     .add(Constants.DEV_API_KEY_PARAM, Constants.DEV_API_KEY)
                     .add(Constants.API_OPTION, "list")
-                    .add(Constants.RESULTS_LIMIT_PARAM, "50")
+                    .add(Constants.RESULTS_LIMIT_PARAM, "50") //TODO: make this user-changeable?
                     .add(Constants.USER_API_KEY_PARAM, userApiKey)
                     .build();
             Request request = new Request.Builder()
@@ -70,19 +66,23 @@ public class PastebinListService {
     public static ArrayList<Paste> processResults(String type, Response response) {
         ArrayList<Paste> pastes = new ArrayList<>();
 
-            //turn response body (XML) to string, build to JSON from that
-            try {
-                Log.d("returnedXML", response.body().string());
-                String returnedXML = response.body().string();
-                XmlToJson resultJSON = new XmlToJson.Builder(returnedXML).build();
-                Log.d("xmltojson result", resultJSON.toString());
-                JSONObject resultJSONObject = new JSONObject(resultJSON.toString());
-//                JSONObject resultJSONObject = XML.toJSONObject(response.body().string());
-            JSONArray resultsJSONArray = resultJSONObject.getJSONArray("paste");
+        //turn response body (XML) to string, build to JSON from that
+        try {
+            //have to add a root to xml or it's invalid, so add <pastelist></pastelist> around the response
+            String withRoot =  "<pastelist>"+response.body().string()+"</pastelist>";
+            XmlToJson resultJSON = new XmlToJson.Builder(withRoot).build();
+            JSONObject resultJSONObject = new JSONObject(resultJSON.toString());
+            JSONObject resultJSONObjectChildren = resultJSONObject.getJSONObject("pastelist");
+            JSONArray resultsJSONArray = resultJSONObjectChildren.getJSONArray("paste");
 
             for (int i = 0; i < resultsJSONArray.length(); i++) {
                 JSONObject eachPaste = resultsJSONArray.getJSONObject(i);
-                final Paste paste = new Paste(eachPaste.optString("paste_title", "Untitled"), eachPaste.optString("paste_key", "No key"), eachPaste.optString("paste_date", "No date"), eachPaste.optString("paste_hits", "No hit count"), eachPaste.optString("paste_size", "No size"), eachPaste.optString("paste_expire_date", "No expire date"));
+                final Paste paste = new Paste(eachPaste.optString("paste_title", "Untitled"),
+                        eachPaste.optString("paste_key", "No key"),
+                        eachPaste.optString("paste_date", "No date"),
+                        eachPaste.optString("paste_hits", "No hit count"),
+                        eachPaste.optString("paste_size", "No size"),
+                        eachPaste.optString("paste_expire_date", "No expire date"));
 
                 if (type.equals("trending")) {
                     paste.setBody(getTrendingPasteBody(paste));
@@ -99,11 +99,13 @@ public class PastebinListService {
     }
 
     public static String getTrendingPasteBody(Paste paste) {
-        //get the raw body of each paste through a seperate call, as it's not included in the normal api call
+        //get the raw body of each paste in the trending list through a seperate call, as it's not included in the normal api call
         StringBuilder html = new StringBuilder();
         try {
             try {
-                URLConnection connection = (new URL("https://pastebin.com/raw/"+paste.getKey()+"/")).openConnection();
+                URLConnection connection = (new URL("https://pastebin.com/raw/"+paste.getKey()+"/"))
+                        .openConnection();
+
                 connection.setConnectTimeout(5000);
                 connection.setReadTimeout(5000);
                 connection.connect();
@@ -111,6 +113,7 @@ public class PastebinListService {
                 InputStream in = connection.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                 for (String line; (line = reader.readLine()) != null; ) {
+                    //add an escaped new line after each line
                     html.append(line+"\n");
                 }
                 in.close();
@@ -121,14 +124,13 @@ public class PastebinListService {
     }
 
     public static String getOwnPasteBody(Paste paste) {
-        Log.d("getOwnPasteBody", "hurr");
         String pasteBody = "";
         try {
             OkHttpClient client = new OkHttpClient();
 
             RequestBody formBody = new FormBody.Builder()
                     .add(Constants.DEV_API_KEY_PARAM, Constants.DEV_API_KEY)
-                    .add(Constants.USER_API_KEY_PARAM, Constants.CURRENT_USER.getUserApiKey())
+                    .add(Constants.USER_API_KEY_PARAM, Constants.USER_API_KEY)
                     .add(Constants.PASTE_KEY_PARAM, paste.getKey())
                     .add(Constants.API_OPTION, "show_paste")
                     .build();

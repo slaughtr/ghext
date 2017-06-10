@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TrendingPastesFragment extends Fragment {
+
     public static final String TAG = TrendingPastesFragment.class.getSimpleName();
     public ArrayList<Paste> mPastes = new ArrayList<>();
 
@@ -47,12 +47,14 @@ public class TrendingPastesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.trending_pastes_list, container, false);
         ButterKnife.bind(this, view);
-        mRecyclerView.setAdapter(new PasteListAdapter(mPastes));
+        mRecyclerView.setAdapter(new PasteListAdapter(getContext(), mPastes));
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
+        //add snaphelper so our horizontal scrolling snaps to the screen
         SnapHelper helper = new LinearSnapHelper();
         helper.attachToRecyclerView(mRecyclerView);
+
         return view;
     }
 

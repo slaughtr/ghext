@@ -1,6 +1,8 @@
 package net.a40two.pext.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,7 +12,9 @@ import android.widget.TextView;
 
 import net.a40two.pext.R;
 import net.a40two.pext.models.Paste;
-import net.a40two.pext.ui.PastesActivity;
+import net.a40two.pext.ui.EditorActivity;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -20,7 +24,9 @@ import butterknife.ButterKnife;
 public class PasteListAdapter extends RecyclerView.Adapter<PasteListAdapter.PasteViewHolder> {
     private ArrayList<Paste> mPastes = new ArrayList<>();
 
-    public PasteListAdapter(ArrayList<Paste> pastes) {
+    private Context mContext;
+    public PasteListAdapter(Context context, ArrayList<Paste> pastes) {
+        mContext = context;
         mPastes = pastes;
     }
 
@@ -30,29 +36,37 @@ public class PasteListAdapter extends RecyclerView.Adapter<PasteListAdapter.Past
         return pvh;
     }
 
-    @Override
-    public void onBindViewHolder(PasteViewHolder holder, int position) {
+    @Override public void onBindViewHolder(PasteViewHolder holder, int position) {
         holder.bindPaste(mPastes.get(position));
     }
 
     @Override public int getItemCount() { return mPastes.size(); }
 
-    public class PasteViewHolder extends RecyclerView.ViewHolder {
+    public class PasteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.trendingListTitleTextView) TextView mTitleTextView;
         @BindView(R.id.trendingListBodyTextView) TextView mBodyTextView;
-
-        private Context mContext;
+        @BindView(R.id.openInEditorFAB) FloatingActionButton mOpenInEditorFAB;
 
         public PasteViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             mContext = itemView.getContext();
+
+            mOpenInEditorFAB.setOnClickListener(this);
         }
 
         public void bindPaste(Paste paste) {
             mTitleTextView.setText(paste.getTitle());
             mBodyTextView.setText(paste.getBody());
 
+        }
+
+        @Override public void onClick(View v) {
+            int position = getAdapterPosition();
+            Log.d("click position adapter", "Position: "+position);
+            Intent intent = new Intent(mContext, EditorActivity.class);
+            intent.putExtra("editPasteBody", Parcels.wrap(mBodyTextView.getText()));
+            mContext.startActivity(intent);
         }
     }
 }

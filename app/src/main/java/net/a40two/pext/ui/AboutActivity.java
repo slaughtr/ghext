@@ -18,10 +18,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class AboutActivity extends AppCompatActivity implements View.OnClickListener{
+
     @BindView(R.id.my_github_button) Button myGithubButton;
     @BindView(R.id.bitcoin_button) Button myBitcoinButton;
     @BindView(R.id.linkedin_button) Button myLinkedinButton;
-
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

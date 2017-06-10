@@ -1,21 +1,19 @@
 General Plan
 ======
 
-With pext, I plan to make a mobile text editor with Pastebin integration. The general idea would be that you can quickly edit and share files of a variety of types. This will be especially useful for developers on the go, as Pastebin features syntax highlighting and easy sharing, as well as timed deletion of files.
-
 
 ### User Stories
-* As a user, I want to be able to open a text file with any extension
+* ~~As a user, I want to be able to open a text file with any extension~~ NOPE
 * ~~As a user, I want to be able to edit a text file~~
 * As a user, I want to be able to save changes to a text file
 * As a user, I want tabs and spaces to be preserved in a text file
 * ~~As a user, I want to see line numbers in a text file~~
 * ~~As a user, I want to be able to login to my account on  Pastebin~~
-* As a user, I want to be able to open an existing Paste
+* ~~As a user, I want to be able to open an existing Paste~~
 * ~~As a user, I want to be able to make new Pastes anonymously~~
-* As a user, I want to be able to make new Pastes
+* ~~As a user, I want to be able to make new Pastes~~
 * As a user, I want to be able to delete my own Paste
-* As a user, I want to be able to see all of my own Pastes
+* ~~As a user, I want to be able to see all of my own Pastes~~
 
 **Dreamy User Stories**
 * As a user, I want to be able to change themes from light to dark
@@ -26,15 +24,15 @@ With pext, I plan to make a mobile text editor with Pastebin integration. The ge
 #### Must Haves
 Text Editing | Pastebin
 -------------|-------------
-Open a file | ~~Create a paste~~
-~~Edit a file~~ | w/ options (Private, deletion time, etc)
-Save a file | Load RAW Paste body into editor
-Create a file |  Get all Pastes by user
+~~Open a file~~ | ~~Create a paste~~
+~~Edit a file~~ | ~~w/ options (Private, deletion time, etc)~~
+Save a file | ~~Load RAW Paste body into editor~~
+~~Create a file~~ |  ~~Get all Pastes by user~~
 
 #### Should Haves
 Text Editing | Pastebin
 -------------|-------------
-Tab/space preservation | Log in to Pastebin
+~~Tab/space preservation~~ | ~~Log in to Pastebin~~
 ~~Line numbers~~ | Able to delete own Pastes
 Find/find and replace | ~~Get trending Pastes~~
 
@@ -44,7 +42,7 @@ Text Editing | Pastebin
 Syntax highlighting | 
 Multiple open files | 
 Light/dark mode | 
-Large files (IE 10k+ lines) | Graphs
+Large files (IE 10k+ lines) | 
 * Some sort of Tasker integration would be cool
 
 Planning
@@ -70,7 +68,7 @@ Planning
   * ~~Model of user for Pastebin?~~
   * ~~Model for creating a Paste?~~
 * ~~Display a list of information using a RecyclerView,~~ OR use fragments and a PagerAdapter to swipe through views. (You are also welcome to do both.)
-  * RecyclerView with Pastebin info. List of Pastes by user, ~~popular Pastes~~, etc
+  * ~~RecyclerView with Pastebin info. List of Pastes by user, popular Pastes, etc~~
 * ~~Incorporate at least one implicit intent; Sending a message or an email, or loading a web page for example.~~
   * ~~This will be on about page. Open github/bitcoin/etc~~
 
@@ -78,8 +76,8 @@ Planning
 * ~~Implement Firebase user authentication.~~
 * Save and retrieve data using Firebase, making sure to structure your data according to Firebase guidelines.
 * Employ the Firebase-RecyclerAdapter to display from your database.
-* Use SharedPreferences to save an important piece of data in your app.
-* Utilize dialogs to inform users of login status, etc.
-* Use a SearchView widget to gather user input.
+* ~~Use SharedPreferences to save an important piece of data in your app.~~
+* ~~Utilize dialogs to inform users of login status, etc.~~
+
 
 #### Week 4

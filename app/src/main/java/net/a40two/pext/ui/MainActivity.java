@@ -1,8 +1,10 @@
 package net.a40two.pext.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -33,7 +35,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
 
-    private static final int READ_REQUEST_CODE = 42;
+    private SharedPreferences mSharedPreferences;
+    private String mUserApiKey;
 
     @BindView(R.id.editor_jump_button) Button mJumpToEditorButton;
     @BindView(R.id.pb_login_button) Button mPastebinLoginButton;
@@ -45,10 +48,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         ButterKnife.bind(this);
 
+        //attempt to get the user's API key from their shared preferences,
+        //if it's there, mark user as logged in and set API key in constants
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mUserApiKey = mSharedPreferences.getString(Constants.PREFERENCES_USER_API_KEY, null);
+
+        if (mUserApiKey != null) {
+            Constants.LOGGED_IN = true;
+            Constants.USER_API_KEY = mUserApiKey;
+            //TODO: make the toast not show every time you return to this activity, also move it on the screen?
+            Toast.makeText(this, "You're already logged in!\n You only need to login again if you're having issues.", Toast.LENGTH_LONG).show();
+        }
+
         mDrawerList = (ListView) findViewById(R.id.main_drawer);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        // Set the adapter for the list view
+        // Set the adapter for the list view (drawer nav)
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.drawer_list_item, mMenuItems));
         // Set the list's click listener
@@ -95,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        // Handle your other action bar items...
+        //for the overflow menu
         int id = item.getItemId();
         if (id == R.id.action_login) {
             FragmentManager fm = getSupportFragmentManager();
@@ -118,7 +133,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
         }
         if (v == mPastebinLoginButton) {
-            //popup login fragment
             FragmentManager fm = getSupportFragmentManager();
             PastebinLoginPopup plp = new PastebinLoginPopup();
             plp.show(fm, "Pastebin login popup");
@@ -126,7 +140,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) { selectItem(position); }
+        @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+        { selectItem(position); }
     }
 
     private void selectItem(int position) {
@@ -136,20 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mDrawerLayout.closeDrawer(mDrawerList);
 
         if (mMenuItems[position] == "New Paste") {
-            //something like the following will be used, but from the editor?:
-//            PastebinPasteService.buildPasteUrl(new Callback() {
-//                @Override
-//                public void onFailure(Call call, IOException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                @Override
-//                public void onResponse(Call call, Response response) throws IOException {
-//                    //do stuff
-////                    PastebinPasteService.processResult(response);
-//                    Log.d("here", PastebinLoginService.processResult(response));
-//                }
-//            });
+            //TODO: popup that shows user last ~5-10 things from editor or clipboard? Store in firebase?
         }
         if (mMenuItems[position] == "My Pastes") {
             if (Constants.LOGGED_IN) {

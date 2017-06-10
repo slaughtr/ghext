@@ -19,6 +19,17 @@
 
 
     <string-array name="syntax_highlight_select">
+        <item>None</item>
+        <item>CSS</item>
+        <item>HTML 5</item>
+        <item>Java</item>
+        <item>JavaScript</item>
+        <item>JSON</item>
+        <item>PHP</item>
+        <item>Python</item>
+        <item>Ruby</item>
+        <item>XML</item>
+
         <item>ActionScript</item>
         <item>AppleScript</item>
         <item>autoconf</item>
@@ -33,7 +44,6 @@
         <item>CMake</item>
         <item>COBOL</item>
         <item>CoffeeScript</item>
-        <item>CSS</item>
         <item>Dart</item>
         <item>Delphi</item>
         <item>ECMAScript</item>
@@ -45,13 +55,10 @@
         <item>Groovy</item>
         <item>Haskell</item>
         <item>HTML</item>
-        <item>HTML 5</item>
         <item>INI file</item>
         <item>J</item>
-        <item>Java</item>
-        <item>JavaScript</item>
+
         <item>jQuery</item>
-        <item>JSON</item>
         <item>Kotlin</item>
         <item>Latex</item>
         <item>Lisp</item>
@@ -63,18 +70,14 @@
         <item>mIRC</item>
         <item>MySQL</item>
         <item>Nginx</item>
-        <item>None</item>
         <item>Objective C</item>
         <item>Pascal</item>
         <item>Perl</item>
-        <item>PHP</item>
         <item>PostgreSQL</item>
         <item>PostScript</item>
         <item>Power Shell</item>
-        <item>Python</item>
         <item>R</item>
         <item>Rails</item>
-        <item>Ruby</item>
         <item>Rust</item>
         <item>Scala</item>
         <item>SQL</item>
@@ -83,7 +86,6 @@
         <item>VIM</item>
         <item>VisualBasic</item>
         <item>WHOIS</item>
-        <item>XML</item>
     </string-array>
 
 </resources>

@@ -9,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 
 import net.a40two.pext.R;
-import net.a40two.pext.adapters.PasteListAdapter;
 import net.a40two.pext.models.Paste;
 import net.a40two.pext.services.PastebinListService;
 import net.a40two.pext.ui.fragments.TrendingPastesFragment;
@@ -24,36 +23,30 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class PastesActivity extends AppCompatActivity {
+
     String fragToLoad = "";
-    private TrendingPastesFragment trendingFrag;
     public ArrayList<Paste> mPastes = new ArrayList<>();
-    private PasteListAdapter mAdapter;
     @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pastes);
 
         fragToLoad = getIntent().getStringExtra("fragToLoad");
 
         if (fragToLoad.equals("")) {
-            Log.d("onCreatePastesActivity", "in empty if");
-            //go back home, there was a problem
+            //TODO: send user back home, toast that there was a problem
         } else if (fragToLoad.equals("trending")) {
             getTrendingPastes();
-            Log.d("onCreatePastesActivity", "in trending if");
             setTitle("Today's Trending Pastes");
         } else if (fragToLoad.equals("ownPastes")) {
             getOwnPastes();
-            Log.d("onCreatePastesActivity", "in own if");
             setTitle("Your Pastes");
 
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.overflow_menu, menu);
         return super.onCreateOptionsMenu(menu);
