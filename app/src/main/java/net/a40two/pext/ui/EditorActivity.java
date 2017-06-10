@@ -5,11 +5,9 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -19,20 +17,8 @@ import net.a40two.pext.R;
 import net.a40two.pext.ui.fragments.PastebinPastePopup;
 import net.a40two.pext.ui.views.AdvancedEditText;
 
-import org.mozilla.universalchardet.UniversalDetector;
 import org.parceler.Parcels;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import org.mozilla.universalchardet.UniversalDetector;
-import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.widget.Toast;
 
 import butterknife.BindView;
@@ -56,9 +42,6 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
-        //get intent with the body of the paste you want to edit, if it's not null (might be, if you're coming from main activity or something went wrong), then set the AdvancedEditText text to that.
-
-
         ButterKnife.bind(this);
         mSaveButton.setOnClickListener(this);
         mPastebinButton.setOnClickListener(this);
@@ -67,6 +50,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         mPasteButton.setOnClickListener(this);
         mBracketsButton.setOnClickListener(this);
         mGithubButton.setOnClickListener(this);
+
         //to set github button to use icon
         Typeface githubBottonFont = Typeface.createFromAsset( getAssets(), "fontawesome-webfont.ttf" );
         mGithubButton.setTypeface(githubBottonFont);
@@ -74,21 +58,31 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override public void onStart() {
         super.onStart();
+        //get intent with the body of the paste you want to edit, if it's not null (might be, if  something went wrong), then set the AdvancedEditText text to that.
         Intent intent = getIntent();
         String editPasteBody = Parcels.unwrap(intent.getParcelableExtra("editPasteBody"));
 
         if (editPasteBody != null && editPasteBody.length() > 0) {
             mEditText.setText(editPasteBody);
+        } else {
+            //grab last thing from editor from firebase
         }
+    }
+
+    @Override public void onStop() {
+        super.onStop();
+        //this is where I'll write to firebase
     }
 
     @Override public void onClick(View v) {
         if (v == mSaveButton) {
             //save locally
+            //maybe this will work one day
         }
         if (v == mPastebinButton) {
-            //open menu for pushing to pastebin
+            //open popup fragment for pushing to pastebin
             Bundle args = new Bundle();
+            //put text to bundle so that the paste popup has access to it for submitting
             args.putString("body", mEditText.getText().toString());
             FragmentManager fm = getSupportFragmentManager();
             PastebinPastePopup ppp = new PastebinPastePopup();
@@ -104,8 +98,8 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
             copyOrCutSelection(false);
         }
         if (v == mPasteButton) {
-            //paste clipboard to location
-            //leave this here as I only need it once
+            //paste clipboard to location TODO: pasting over selection deletes selection?
+            //leave this here instead of another method as I only need it once
             ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
             String pasteData = "";
             if (!(clipboard.hasPrimaryClip())) {
@@ -117,7 +111,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
             } else {
                 //the clipboard contains plain text.
                 ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
-                // Gets the clipboard as text.
+                // Gets the clipboard as a string.
                 pasteData = item.getText().toString();
             }
             //put paste at current selection
@@ -154,6 +148,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         clipboard.setPrimaryClip(clip);
 
         if (cut) {
+            //a somewhat gross way of cutting. Copy the selected text, then make a whole new string out of the entire body, minus what you selected.
             String allText = mEditText.getText().toString();
             String newText = allText.substring(0, start)+allText.substring(end, allText.length());
             mEditText.setText(newText);
