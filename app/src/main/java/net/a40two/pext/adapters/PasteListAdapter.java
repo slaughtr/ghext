@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import net.a40two.pext.R;
 import net.a40two.pext.models.Paste;
@@ -37,8 +36,7 @@ public class PasteListAdapter extends RecyclerView.Adapter<PasteListAdapter.Past
         return pvh;
     }
 
-    @Override
-    public void onBindViewHolder(PasteViewHolder holder, int position) {
+    @Override public void onBindViewHolder(PasteViewHolder holder, int position) {
         holder.bindPaste(mPastes.get(position));
     }
 
@@ -63,8 +61,7 @@ public class PasteListAdapter extends RecyclerView.Adapter<PasteListAdapter.Past
 
         }
 
-        @Override
-        public void onClick(View v) {
+        @Override public void onClick(View v) {
             int position = getAdapterPosition();
             Log.d("click position adapter", "Position: "+position);
             Intent intent = new Intent(mContext, EditorActivity.class);

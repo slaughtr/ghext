@@ -47,4 +47,6 @@ public class Constants {
 
     //Firebase
     public static final String FIREBASE_CHILD_SAVED_EDITOR_STATE = "savedFromEditor";
+    //TODO: this should probably be an array of things saved/clipboard items,
+    //so that it can be used in the "new paste" menu and maybe eventually in the paste functionality
 }

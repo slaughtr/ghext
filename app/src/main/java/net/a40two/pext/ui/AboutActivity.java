@@ -2,12 +2,9 @@ package net.a40two.pext.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -21,6 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class AboutActivity extends AppCompatActivity implements View.OnClickListener{
+
     @BindView(R.id.my_github_button) Button myGithubButton;
     @BindView(R.id.bitcoin_button) Button myBitcoinButton;
     @BindView(R.id.linkedin_button) Button myLinkedinButton;

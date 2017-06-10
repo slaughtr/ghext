@@ -51,14 +51,16 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         mBracketsButton.setOnClickListener(this);
         mGithubButton.setOnClickListener(this);
 
-        //to set github button to use icon
+        //set github button to use icon
         Typeface githubBottonFont = Typeface.createFromAsset( getAssets(), "fontawesome-webfont.ttf" );
         mGithubButton.setTypeface(githubBottonFont);
     }
 
     @Override public void onStart() {
         super.onStart();
-        //get intent with the body of the paste you want to edit, if it's not null (might be, if  something went wrong), then set the AdvancedEditText text to that.
+        //get intent with the body of the paste you want to edit,
+        // if it's not null (might be, if  something went wrong),
+        // then set the AdvancedEditText text to that.
         Intent intent = getIntent();
         String editPasteBody = Parcels.unwrap(intent.getParcelableExtra("editPasteBody"));
 
@@ -71,7 +73,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override public void onStop() {
         super.onStop();
-        //this is where I'll write to firebase
+        //TODO: add code to write current text in editor to firebase on activity exit
     }
 
     @Override public void onClick(View v) {
@@ -89,17 +91,10 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
             ppp.setArguments(args);
             ppp.show(fm, "Pastebin paste popup");
         }
-        if (v == mCutButton) {
-            //cut selection from view
-            copyOrCutSelection(true);
-        }
-        if (v == mCopyButton) {
-            //copy selection to clipboard
-            copyOrCutSelection(false);
-        }
+        if (v == mCutButton) { copyOrCutSelection(true); }
+        if (v == mCopyButton) { copyOrCutSelection(false); }
         if (v == mPasteButton) {
             //paste clipboard to location TODO: pasting over selection deletes selection?
-            //leave this here instead of another method as I only need it once
             ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
             String pasteData = "";
             if (!(clipboard.hasPrimaryClip())) {
@@ -114,11 +109,11 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
                 // Gets the clipboard as a string.
                 pasteData = item.getText().toString();
             }
-            //put paste at current selection
+            //put paste at current cursor selection
             mEditText.getText().insert(mEditText.getSelectionStart(), pasteData);
         }
         if (v == mBracketsButton) {
-            //popup brackets etc menu
+            //TODO: add code to popup brackets etc menu
         }
         if (v == mGithubButton) {
             //maybe should have deleted this button. Might find use for it?
@@ -133,22 +128,26 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void copyOrCutSelection(boolean cut) {
+        //TODO: add code to save last 5-10 copied text to firebase
+
         String copiedString = mEditText.getText().toString();
         int start = mEditText.getSelectionStart();
         int end = mEditText.getSelectionEnd();
-        //do check, since if you start your selection on the right and highlight to the left, your selectionStart index will be greater than your selectionEnd index and things will break
+        //do check, since if you start your selection on the right and highlight to the left,
+        // your selectionStart index will be greater than your selectionEnd index and things will break
         if (mEditText.getSelectionStart() > mEditText.getSelectionEnd()) {
             start = mEditText.getSelectionEnd();
             end = mEditText.getSelectionStart();
         }
-
+        //do the clipboard dance
         copiedString = copiedString.substring(start, end);
         android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text From pext", copiedString);
         clipboard.setPrimaryClip(clip);
 
         if (cut) {
-            //a somewhat gross way of cutting. Copy the selected text, then make a whole new string out of the entire body, minus what you selected.
+            //a somewhat gross way of cutting. Copy the selected text,
+            // then make a whole new string out of the entire body, minus what you selected.
             String allText = mEditText.getText().toString();
             String newText = allText.substring(0, start)+allText.substring(end, allText.length());
             mEditText.setText(newText);
