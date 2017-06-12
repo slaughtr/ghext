@@ -6,15 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import net.a40two.pext.Constants;
 import net.a40two.pext.R;
-import net.a40two.pext.models.FirebaseString;
 
 public class FbClipViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
