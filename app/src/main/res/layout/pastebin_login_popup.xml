@@ -6,7 +6,6 @@
     android:background="@android:color/background_dark"
     tools:context=".ui.fragments.PastebinLoginPopup">
 
-    <!-- TODO: Update blank fragment layout -->
 
     <EditText
         android:id="@+id/username_field"
