@@ -74,7 +74,7 @@ Planning
 
 #### Week 3
 * ~~Implement Firebase user authentication.~~
-* Save and retrieve data using Firebase, making sure to structure your data according to Firebase guidelines.
+* ~~Save and retrieve data using Firebase, making sure to structure your data according to Firebase guidelines.~~
 * Employ the Firebase-RecyclerAdapter to display from your database.
 * ~~Use SharedPreferences to save an important piece of data in your app.~~
 * ~~Utilize dialogs to inform users of login status, etc.~~

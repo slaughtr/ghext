@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -22,8 +23,11 @@ import org.parceler.Parcels;
 
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,6 +45,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
     @BindView(R.id.editorAdvancedTextView) AdvancedEditText mEditText;
 
     private DatabaseReference mEditorStateReference;
+    private DatabaseReference mClipboardReference;
 
 
     public static final String TAG = EditorActivity.class.getSimpleName();
@@ -55,6 +60,11 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
                 .getReference()
                 .child(Constants.FIREBASE_CHILD_SAVED_EDITOR_STATE);
 
+        mClipboardReference = FirebaseDatabase
+                .getInstance()
+                .getReference()
+                .child(Constants.FIREBASE_CHILD_CLIPBOARD_HISTORY);
+
         ButterKnife.bind(this);
         mSaveButton.setOnClickListener(this);
         mPastebinButton.setOnClickListener(this);
@@ -67,6 +77,18 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         //set github button to use icon
         Typeface githubBottonFont = Typeface.createFromAsset( getAssets(), "fontawesome-webfont.ttf" );
         mGithubButton.setTypeface(githubBottonFont);
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_SAVED_EDITOR_STATE);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("from firebase", dataSnapshot.getValue().toString());
+               mEditText.setText(dataSnapshot.getValue().toString());
+            }
+
+            @Override public void onCancelled(DatabaseError databaseError) { }
+        });
+
     }
 
     @Override public void onStart() {
@@ -86,7 +108,6 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override public void onStop() {
         super.onStop();
-        //TODO: add code to write current text in editor to firebase on activity exit
         saveEditorStateToFirebase(mEditText.getText().toString());
     }
 
@@ -142,7 +163,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void copyOrCutSelection(boolean cut) {
-        //TODO: add code to save last 5-10 copied text to firebase
+        saveClipboardToFirebase(mEditText.getText().toString());
 
         String copiedString = mEditText.getText().toString();
         int start = mEditText.getSelectionStart();
@@ -170,6 +191,11 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
 
     public void saveEditorStateToFirebase(String body) {
         mEditorStateReference.setValue(body);
+    }
+
+    public void saveClipboardToFirebase(String clip) {
+        //TODO: add code to limit this to last 5-10 copied text
+        mClipboardReference.setValue(clip);
     }
 
 }
