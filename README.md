@@ -16,7 +16,9 @@ While you don't NEED a [Pastebin](https://www.pastebin.com) account to use this 
 
 ## Known Bugs
 
-_ Occasionally the login popup will cause the app to crash when you click login. The fragment just can't getActivity occasionally. I have no idea why. _
+_ Occasionally the login popup will cause the app to crash when you click login. The fragment just can't getActivity occasionally. I have no idea why. 
+
+There are a few unnecessary buttons and options that do nothing at the moment. I plan to implement these later, or remove them completely. Some dialogs could also use a little more info for the user. These will be updated._
 
 ## Support and contact details
 
