@@ -16,6 +16,7 @@ import android.widget.Button;
 
 import net.a40two.pext.Constants;
 import net.a40two.pext.R;
+import net.a40two.pext.ui.fragments.PasteFromFirebasePopup;
 import net.a40two.pext.ui.fragments.PastebinPastePopup;
 import net.a40two.pext.ui.views.AdvancedEditText;
 
@@ -34,7 +35,7 @@ import butterknife.ButterKnife;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
-public class EditorActivity extends AppCompatActivity implements View.OnClickListener {
+public class EditorActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener {
     @BindView(R.id.save_button) Button mSaveButton;
     @BindView(R.id.pastebin_button) Button mPastebinButton;
     @BindView(R.id.cut_button) Button mCutButton;
@@ -71,6 +72,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         mCutButton.setOnClickListener(this);
         mCopyButton.setOnClickListener(this);
         mPasteButton.setOnClickListener(this);
+        mPasteButton.setOnLongClickListener(this);
         mBracketsButton.setOnClickListener(this);
         mGithubButton.setOnClickListener(this);
 
@@ -82,7 +84,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("from firebase", dataSnapshot.getValue().toString());
+                //TODO: add loading indicator while this value is retrieved
                mEditText.setText(dataSnapshot.getValue().toString());
             }
 
@@ -155,8 +157,18 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    @Override public boolean onLongClick(View v) {
+        boolean gotLongClick = false;
+        if (v == mPasteButton) {
+            gotLongClick = true;
+            FragmentManager fm = getSupportFragmentManager();
+            PasteFromFirebasePopup pffb = new PasteFromFirebasePopup();
+            pffb.show(fm, "Pastebin paste popup");
+        }
+        return gotLongClick;
+    }
+
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.overflow_menu, menu);
         return super.onCreateOptionsMenu(menu);
@@ -197,5 +209,6 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         //TODO: add code to limit this to last 5-10 copied text
         mClipboardReference.setValue(clip);
     }
+
 
 }

@@ -7,49 +7,35 @@
     android:layout_height="match_parent"
 >
 
-    <!--<TextView-->
-        <!--android:id="@+id/trendingListTitleTextView"-->
-        <!--android:layout_width="368dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginBottom="12dp"-->
-        <!--android:layout_marginTop="16dp"-->
-        <!--android:text="Paste title"-->
-        <!--android:textColor="@color/colorPrimary"-->
-        <!--android:textSize="20dp"-->
-        <!--android:textStyle="bold"-->
-        <!--app:layout_constraintLeft_toLeftOf="parent"-->
-        <!--app:layout_constraintRight_toRightOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent"-->
-        <!--app:layout_constraintBottom_toTopOf="@+id/trendingScrollView"/>-->
-
     <ScrollView
         android:id="@+id/trendingScrollView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="8dp"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
-        <TextView
-            android:id="@+id/trendingListTitleTextView"
-            android:layout_width="368dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:layout_marginTop="2dp"
-            android:text="Paste title"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/trendingScrollView"/>
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/trendingListTitleTextView"
+                android:layout_width="368dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:layout_marginTop="2dp"
+                android:text="Paste title"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/trendingScrollView"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/trendingListBodyTextView"
@@ -58,8 +44,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:text="Paste body"
-                android:textColor="@color/colorPrimary"
- />
+                android:textColor="@color/colorPrimary" />
         </LinearLayout>
     </ScrollView>
 
@@ -69,7 +54,6 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginRight="8dp"
-        android:background="@color/colorPrimaryText"
         android:clickable="true"
         app:backgroundTint="@color/colorPrimary"
         app:fabSize="mini"
