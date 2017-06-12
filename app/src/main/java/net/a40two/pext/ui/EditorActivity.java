@@ -4,11 +4,9 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -36,13 +34,11 @@ import butterknife.ButterKnife;
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
 public class EditorActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener {
-    @BindView(R.id.save_button) Button mSaveButton;
     @BindView(R.id.pastebin_button) Button mPastebinButton;
     @BindView(R.id.cut_button) Button mCutButton;
     @BindView(R.id.copy_button) Button mCopyButton;
     @BindView(R.id.paste_button) Button mPasteButton;
     @BindView(R.id.brackets_button) Button mBracketsButton;
-    @BindView(R.id.github_button) Button mGithubButton;
     @BindView(R.id.editorAdvancedTextView) AdvancedEditText mEditText;
 
     private DatabaseReference mEditorStateReference;
@@ -67,29 +63,12 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
                 .child(Constants.FIREBASE_CHILD_CLIPBOARD_HISTORY);
 
         ButterKnife.bind(this);
-        mSaveButton.setOnClickListener(this);
         mPastebinButton.setOnClickListener(this);
         mCutButton.setOnClickListener(this);
         mCopyButton.setOnClickListener(this);
         mPasteButton.setOnClickListener(this);
         mPasteButton.setOnLongClickListener(this);
         mBracketsButton.setOnClickListener(this);
-        mGithubButton.setOnClickListener(this);
-
-        //set github button to use icon
-        Typeface githubBottonFont = Typeface.createFromAsset( getAssets(), "fontawesome-webfont.ttf" );
-        mGithubButton.setTypeface(githubBottonFont);
-
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_SAVED_EDITOR_STATE);
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-
-            @Override public void onDataChange(DataSnapshot dataSnapshot) {
-                //TODO: add loading indicator while this value is retrieved
-               mEditText.setText(dataSnapshot.getValue().toString());
-            }
-
-            @Override public void onCancelled(DatabaseError databaseError) { }
-        });
 
     }
 
@@ -104,8 +83,16 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         if (editPasteBody != null && editPasteBody.length() > 0) {
             mEditText.setText(editPasteBody);
         } else {
-            //grab last thing from editor from firebase
-        }
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_SAVED_EDITOR_STATE);
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                @Override public void onDataChange(DataSnapshot dataSnapshot) {
+                    //TODO: add loading indicator while this value is retrieved
+                    mEditText.setText(dataSnapshot.getValue().toString());
+                }
+
+                @Override public void onCancelled(DatabaseError databaseError) { }
+            });        }
     }
 
     @Override public void onStop() {
@@ -114,10 +101,6 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override public void onClick(View v) {
-        if (v == mSaveButton) {
-            //save locally
-            //maybe this will work one day
-        }
         if (v == mPastebinButton) {
             //open popup fragment for pushing to pastebin
             Bundle args = new Bundle();
@@ -151,9 +134,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         }
         if (v == mBracketsButton) {
             //TODO: add code to popup brackets etc menu
-        }
-        if (v == mGithubButton) {
-            //maybe should have deleted this button. Might find use for it?
+            Toast.makeText(this, "Coming soon....", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -209,6 +190,4 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         //TODO: add code to limit this to last 5-10 copied text
         mClipboardReference.setValue(clip);
     }
-
-
 }
