@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 
+import net.a40two.pext.Constants;
 import net.a40two.pext.R;
 import net.a40two.pext.ui.fragments.PastebinPastePopup;
 import net.a40two.pext.ui.views.AdvancedEditText;
@@ -20,6 +21,9 @@ import net.a40two.pext.ui.views.AdvancedEditText;
 import org.parceler.Parcels;
 
 import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,11 +40,20 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
     @BindView(R.id.github_button) Button mGithubButton;
     @BindView(R.id.editorAdvancedTextView) AdvancedEditText mEditText;
 
+    private DatabaseReference mEditorStateReference;
+
+
     public static final String TAG = EditorActivity.class.getSimpleName();
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
+
+
+        mEditorStateReference = FirebaseDatabase
+                .getInstance()
+                .getReference()
+                .child(Constants.FIREBASE_CHILD_SAVED_EDITOR_STATE);
 
         ButterKnife.bind(this);
         mSaveButton.setOnClickListener(this);
@@ -74,6 +87,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
     @Override public void onStop() {
         super.onStop();
         //TODO: add code to write current text in editor to firebase on activity exit
+        saveEditorStateToFirebase(mEditText.getText().toString());
     }
 
     @Override public void onClick(View v) {
@@ -152,6 +166,10 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
             String newText = allText.substring(0, start)+allText.substring(end, allText.length());
             mEditText.setText(newText);
         }
+    }
+
+    public void saveEditorStateToFirebase(String body) {
+        mEditorStateReference.setValue(body);
     }
 
 }
