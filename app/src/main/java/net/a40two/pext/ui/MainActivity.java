@@ -29,7 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private String[] mMenuItems = new String[] {"New Paste", "My Pastes", "Trending Pastes", "Get Pastes", "Help", "About"};
+    private String[] mMenuItems = new String[] {"New Paste", "My Pastes", "Trending Pastes", "Help", "About"};
     //things for nav drawer
     private ListView mDrawerList;
     private CharSequence mTitle;
@@ -181,10 +181,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(MainActivity.this, PastesActivity.class);
             intent.putExtra("fragToLoad", "trending");
             startActivity(intent);
-        }
-        if (mMenuItems[position] == "Get Pastes") {
-            //ask if want to search? might need another item
-            //if getting specific paste, ask for paste identifier (from end of URL)
         }
         if (mMenuItems[position] == "About") {
             Intent intent = new Intent(MainActivity.this, AboutActivity.class);
