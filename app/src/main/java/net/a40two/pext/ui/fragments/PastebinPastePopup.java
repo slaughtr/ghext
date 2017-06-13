@@ -34,6 +34,8 @@ public class PastebinPastePopup extends DialogFragment implements AdapterView.On
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
         activity = getActivity();
 
         View rootView = inflater.inflate(R.layout.pastebin_paste_popup, container, false);

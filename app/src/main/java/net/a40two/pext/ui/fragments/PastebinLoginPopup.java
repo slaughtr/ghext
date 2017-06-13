@@ -33,9 +33,10 @@ public class PastebinLoginPopup extends DialogFragment {
 
     public PastebinLoginPopup() {}
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimationInverse;
+
         View rootView = inflater.inflate(R.layout.pastebin_login_popup, container, false);
         final EditText mUsernameField = (EditText) rootView.findViewById(R.id.username_field);
         final EditText mPasswordField = (EditText) rootView.findViewById(R.id.password_field);
@@ -64,7 +65,7 @@ public class PastebinLoginPopup extends DialogFragment {
 
                             user.setUsername(loginName);
                             user.setUserApiKey(userApiKey);
-                            addToSharedPreferences(userApiKey);
+                            addToSharedPreferences(userApiKey, loginName);
                             goodLogin();
                             dismiss();
                         }
@@ -94,8 +95,9 @@ public class PastebinLoginPopup extends DialogFragment {
         });
     }
 
-    private void addToSharedPreferences(String userKey) {
+    private void addToSharedPreferences(String userKey, String userName) {
         mEditor.putString(Constants.PREFERENCES_USER_API_KEY, userKey).apply();
+        mEditor.putString(Constants.PREFERENCES_USER_NAME_KEY, userName).apply();
     }
 
 }
