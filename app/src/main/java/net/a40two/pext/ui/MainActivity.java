@@ -3,6 +3,7 @@ package net.a40two.pext.ui;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
@@ -43,14 +44,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.editor_jump_button) Button mJumpToEditorButton;
     @BindView(R.id.pb_login_button) Button mPastebinLoginButton;
     @BindView(R.id.username_text_view) TextView mUsernameTextView;
+    @BindView(R.id.pext_text_view) TextView mPextTextView;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         ButterKnife.bind(this);
 
+        Typeface andvari = Typeface.createFromAsset(getAssets(), "andvari.ttf");
+        mPextTextView.setTypeface(andvari);
+        mUsernameTextView.setTypeface(andvari);
+        mJumpToEditorButton.setTypeface(andvari);
+        mPastebinLoginButton.setTypeface(andvari);
         //attempt to get the user's API key from their shared preferences,
         //if it's there, mark user as logged in and set API key in constants
         //also get user name from sharedprefs for setting textview

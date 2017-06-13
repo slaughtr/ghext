@@ -81,7 +81,9 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         String editPasteBody = Parcels.unwrap(intent.getParcelableExtra("editPasteBody"));
 
         if (editPasteBody != null && editPasteBody.length() > 0) {
-            mEditText.setText(editPasteBody);
+            if (!editPasteBody.equals("") || !editPasteBody.equals(" ")) {
+                mEditText.setText(editPasteBody);
+            }
         } else {
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_SAVED_EDITOR_STATE);
             ref.addListenerForSingleValueEvent(new ValueEventListener() {
