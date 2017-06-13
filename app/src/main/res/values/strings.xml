@@ -3,4 +3,7 @@
     <string name="fa_github_alt">&#xf113;</string>
     <string name="drawer_open">menu</string>
     <string name="drawer_close">pext</string>
+    <string name="help_text_editor"></string>
+    <string name="help_text_general"></string>
+    <string name="help_text_pastebin"></string>
 </resources>

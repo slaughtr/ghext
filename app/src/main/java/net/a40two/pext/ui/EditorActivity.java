@@ -38,7 +38,6 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
     @BindView(R.id.cut_button) Button mCutButton;
     @BindView(R.id.copy_button) Button mCopyButton;
     @BindView(R.id.paste_button) Button mPasteButton;
-    @BindView(R.id.brackets_button) Button mBracketsButton;
     @BindView(R.id.editorAdvancedTextView) AdvancedEditText mEditText;
 
     private DatabaseReference mEditorStateReference;
@@ -68,7 +67,6 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         mCopyButton.setOnClickListener(this);
         mPasteButton.setOnClickListener(this);
         mPasteButton.setOnLongClickListener(this);
-        mBracketsButton.setOnClickListener(this);
 
     }
 
@@ -134,10 +132,6 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
             }
             //put paste at current cursor selection
             mEditText.getText().insert(mEditText.getSelectionStart(), pasteData);
-        }
-        if (v == mBracketsButton) {
-            //TODO: add code to popup brackets etc menu
-            Toast.makeText(this, "Coming soon....", Toast.LENGTH_SHORT).show();
         }
     }
 
