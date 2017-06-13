@@ -39,6 +39,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
     @BindView(R.id.cut_button) Button mCutButton;
     @BindView(R.id.copy_button) Button mCopyButton;
     @BindView(R.id.paste_button) Button mPasteButton;
+    @BindView(R.id.clear_button) Button mClearButton;
     @BindView(R.id.editorAdvancedTextView) AdvancedEditText mEditText;
 
     private DatabaseReference mEditorStateReference;
@@ -68,6 +69,9 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
 
         mPastebinButton.setTypeface(andvari);
         mPastebinButton.setOnClickListener(this);
+
+        mClearButton.setTypeface(andvari);
+        mClearButton.setOnClickListener(this);
 
         mCutButton.setTypeface(andvari);
         mCutButton.setOnClickListener(this);
@@ -143,6 +147,9 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
             }
             //put paste at current cursor selection
             mEditText.getText().insert(mEditText.getSelectionStart(), pasteData);
+        }
+        if (v == mClearButton) {
+            mEditText.setText("");
         }
     }
 
