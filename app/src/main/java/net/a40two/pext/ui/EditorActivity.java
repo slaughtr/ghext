@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -62,9 +63,19 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
                 .child(Constants.FIREBASE_CHILD_CLIPBOARD_HISTORY);
 
         ButterKnife.bind(this);
+
+        Typeface andvari = Typeface.createFromAsset(getAssets(), "andvari.ttf");
+
+        mPastebinButton.setTypeface(andvari);
         mPastebinButton.setOnClickListener(this);
+
+        mCutButton.setTypeface(andvari);
         mCutButton.setOnClickListener(this);
+
+        mCopyButton.setTypeface(andvari);
         mCopyButton.setOnClickListener(this);
+
+        mPasteButton.setTypeface(andvari);
         mPasteButton.setOnClickListener(this);
         mPasteButton.setOnLongClickListener(this);
 
