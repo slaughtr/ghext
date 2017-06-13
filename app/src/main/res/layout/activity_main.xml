@@ -56,8 +56,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/mainback"
-            tools:layout_editor_absoluteX="-6dp"
-            android:layout_marginTop="0dp" />
+            android:layout_marginTop="-72dp" />
 
         <Button
             android:id="@+id/pb_login_button"
@@ -72,6 +71,24 @@
             app:layout_constraintBottom_toTopOf="@+id/editor_jump_button"
             app:layout_constraintLeft_toLeftOf="@+id/editor_jump_button"
             app:layout_constraintRight_toRightOf="@+id/editor_jump_button" />
+
+        <TextView
+            android:id="@+id/username_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:text="You are not logged in."
+            android:textAppearance="@android:style/TextAppearance.Material.Medium"
+            android:textColor="@color/colorTextIcons"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/textView"
+            app:layout_constraintHorizontal_bias="0.08"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
     <!-- The navigation drawer -->

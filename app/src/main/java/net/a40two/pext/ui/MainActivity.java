@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import net.a40two.pext.Constants;
@@ -36,10 +37,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private CharSequence mDrawerTitle;
 
     private SharedPreferences mSharedPreferences;
-    private String mUserApiKey;
+    private String mUserApiKeyFromPrefs;
+    private String mUserNameFromPrefs;
 
     @BindView(R.id.editor_jump_button) Button mJumpToEditorButton;
     @BindView(R.id.pb_login_button) Button mPastebinLoginButton;
+    @BindView(R.id.username_text_view) TextView mUsernameTextView;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
 
@@ -50,12 +53,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //attempt to get the user's API key from their shared preferences,
         //if it's there, mark user as logged in and set API key in constants
+        //also get user name from sharedprefs for setting textview
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mUserApiKey = mSharedPreferences.getString(Constants.PREFERENCES_USER_API_KEY, null);
+        mUserApiKeyFromPrefs = mSharedPreferences.getString(Constants.PREFERENCES_USER_API_KEY, null);
+        mUserNameFromPrefs = mSharedPreferences.getString(Constants.PREFERENCES_USER_NAME_KEY, null);
 
-        if (mUserApiKey != null) {
+        if (mUserApiKeyFromPrefs != null) {
             Constants.LOGGED_IN = true;
-            Constants.USER_API_KEY = mUserApiKey;
+            Constants.USER_API_KEY = mUserApiKeyFromPrefs;
+            Constants.USER_NAME = mUserNameFromPrefs;
+            mUsernameTextView.setText("Welcome back, "+mUserNameFromPrefs);
             //TODO: make the toast not show every time you return to this activity, also move it on the screen?
             Toast.makeText(this, "You're already logged in!\n You only need to login again if you're having issues.", Toast.LENGTH_LONG).show();
         }
