@@ -6,8 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -34,7 +37,7 @@ import butterknife.ButterKnife;
 
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
-public class EditorActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener {
+public class EditorActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener, PasteFromFirebasePopup.OnItemSelectedListener {
     @BindView(R.id.pastebin_button) Button mPastebinButton;
     @BindView(R.id.cut_button) Button mCutButton;
     @BindView(R.id.copy_button) Button mCopyButton;
@@ -129,25 +132,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         }
         if (v == mCutButton) { copyOrCutSelection(true); }
         if (v == mCopyButton) { copyOrCutSelection(false); }
-        if (v == mPasteButton) {
-            //paste clipboard to location TODO: pasting over selection deletes selection?
-            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            String pasteData = "";
-            if (!(clipboard.hasPrimaryClip())) {
-                //nothing on the clipboard
-                Toast.makeText(this, "Nothing on clipboard to paste!", Toast.LENGTH_SHORT).show();
-            } else if (!(clipboard.getPrimaryClipDescription().hasMimeType(MIMETYPE_TEXT_PLAIN))) {
-                // the clipboard has data but it is not plain text
-                Toast.makeText(this, "Item on clipboard is not plain text!", Toast.LENGTH_SHORT).show();
-            } else {
-                //the clipboard contains plain text.
-                ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
-                // Gets the clipboard as a string.
-                pasteData = item.getText().toString();
-            }
-            //put paste at current cursor selection
-            mEditText.getText().insert(mEditText.getSelectionStart(), pasteData);
-        }
+        if (v == mPasteButton) { paste(null); }
         if (v == mClearButton) {
             mEditText.setText("");
         }
@@ -197,6 +182,28 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    public void paste(@Nullable String text) {
+        //paste clipboard to location TODO: pasting over selection deletes selection?
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        String pasteData = "";
+        if (text != null) {
+            mEditText.getText().insert(mEditText.getSelectionStart(), text);
+        } else if (!(clipboard.hasPrimaryClip())) {
+            //nothing on the clipboard
+            Toast.makeText(this, "Nothing on clipboard to paste!", Toast.LENGTH_SHORT).show();
+        } else if (!(clipboard.getPrimaryClipDescription().hasMimeType(MIMETYPE_TEXT_PLAIN))) {
+            // the clipboard has data but it is not plain text
+            Toast.makeText(this, "Item on clipboard is not plain text!", Toast.LENGTH_SHORT).show();
+        } else {
+            //the clipboard contains plain text.
+            ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
+            // Gets the clipboard as a string.
+            pasteData = item.getText().toString();
+        }
+        //put paste at current cursor selection
+        mEditText.getText().insert(mEditText.getSelectionStart(), pasteData);
+    }
+
     public void saveEditorStateToFirebase(String body) {
         mEditorStateReference.setValue(body);
     }
@@ -204,5 +211,10 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
     public void saveClipboardToFirebase(String clip) {
         //TODO: add code to limit this to last 5-10 copied text
         mClipboardReference.setValue(clip);
+    }
+
+    @Override
+    public void clickItemFromFirebase(String text) {
+        paste(text);
     }
 }

@@ -2,9 +2,12 @@ package net.a40two.pext.ui.fragments;
 
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +22,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import net.a40two.pext.Constants;
 import net.a40two.pext.R;
+import net.a40two.pext.ui.EditorActivity;
 
 
-public class PasteFromFirebasePopup extends DialogFragment {
+public class PasteFromFirebasePopup extends DialogFragment  {
     Activity activity;
 
     private FirebaseListAdapter mFirebaseAdapter;
@@ -29,6 +33,17 @@ public class PasteFromFirebasePopup extends DialogFragment {
     private ListView mListView;
 
     public PasteFromFirebasePopup() {}
+
+    // ...
+    // Define the listener of the interface type
+    // listener will the activity instance containing fragment
+    private OnItemSelectedListener listener;
+
+    // Define the events that the fragment will use to communicate
+    public interface OnItemSelectedListener {
+        // This can be any number of events to be sent to the activity
+        public void clickItemFromFirebase(String text);
+    }
 
     @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                                        Bundle savedInstanceState) {
@@ -60,13 +75,29 @@ public class PasteFromFirebasePopup extends DialogFragment {
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override public void onItemClick(AdapterView av, View v, int index, long id) {
-//                DatabaseReference ref = FirebaseDatabase.getInstance().getReference(mFirebaseAdapter.getRef(index).getKey());
-                //TODO: code here to add clicked item to editor at current selection
+                TextView mTextView = (TextView) v.findViewById(R.id.clipboardHistoryTextView);
+                String textFromFirebase = mTextView.getText().toString();
+//                Log.d("text from firebase", textFromFirebase);
+//                android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+//                android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text From pext", textFromFirebase);
+                listener.clickItemFromFirebase(textFromFirebase);
+                dismiss();
             }
         });
         return rootView;
     }
 
+
+    // Store the listener (activity) that will have events fired once the fragment is attached
+    @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnItemSelectedListener) {
+            listener = (OnItemSelectedListener) context;
+        } else {
+            throw new ClassCastException(context.toString()
+                    + " must implement MyListFragment.OnItemSelectedListener");
+        }
+    }
 
     @Override public void onDestroy() {
         super.onDestroy();
