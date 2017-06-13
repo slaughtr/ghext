@@ -36,6 +36,7 @@ public class PasteListAdapter extends RecyclerView.Adapter<PasteListAdapter.Past
         return pvh;
     }
 
+
     @Override public void onBindViewHolder(PasteViewHolder holder, int position) {
         holder.bindPaste(mPastes.get(position));
     }

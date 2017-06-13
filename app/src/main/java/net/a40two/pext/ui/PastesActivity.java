@@ -2,6 +2,7 @@ package net.a40two.pext.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -64,7 +65,7 @@ public class PastesActivity extends AppCompatActivity {
 
                 mPastes = pblService.processResults("trending", response);
                     FragmentManager fm = getSupportFragmentManager();
-                    fm.beginTransaction().replace(R.id.fragmentHolder, TrendingPastesFragment.newInstance(mPastes)).commit();
+                    fm.beginTransaction().setTransition(FragmentTransaction.TRANSIT_ENTER_MASK).replace(R.id.fragmentHolder, TrendingPastesFragment.newInstance(mPastes)).commit();
             }
         });
     }

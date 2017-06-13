@@ -92,7 +92,8 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
                 }
 
                 @Override public void onCancelled(DatabaseError databaseError) { }
-            });        }
+            });
+        }
     }
 
     @Override public void onStop() {

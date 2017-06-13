@@ -57,5 +57,4 @@ public class TrendingPastesFragment extends Fragment {
 
         return view;
     }
-
 }
