@@ -36,15 +36,14 @@ public class TrendingPastesFragment extends Fragment {
         return tpFrag;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPastes = Parcels.unwrap(getArguments().getParcelable("pastes"));
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.trending_pastes_list, container, false);
         ButterKnife.bind(this, view);
         mRecyclerView.setAdapter(new PasteListAdapter(getContext(), mPastes));
@@ -57,5 +56,4 @@ public class TrendingPastesFragment extends Fragment {
 
         return view;
     }
-
 }

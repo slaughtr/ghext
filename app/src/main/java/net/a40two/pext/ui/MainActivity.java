@@ -3,12 +3,15 @@ package net.a40two.pext.ui;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,7 +20,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import net.a40two.pext.Constants;
 import net.a40two.pext.R;
@@ -27,7 +37,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private String[] mMenuItems = new String[] {"New Paste", "My Pastes", "Trending Pastes", "Get Pastes", "Help", "About"};
+
+    private String[] mMenuItems = new String[] {"My Pastes", "Trending Pastes", "Help", "About"};
     //things for nav drawer
     private ListView mDrawerList;
     private CharSequence mTitle;
@@ -36,26 +47,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private CharSequence mDrawerTitle;
 
     private SharedPreferences mSharedPreferences;
-    private String mUserApiKey;
+    private String mUserApiKeyFromPrefs;
+    private String mUserNameFromPrefs;
+
+    private FirebaseAuth mAuth;
 
     @BindView(R.id.editor_jump_button) Button mJumpToEditorButton;
     @BindView(R.id.pb_login_button) Button mPastebinLoginButton;
+    @BindView(R.id.username_text_view) TextView mUsernameTextView;
+    @BindView(R.id.pext_text_view) TextView mPextTextView;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //get firebase auth
+        mAuth = FirebaseAuth.getInstance();
+
         ButterKnife.bind(this);
 
+        Typeface andvari = Typeface.createFromAsset(getAssets(), "andvari.ttf");
+        mPextTextView.setTypeface(andvari);
+        mUsernameTextView.setTypeface(andvari);
+        mJumpToEditorButton.setTypeface(andvari);
+        mPastebinLoginButton.setTypeface(andvari);
         //attempt to get the user's API key from their shared preferences,
         //if it's there, mark user as logged in and set API key in constants
+        //also get user name from sharedprefs for setting textview
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mUserApiKey = mSharedPreferences.getString(Constants.PREFERENCES_USER_API_KEY, null);
+        mUserApiKeyFromPrefs = mSharedPreferences.getString(Constants.PREFERENCES_USER_API_KEY, null);
+        mUserNameFromPrefs = mSharedPreferences.getString(Constants.PREFERENCES_USER_NAME_KEY, null);
 
-        if (mUserApiKey != null) {
+        if (mUserApiKeyFromPrefs != null) {
             Constants.LOGGED_IN = true;
-            Constants.USER_API_KEY = mUserApiKey;
+            Constants.USER_API_KEY = mUserApiKeyFromPrefs;
+            Constants.USER_NAME = mUserNameFromPrefs;
+            mUsernameTextView.setText("Welcome back, "+mUserNameFromPrefs);
             //TODO: make the toast not show every time you return to this activity, also move it on the screen?
             Toast.makeText(this, "You're already logged in!\n You only need to login again if you're having issues.", Toast.LENGTH_LONG).show();
         }
@@ -91,6 +119,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
+    @Override public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null)
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        signInAnonymously();
+    }
+
+    private void signInAnonymously() {
+        Log.d("signInAnon", "IN THE METHOD");
+        // [START signin_anonymously]
+        mAuth.signInAnonymously()
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("signInAnonymously", "signInAnonymously:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("signInAnonymously", "signInAnonymously:failure", task.getException());
+                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+        // [END signin_anonymously]
     }
 
     @Override protected void onPostCreate(Bundle savedInstanceState) {
@@ -150,9 +206,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setTitle(mMenuItems[position]);
         mDrawerLayout.closeDrawer(mDrawerList);
 
-        if (mMenuItems[position] == "New Paste") {
-            //TODO: popup that shows user last ~5-10 things from editor or clipboard? Store in firebase?
-        }
         if (mMenuItems[position] == "My Pastes") {
             if (Constants.LOGGED_IN) {
                 Intent intent = new Intent(MainActivity.this, PastesActivity.class);
@@ -167,22 +220,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             intent.putExtra("fragToLoad", "trending");
             startActivity(intent);
         }
-        if (mMenuItems[position] == "Get Pastes") {
-            //ask if want to search? might need another item
-            //if getting specific paste, ask for paste identifier (from end of URL)
-        }
         if (mMenuItems[position] == "About") {
-            Intent intent = new Intent(MainActivity.this, AboutActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(MainActivity.this, AboutActivity.class));
         }
         if (mMenuItems[position] == "Help") {
-            Intent intent = new Intent(MainActivity.this, HelpActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(MainActivity.this, HelpActivity.class));
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.overflow_menu, menu);
         return super.onCreateOptionsMenu(menu);

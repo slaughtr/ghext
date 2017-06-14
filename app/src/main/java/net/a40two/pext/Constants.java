@@ -31,6 +31,7 @@ public class Constants {
 
     //logging in, pasting as user
     public static final String PREFERENCES_USER_API_KEY = "userApiKey";
+    public static final String PREFERENCES_USER_NAME_KEY = "userNameKey";
     public static final String USERNAME_PARAM = "api_user_name";
     public static final String PASSWORD_PARAM = "api_user_password";
     public static final String USER_API_KEY_PARAM = "api_user_key";
