@@ -36,6 +36,8 @@ import net.a40two.pext.ui.fragments.PastebinLoginPopup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.view.View.GONE;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private String[] mMenuItems = new String[] {"My Pastes", "Trending Pastes", "Help", "About"};
@@ -84,8 +86,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Constants.USER_API_KEY = mUserApiKeyFromPrefs;
             Constants.USER_NAME = mUserNameFromPrefs;
             mUsernameTextView.setText("Welcome back, "+mUserNameFromPrefs);
+            mPastebinLoginButton.setVisibility(GONE);
             //TODO: make the toast not show every time you return to this activity, also move it on the screen?
-            Toast.makeText(this, "You're already logged in!\n You only need to login again if you're having issues.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "You're already logged in!\n You only need to login again if you're having issues.", Toast.LENGTH_SHORT).show();
         }
 
         mDrawerList = (ListView) findViewById(R.id.main_drawer);
@@ -128,7 +131,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         signInAnonymously();
     }
 
-    //used to sign in anonymously to firebase auth, so that user has access to database without having to create an account for it
+    //used to sign in anonymously to firebase auth,
+    // so that user has access to database without having to create an account for it
     private void signInAnonymously() {
         mAuth.signInAnonymously()
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -167,10 +171,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             FragmentManager fm = getSupportFragmentManager();
             PastebinLoginPopup plp = new PastebinLoginPopup();
             plp.show(fm, "Pastebin login popup");
+            //TODO: add listener to loginPopup/main activity to change mUsernameTextView when logged in
         } else if (id == R.id.action_logout) {
             Constants.LOGGED_IN = false;
             Constants.CURRENT_USER = null;
-            Toast.makeText(MainActivity.this, "You are now logged out!", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "You are now logged out!", Toast.LENGTH_SHORT).show();
+            mUsernameTextView.setText("You are not logged in");
+            mPastebinLoginButton.setVisibility(View.VISIBLE);
         } else if (id == R.id.action_settings) {
             //open settings
             //TODO: make a settings activity
