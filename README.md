@@ -4,9 +4,30 @@ pext
 #### By [Dallas Slaughter](https://www.linkedin.com/in/dallas-slaughter) -  [email](mailto:dslaughtr@gmail.com)
 
 
-With pext, I plan to make a mobile text editor with Pastebin integration. The general idea would be that you can quickly edit and share files of a variety of types. This will be especially useful for developers on the go, as Pastebin features syntax highlighting and easy sharing, as well as timed deletion of files.
+pext is a text editor with Pastebin integration. It is meant to simplifly sharing code snippets and other text-based items on the go. It allows a user to login to Pastebin, submit text to Pastebin, and see a list of their own pastes and trending pastes.
 
+When submitting to Pastebin, the user is given several options: Paste title, Paste privacy, Paste expiration, and Paste syntax highlighting. 
+
+The Paste does not require a title, and will default to Untitled if none is provided.
+
+Privacy only works when logged in. The three options are: Public, Unlisted, and Private. Public includes your Paste in the Pastebin index, Unlisted does not. Private means only you can see it.
+
+Expiration works much as you might expect. When the amount of time you specify is up, the Paste expires and is deleted from Pastebin.
+
+I have not included _all_ options for syntax highlighting in the app, as many options seemed like a little too much (and made finding your preferred syntax quite difficult).
+
+####NOTE
 While you don't NEED a [Pastebin](https://www.pastebin.com) account to use this app, most features won't work unless you login. Without logging in, you can still submit new pastes and see the list of trending pastes. When logged in, you can see all of your own pastes and have many more options when submitting a paste.
+
+## Screenshots
+
+![main screen](http://40two.net/pext/mainscreen.png)
+![main screen menu](http://40two.net/pext/mainscreenmenu.png)
+![editor](http://40two.net/pext/editor.png)
+![pastebin sending options](http://40two.net/pext/pastebinoptions.png)
+![trending pastes list](http://40two.net/pext/trendingpastes.png)
+![user pastes list](http://40two.net/pext/yourpastes.png)
+
 
 ## Setup/Installation Requirements
 
@@ -14,15 +35,40 @@ While you don't NEED a [Pastebin](https://www.pastebin.com) account to use this 
 * _Open in Android Studio_
 * _Run in emulator or on your connected Android device_
 
+## Missing Features
+
+* A settings page (the editor has a ton that I'm not taking advantage of)
+* Ability to delete user's own pastes
+* More info in trending/own pastes lists
+* Firebase fine-tuning, especially with the clipboard history
+* General styling and UI improvements. IE: better colors and positioning of items
+* A few things the [Pastebin API](https://pastebin.com/api) is capable of that I didn't implement, like getting a paste by it's key
+* A brackets button for easier insertion of certain common characters
+* Save/load files from device. This may never actually happen.
+* Some loading indicators
+
+
 ## Known Bugs
 
 _ Occasionally the login popup will cause the app to crash when you click login. The fragment just can't getActivity occasionally. I have no idea why. 
 
-There are a few unnecessary buttons and options that do nothing at the moment. I plan to implement these later, or remove them completely. Some dialogs could also use a little more info for the user. These will be updated._
+The "Welcome back," and "You are not logged in" texts don't always update appropriately. This will be fixed in future updates.
+
+There are some settings that need to be implemented still._
 
 ## Support and contact details
 
 _If you have any issues or questions (or even suggestions!), email me at the address listed above._
+
+## Special Thanks
+
+[xgouchet](https://github.com/xgouchet) for making [TED](https://github.com/xgouchet/Ted). I borrowed his AdvancedEditText view, which saved me a ton of time (and looks great!).
+
+[smart-fun](https://github.com/smart-fun) for [XmlToJson](https://github.com/smart-fun/XmlToJson). This tool was indespensible for my API calls, and their help in solving some API call issues saved the project.
+
+My instructor at [Epicodus](https://www.epicodus.com), [Perry Eising](https://github.com/PerrySetGo) for being incredibly helpful and understanding along the way.
+
+And the Pastebin admin for whitelisting my IP so I could do testing!
 
 ## Technologies Used
 
