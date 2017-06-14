@@ -17,7 +17,7 @@
         android:fontFamily="monospace"
         android:gravity="start"
         android:hint="Type some things here. If you exit the app, they should still be here when you get back! Long-press the &quot;Paste&quot; button to see the last few things you've cut/copied!"
-        android:inputType="textMultiLine"
+        android:inputType="textMultiLine|textNoSuggestions"
         android:text=""
         android:textAlignment="inherit"
         app:layout_constraintBottom_toBottomOf="parent"
