@@ -22,7 +22,6 @@ While you don't NEED a [Pastebin](https://www.pastebin.com) account to use this 
 ## Screenshots
 
 ![main screen](http://40two.net/pext/mainscreen.png)
-<img src="http://40two.net/pext/mainscreen.png" style="width: 200px">
 ![main screen menu](http://40two.net/pext/mainscreenmenu.png)
 ![editor](http://40two.net/pext/editor.png)
 ![pastebin sending options](http://40two.net/pext/pastebinoptions.png)
