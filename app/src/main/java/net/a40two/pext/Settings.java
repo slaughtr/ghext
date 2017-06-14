@@ -34,7 +34,7 @@ public class Settings {
     public static boolean AUTO_SAVE_OVERWRITE = false;
 
     /** enable fling to scroll */
-    public static boolean FLING_TO_SCROLL = false;
+    public static boolean FLING_TO_SCROLL = true;
 
     /** Use Undo instead of quit ? */
     public static boolean UNDO = true;

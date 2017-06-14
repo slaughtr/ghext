@@ -41,7 +41,7 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
             startActivity(webIntent);
         }
         if (v == myBitcoinButton) {
-            //this is going to be tricky. Will need to check if user has a bitcoin app
+            //TODO: check if user has a bitcoin app
             //use PackageManager and resolveActivity() or queryIntentActivities() to see if there is anything matching your Intent
             //if no bitcoin app, copy address to clipboard and ask to send to play store with a search of "bitcoin"?
             android.content.ClipboardManager clipboard = (android.content.ClipboardManager)
@@ -56,12 +56,5 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
                     Uri.parse(Constants.MY_LINKEDIN));
             startActivity(webIntent);
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.overflow_menu, menu);
-        return super.onCreateOptionsMenu(menu);
     }
 }

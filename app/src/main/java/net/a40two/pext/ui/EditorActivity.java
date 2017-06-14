@@ -4,17 +4,13 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.View;
-import android.widget.Button;
+import android.view.MenuItem;
 
 import net.a40two.pext.Constants;
 import net.a40two.pext.R;
@@ -32,18 +28,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
-public class EditorActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener, PasteFromFirebasePopup.OnItemSelectedListener {
-    @BindView(R.id.pastebin_button) Button mPastebinButton;
-    @BindView(R.id.cut_button) Button mCutButton;
-    @BindView(R.id.copy_button) Button mCopyButton;
-    @BindView(R.id.paste_button) Button mPasteButton;
-    @BindView(R.id.clear_button) Button mClearButton;
-    @BindView(R.id.editorAdvancedTextView) AdvancedEditText mEditText;
+public class EditorActivity extends AppCompatActivity implements PasteFromFirebasePopup.OnItemSelectedListener {
+
+    AdvancedEditText mEditText;
 
     private DatabaseReference mEditorStateReference;
     private DatabaseReference mClipboardReference;
@@ -54,6 +43,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
+        mEditText = (AdvancedEditText) this.findViewById(R.id.editorAdvancedTextView);
 
         mEditorStateReference = FirebaseDatabase
                 .getInstance()
@@ -66,27 +56,6 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
                 .getReference()
                 .child(Constants.USER_NAME)
                 .child(Constants.FIREBASE_CHILD_CLIPBOARD_HISTORY);
-
-        ButterKnife.bind(this);
-
-        Typeface andvari = Typeface.createFromAsset(getAssets(), "andvari.ttf");
-
-        mPastebinButton.setTypeface(andvari);
-        mPastebinButton.setOnClickListener(this);
-
-        mClearButton.setTypeface(andvari);
-        mClearButton.setOnClickListener(this);
-
-        mCutButton.setTypeface(andvari);
-        mCutButton.setOnClickListener(this);
-
-        mCopyButton.setTypeface(andvari);
-        mCopyButton.setOnClickListener(this);
-
-        mPasteButton.setTypeface(andvari);
-        mPasteButton.setOnClickListener(this);
-        mPasteButton.setOnLongClickListener(this);
-
     }
 
     @Override public void onStart() {
@@ -122,8 +91,22 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         saveEditorStateToFirebase(mEditText.getText().toString());
     }
 
-    @Override public void onClick(View v) {
-        if (v == mPastebinButton) {
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.editor_overflow_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        //for the overflow menu
+        int id = item.getItemId();
+        if (id == R.id.action_copy) { copyOrCutSelection(false); }
+        else if (id == R.id.action_cut) { copyOrCutSelection(true); }
+        else if (id == R.id.action_paste) { paste(null); }
+        else if (id == R.id.action_paste_history) {
+            FragmentManager fm = getSupportFragmentManager();
+            PasteFromFirebasePopup pffb = new PasteFromFirebasePopup();
+            pffb.show(fm, "Pastebin paste popup");
+        } else if (id == R.id.action_pastebin) {
             //open popup fragment for pushing to pastebin
             Bundle args = new Bundle();
             //put text to bundle so that the paste popup has access to it for submitting
@@ -132,30 +115,9 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
             PastebinPastePopup ppp = new PastebinPastePopup();
             ppp.setArguments(args);
             ppp.show(fm, "Pastebin paste popup");
-        }
-        if (v == mCutButton) { copyOrCutSelection(true); }
-        if (v == mCopyButton) { copyOrCutSelection(false); }
-        if (v == mPasteButton) { paste(null); }
-        if (v == mClearButton) {
-            mEditText.setText("");
-        }
-    }
+        } else if (id == R.id.action_clear) { mEditText.setText(""); }
 
-    @Override public boolean onLongClick(View v) {
-        boolean gotLongClick = false;
-        if (v == mPasteButton) {
-            gotLongClick = true;
-            FragmentManager fm = getSupportFragmentManager();
-            PasteFromFirebasePopup pffb = new PasteFromFirebasePopup();
-            pffb.show(fm, "Pastebin paste popup");
-        }
-        return gotLongClick;
-    }
-
-    @Override public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.overflow_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+            return super.onOptionsItemSelected(item);
     }
 
     private void copyOrCutSelection(boolean cut) {
