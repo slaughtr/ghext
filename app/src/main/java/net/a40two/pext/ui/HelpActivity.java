@@ -14,10 +14,4 @@ public class HelpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_help);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.overflow_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 }
