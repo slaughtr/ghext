@@ -60,14 +60,16 @@ public class PasteFromFirebasePopup extends DialogFragment  {
                 TextView mTextView;
 
             @Override protected void populateView(View v, String text, int position) {
-                String shorterText = "";
+//                String shorterText = "";
                 mTextView = (TextView) v.findViewById(R.id.clipboardHistoryTextView);
 
-                if(text.length() > 50) {
+//                if(text.length() > 50) {
                     //if the returned text is too long, shorten it and put an ellipsis
-                    shorterText = text.substring(0, 51) + "...";
-                    mTextView.setText(shorterText);
-                } else { mTextView.setText(text); }
+//                    shorterText = text.substring(0, 51) + "...";
+//                    mTextView.setText(shorterText);
+//                } else {
+                mTextView.setText(text);
+//            }
             }
         };
 
