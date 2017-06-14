@@ -20,9 +20,6 @@ import android.widget.Scroller;
 
 import net.a40two.pext.Settings;
 
-/**
- * TODO create a syntax highlighter
- */
 public class AdvancedEditText extends AppCompatEditText implements
         OnKeyListener, OnGestureListener {
 

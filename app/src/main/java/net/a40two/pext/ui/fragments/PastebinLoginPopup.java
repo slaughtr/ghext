@@ -1,6 +1,7 @@
 package net.a40two.pext.ui.fragments;
 
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -27,7 +28,7 @@ import okhttp3.Response;
 public class PastebinLoginPopup extends DialogFragment {
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mEditor;
-
+    Activity activity;
     User user = new User("", "");
 
 
@@ -36,8 +37,10 @@ public class PastebinLoginPopup extends DialogFragment {
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimationInverse;
-
         View rootView = inflater.inflate(R.layout.pastebin_login_popup, container, false);
+
+        activity = getActivity();
+
         final EditText mUsernameField = (EditText) rootView.findViewById(R.id.username_field);
         final EditText mPasswordField = (EditText) rootView.findViewById(R.id.password_field);
         final Button mLoginButton = (Button) rootView.findViewById(R.id.login_button);
@@ -77,20 +80,20 @@ public class PastebinLoginPopup extends DialogFragment {
     }
 
     private void badLogin() {
-        getActivity().runOnUiThread(new Runnable() {
+        activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getActivity(), "Bad username or password", Toast.LENGTH_LONG).show();
+                Toast.makeText(activity, "Bad username or password", Toast.LENGTH_LONG).show();
             }
         });
     }
 
     private void goodLogin() {
         Constants.LOGGED_IN = true;
-        getActivity().runOnUiThread(new Runnable() {
+        activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getActivity(), "You are now logged in as " + user.getUsername(), Toast.LENGTH_LONG).show();
+                Toast.makeText(activity, "You are now logged in as " + user.getUsername(), Toast.LENGTH_LONG).show();
             }
         });
     }

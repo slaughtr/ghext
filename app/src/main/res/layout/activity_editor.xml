@@ -20,7 +20,7 @@
         android:fontFamily="monospace"
         android:gravity="start"
         android:hint="Type some things here. If you exit the app, they should still be here when you get back! Long-press the &quot;Paste&quot; button to see the last few things you've cut/copied!"
-        android:inputType="textMultiLine"
+        android:inputType="textMultiLine|textNoSuggestions"
         android:text=""
         android:textAlignment="inherit"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -60,17 +60,17 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.285"
             app:layout_constraintLeft_toRightOf="@+id/paste_button"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/paste_button"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.8" />
 
         <Button
             android:id="@+id/cut_button"
             android:layout_width="50dp"
             android:layout_height="48dp"
-            android:layout_marginLeft="18dp"
+            android:layout_marginLeft="8dp"
             android:padding="0dp"
             android:text="cut"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
@@ -85,8 +85,7 @@
             android:id="@+id/paste_button"
             android:layout_width="60dp"
             android:layout_height="48dp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginLeft="25dp"
+            android:layout_marginLeft="12dp"
             android:padding="0dp"
             android:text="paste"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
@@ -112,7 +111,7 @@
             android:id="@+id/copy_button"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
+            android:layout_marginLeft="8dp"
             android:padding="0dp"
             android:text="copy"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
@@ -121,7 +120,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/cut_button"
             app:layout_constraintTop_toTopOf="@+id/paste_button"
-            app:layout_constraintVertical_bias="0.666" />
+            app:layout_constraintVertical_bias="0.0" />
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

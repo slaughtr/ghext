@@ -64,10 +64,14 @@ public class PastesActivity extends AppCompatActivity {
             @Override public void onResponse(Call call, Response response) throws IOException {
 
                 mPastes = pblService.processResults("trending", response);
-                    FragmentManager fm = getSupportFragmentManager();
-                    fm.beginTransaction().setTransition(FragmentTransaction.TRANSIT_ENTER_MASK).replace(R.id.fragmentHolder, TrendingPastesFragment.newInstance(mPastes)).commit();
+                    loadTrendingFragment();
             }
         });
+    }
+
+    private void loadTrendingFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction().setTransition(FragmentTransaction.TRANSIT_ENTER_MASK).replace(R.id.fragmentHolder, TrendingPastesFragment.newInstance(mPastes)).commit();
     }
 
     private void getOwnPastes() {
@@ -80,9 +84,13 @@ public class PastesActivity extends AppCompatActivity {
             @Override public void onResponse(Call call, Response response) throws IOException {
 
                 mPastes = pblService.processResults("ownPastes", response);
-                FragmentManager fm = getSupportFragmentManager();
-                fm.beginTransaction().replace(R.id.fragmentHolder, UserPastesFragment.newInstance(mPastes)).commit();
+                loadOwnFragment();
             }
         });
+    }
+
+    private void loadOwnFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction().replace(R.id.fragmentHolder, UserPastesFragment.newInstance(mPastes)).commit();
     }
 }
