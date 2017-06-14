@@ -4,8 +4,6 @@ public class PasteHelper {
 
     public static String getSyntax(String name) {
         String shortName = "text";
-        //TODO: this should probably just be a method in the paste popup/
-        //we need short names to submit syntax, from the spinner selection
         if (name.equals("Batch")) { shortName = "dos"; }
         else if (name.equals("BrainFuck")) { shortName = "bf"; }
         else if (name.equals("C#")) { shortName = "csharp"; }

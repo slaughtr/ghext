@@ -36,6 +36,7 @@ public class PasteListAdapter extends RecyclerView.Adapter<PasteListAdapter.Past
         return pvh;
     }
 
+
     @Override public void onBindViewHolder(PasteViewHolder holder, int position) {
         holder.bindPaste(mPastes.get(position));
     }
@@ -63,7 +64,6 @@ public class PasteListAdapter extends RecyclerView.Adapter<PasteListAdapter.Past
 
         @Override public void onClick(View v) {
             int position = getAdapterPosition();
-            Log.d("click position adapter", "Position: "+position);
             Intent intent = new Intent(mContext, EditorActivity.class);
             intent.putExtra("editPasteBody", Parcels.wrap(mBodyTextView.getText()));
             mContext.startActivity(intent);

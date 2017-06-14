@@ -26,7 +26,7 @@ Text Editing | Pastebin
 -------------|-------------
 ~~Open a file~~ | ~~Create a paste~~
 ~~Edit a file~~ | ~~w/ options (Private, deletion time, etc)~~
-Save a file | ~~Load RAW Paste body into editor~~
+~~Save a file~~ | ~~Load RAW Paste body into editor~~
 ~~Create a file~~ |  ~~Get all Pastes by user~~
 
 #### Should Haves
@@ -42,7 +42,7 @@ Text Editing | Pastebin
 Syntax highlighting | 
 Multiple open files | 
 Light/dark mode | 
-Large files (IE 10k+ lines) | 
+~~Large files (IE 10k+ lines)~~ | 
 * Some sort of Tasker integration would be cool
 
 Planning
@@ -74,10 +74,13 @@ Planning
 
 #### Week 3
 * ~~Implement Firebase user authentication.~~
-* Save and retrieve data using Firebase, making sure to structure your data according to Firebase guidelines.
-* Employ the Firebase-RecyclerAdapter to display from your database.
+* ~~Save and retrieve data using Firebase, making sure to structure your data according to Firebase guidelines.~~
+* ~~Employ the Firebase-RecyclerAdapter to display from your database. (Had to go with ListAdapter)~~
 * ~~Use SharedPreferences to save an important piece of data in your app.~~
 * ~~Utilize dialogs to inform users of login status, etc.~~
 
 
 #### Week 4
+
+* ~~Includes at least two gesture listeners OR two animations, OR utilize the camera within your application.~~
+* ~~Implements at least one alternate resource.~~
