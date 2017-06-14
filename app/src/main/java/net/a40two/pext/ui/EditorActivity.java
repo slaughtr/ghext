@@ -102,12 +102,14 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
                 mEditText.setText(editPasteBody);
             }
         } else {
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_SAVED_EDITOR_STATE);
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Constants.USER_NAME).child("savedFromEditor");
             ref.addListenerForSingleValueEvent(new ValueEventListener() {
 
                 @Override public void onDataChange(DataSnapshot dataSnapshot) {
                     //TODO: add loading indicator while this value is retrieved
-                    mEditText.setText(dataSnapshot.getValue().toString());
+                    if (dataSnapshot.getValue() != null) {
+                        mEditText.setText(dataSnapshot.getValue().toString());
+                    }
                 }
 
                 @Override public void onCancelled(DatabaseError databaseError) { }
@@ -157,7 +159,6 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void copyOrCutSelection(boolean cut) {
-        saveClipboardToFirebase(mEditText.getText().toString());
 
         String copiedString = mEditText.getText().toString();
         int start = mEditText.getSelectionStart();
@@ -170,6 +171,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         }
         //do the clipboard dance
         copiedString = copiedString.substring(start, end);
+        saveClipboardToFirebase(copiedString);
         android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text From pext", copiedString);
         clipboard.setPrimaryClip(clip);
@@ -209,7 +211,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
 
     public void saveClipboardToFirebase(String clip) {
         //TODO: add code to limit this to last 5-10 copied text
-        mClipboardReference.setValue(clip);
+        mClipboardReference.push().setValue(clip);
     }
 
     @Override public void clickItemFromFirebase(String text) { paste(text); }

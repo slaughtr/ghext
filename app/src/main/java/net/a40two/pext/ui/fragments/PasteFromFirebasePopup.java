@@ -53,7 +53,7 @@ public class PasteFromFirebasePopup extends DialogFragment  {
         mListView = (ListView) rootView.findViewById(R.id.clipboardHistoryListView);
 
         activity = getActivity();
-        mClipboardHistoryReference = FirebaseDatabase.getInstance().getReference(Constants.FIREBASE_CHILD_CLIPBOARD_HISTORY);
+        mClipboardHistoryReference = FirebaseDatabase.getInstance().getReference(Constants.USER_NAME).child("clipboardHistory");
 
         mFirebaseAdapter = new FirebaseListAdapter<String>
                 (activity, String.class, R.layout.clip_history_popup_item, mClipboardHistoryReference) {
