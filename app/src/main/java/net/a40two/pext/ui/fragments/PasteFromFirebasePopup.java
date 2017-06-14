@@ -34,7 +34,6 @@ public class PasteFromFirebasePopup extends DialogFragment  {
 
     public PasteFromFirebasePopup() {}
 
-    // ...
     // Define the listener of the interface type
     // listener will the activity instance containing fragment
     private OnItemSelectedListener listener;
