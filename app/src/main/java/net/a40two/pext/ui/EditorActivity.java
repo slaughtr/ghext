@@ -48,7 +48,6 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
     private DatabaseReference mEditorStateReference;
     private DatabaseReference mClipboardReference;
 
-
     public static final String TAG = EditorActivity.class.getSimpleName();
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +58,13 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         mEditorStateReference = FirebaseDatabase
                 .getInstance()
                 .getReference()
+                .child(Constants.USER_NAME)
                 .child(Constants.FIREBASE_CHILD_SAVED_EDITOR_STATE);
 
         mClipboardReference = FirebaseDatabase
                 .getInstance()
                 .getReference()
+                .child(Constants.USER_NAME)
                 .child(Constants.FIREBASE_CHILD_CLIPBOARD_HISTORY);
 
         ButterKnife.bind(this);
@@ -204,17 +205,12 @@ public class EditorActivity extends AppCompatActivity implements View.OnClickLis
         mEditText.getText().insert(mEditText.getSelectionStart(), pasteData);
     }
 
-    public void saveEditorStateToFirebase(String body) {
-        mEditorStateReference.setValue(body);
-    }
+    public void saveEditorStateToFirebase(String body) { mEditorStateReference.setValue(body); }
 
     public void saveClipboardToFirebase(String clip) {
         //TODO: add code to limit this to last 5-10 copied text
         mClipboardReference.setValue(clip);
     }
 
-    @Override
-    public void clickItemFromFirebase(String text) {
-        paste(text);
-    }
+    @Override public void clickItemFromFirebase(String text) { paste(text); }
 }
