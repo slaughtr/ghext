@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_cut"
+        android:icon="?android:attr/actionModeCutDrawable"
+        android:title="Cut"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_copy"
+        android:icon="?android:attr/actionModeCopyDrawable"
+        android:title="Copy"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_paste"
+        android:icon="?android:attr/actionModePasteDrawable"
+        android:title="Paste"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_paste_history"
+        android:icon="@android:drawable/ic_menu_recent_history"
+        android:title="Paste history"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_pastebin"
+        android:icon="@android:drawable/ic_menu_send"
+        android:title="Send to Pastebin"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_clear"
+        android:icon="@android:drawable/ic_notification_clear_all"
+        android:title="Clear"
+        app:showAsAction="ifRoom" />
+</menu>

@@ -128,25 +128,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         signInAnonymously();
     }
 
+    //used to sign in anonymously to firebase auth, so that user has access to database without having to create an account for it
     private void signInAnonymously() {
-        Log.d("signInAnon", "IN THE METHOD");
-        // [START signin_anonymously]
         mAuth.signInAnonymously()
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("signInAnonymously", "signInAnonymously:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w("signInAnonymously", "signInAnonymously:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                            Toast.makeText(MainActivity.this, "Authentication to database failed. If problem persists, please contact the developer.",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-        // [END signin_anonymously]
     }
 
     @Override protected void onPostCreate(Bundle savedInstanceState) {
