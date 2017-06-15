@@ -65,6 +65,7 @@ public class PastebinLoginPopup extends DialogFragment {
                             Constants.LOGGED_IN = true;
                             Constants.CURRENT_USER = user;
                             Constants.USER_API_KEY = userApiKey;
+                            Constants.USER_NAME = loginName;
 
                             user.setUsername(loginName);
                             user.setUserApiKey(userApiKey);
