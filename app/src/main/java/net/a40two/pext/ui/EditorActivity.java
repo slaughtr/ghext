@@ -96,6 +96,7 @@ public class EditorActivity extends AppCompatActivity implements PasteFromFireba
         inflater.inflate(R.menu.editor_overflow_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         //for the overflow menu
         int id = item.getItemId();
