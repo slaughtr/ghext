@@ -115,12 +115,19 @@ public class PastebinLoginPopup extends DialogFragment {
                             Settings.SYNTAX = Integer.parseInt(dataSnapshot.child("SYNTAX").getValue().toString());
                             Settings.TEXT_SIZE = Integer.parseInt(dataSnapshot.child("TEXT_SIZE").getValue().toString());
                             Settings.RESULT_LIMIT = Integer.parseInt(dataSnapshot.child("RESULT_LIMIT").getValue().toString());
+                            Settings.SHOW_LINE_NUMBERS = (Boolean) dataSnapshot.child("SHOW_LINE_NUMBERS").getValue();
+                            Settings.WORDWRAP = (Boolean) dataSnapshot.child("WORDWRAP").getValue();
+                            Settings.FLING_TO_SCROLL = (Boolean) dataSnapshot.child("FLING_TO_SCROLL").getValue();
 
                             mEditor.putInt(Constants.PREFERENCES_EXPIRATION_KEY, Settings.EXPIRE).apply();
                             mEditor.putInt(Constants.PREFERENCES_PRIVACY_KEY, Settings.PRIVACY).apply();
                             mEditor.putInt(Constants.PREFERENCES_SYNTAX_KEY, Settings.SYNTAX).apply();
                             mEditor.putInt(Constants.PREFERENCES_TEXT_SIZE_KEY, Settings.TEXT_SIZE).apply();
                             mEditor.putInt(Constants.PREFERENCES_RESULT_LIMIT_KEY, Settings.RESULT_LIMIT).apply();
+                            mEditor.putBoolean(Constants.PREFERENCES_LINE_NUMBER_KEY, Settings.SHOW_LINE_NUMBERS).apply();
+                            mEditor.putBoolean(Constants.PREFERENCES_WORDWRAP_KEY, Settings.WORDWRAP).apply();
+                            mEditor.putBoolean(Constants.PREFERENCE_FLING_SCROLL_KEY, Settings.FLING_TO_SCROLL).apply();
+
 
                             Toast.makeText(activity, "Settings loaded from the cloud!", Toast.LENGTH_SHORT).show();
                         }

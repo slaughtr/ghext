@@ -88,6 +88,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Settings.SYNTAX = mSharedPreferences.getInt(Constants.PREFERENCES_SYNTAX_KEY, 0);
         Settings.TEXT_SIZE = mSharedPreferences.getInt(Constants.PREFERENCES_TEXT_SIZE_KEY, 12);
         Settings.RESULT_LIMIT = mSharedPreferences.getInt(Constants.PREFERENCES_RESULT_LIMIT_KEY, 50);
+        Settings.SHOW_LINE_NUMBERS = mSharedPreferences.getBoolean(Constants.PREFERENCES_LINE_NUMBER_KEY, true);
+        Settings.WORDWRAP = mSharedPreferences.getBoolean(Constants.PREFERENCES_WORDWRAP_KEY, true);
+        Settings.FLING_TO_SCROLL = mSharedPreferences.getBoolean(Constants.PREFERENCE_FLING_SCROLL_KEY, true);
 
         if (mUserApiKeyFromPrefs != null) {
             Constants.LOGGED_IN = true;

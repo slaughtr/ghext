@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,9 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
     Spinner mTextSizeSpinner;
     Spinner mResultLimitSpinner;
     Button mSaveSettingsButton;
+    Switch mLineNumberSwitch;
+    Switch mWrapSwitch;
+    Switch mFlingScrollSwitch;
 
     //for saving to shared prefs
     private SharedPreferences mSharedPreferences;
@@ -81,8 +85,19 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         mTextSizeSpinner.setSelection(getIndex(mTextSizeSpinner, Settings.TEXT_SIZE));
         mResultLimitSpinner.setSelection(getIndex(mResultLimitSpinner, Settings.RESULT_LIMIT));
 
+        //button
         mSaveSettingsButton = (Button) this.findViewById(R.id.save_settings_button);
         mSaveSettingsButton.setOnClickListener(this);
+
+        //switches
+        mLineNumberSwitch = (Switch) this.findViewById(R.id.show_line_numbers_switch);
+        mLineNumberSwitch.setChecked(Settings.SHOW_LINE_NUMBERS);
+
+        mWrapSwitch = (Switch) this.findViewById(R.id.wrap_switch);
+        mWrapSwitch.setChecked(Settings.WORDWRAP);
+
+        mFlingScrollSwitch = (Switch) this.findViewById(R.id.fling_to_scroll_switch);
+        mFlingScrollSwitch.setChecked(Settings.FLING_TO_SCROLL);
 
         mSettingsReference = FirebaseDatabase
                 .getInstance()
@@ -108,6 +123,9 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         Settings.SYNTAX = mSyntaxSpinner.getSelectedItemPosition();
         Settings.TEXT_SIZE = Integer.parseInt(mTextSizeSpinner.getSelectedItem().toString());
         Settings.RESULT_LIMIT = Integer.parseInt(mResultLimitSpinner.getSelectedItem().toString());
+        Settings.SHOW_LINE_NUMBERS = mLineNumberSwitch.isChecked();
+        Settings.WORDWRAP = mWrapSwitch.isChecked();
+        Settings.FLING_TO_SCROLL = mFlingScrollSwitch.isChecked();
 
         //set values in shared preferences
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -117,6 +135,9 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         mEditor.putInt(Constants.PREFERENCES_SYNTAX_KEY, Settings.SYNTAX).apply();
         mEditor.putInt(Constants.PREFERENCES_TEXT_SIZE_KEY, Settings.TEXT_SIZE).apply();
         mEditor.putInt(Constants.PREFERENCES_RESULT_LIMIT_KEY, Settings.RESULT_LIMIT).apply();
+        mEditor.putBoolean(Constants.PREFERENCES_LINE_NUMBER_KEY, Settings.SHOW_LINE_NUMBERS).apply();
+        mEditor.putBoolean(Constants.PREFERENCES_WORDWRAP_KEY, Settings.WORDWRAP).apply();
+        mEditor.putBoolean(Constants.PREFERENCE_FLING_SCROLL_KEY, Settings.FLING_TO_SCROLL).apply();
 
         //set values in firebase
         mSettingsReference.child("EXPIRE").setValue(Settings.EXPIRE);
@@ -124,6 +145,9 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         mSettingsReference.child("SYNTAX").setValue(Settings.SYNTAX);
         mSettingsReference.child("TEXT_SIZE").setValue(Settings.TEXT_SIZE);
         mSettingsReference.child("RESULT_LIMIT").setValue(Settings.RESULT_LIMIT);
+        mSettingsReference.child("SHOW_LINE_NUMBERS").setValue(Settings.SHOW_LINE_NUMBERS);
+        mSettingsReference.child("WORDWRAP").setValue(Settings.WORDWRAP);
+        mSettingsReference.child("FLING_TO_SCROLL").setValue(Settings.FLING_TO_SCROLL);
 
         //show a confirmation toast and exit
         Toast.makeText(this, "Settings saved!", Toast.LENGTH_SHORT).show();

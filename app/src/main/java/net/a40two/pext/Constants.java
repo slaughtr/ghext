@@ -37,6 +37,9 @@ public class Constants {
     public static final String PREFERENCES_SYNTAX_KEY = "syntaxKey";
     public static final String PREFERENCES_TEXT_SIZE_KEY = "textSizeKey";
     public static final String PREFERENCES_RESULT_LIMIT_KEY = "resultLimitKey";
+    public static final String PREFERENCES_LINE_NUMBER_KEY = "lineNumberKey";
+    public static final String PREFERENCES_WORDWRAP_KEY = "wordwrapKey";
+    public static final String PREFERENCE_FLING_SCROLL_KEY = "flingScrollKey";
 
 
     //logging in, pasting as user

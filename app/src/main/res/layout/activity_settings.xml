@@ -48,7 +48,11 @@
                 android:id="@+id/show_line_numbers_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight=".1" />
+                android:layout_weight=".1"
+                android:textOff="N"
+                android:textOn="Y"
+                android:showText="true"
+                />
         </TableRow>
 
         <TableRow
@@ -68,7 +72,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight=".1"
-                android:fadingEdge="none" />
+                android:fadingEdge="none"
+                android:textOff="N"
+                android:textOn="Y"
+                android:showText="true"
+                />
 
         </TableRow>
 
@@ -88,7 +96,12 @@
                 android:id="@+id/fling_to_scroll_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight=".1" />
+                android:layout_weight=".1"
+                android:textOff="N"
+                android:textOn="Y"
+                android:showText="true"
+                />
+
         </TableRow>
 
         <TableRow
