@@ -29,9 +29,17 @@ public class Constants {
     public static final String PASTE_KEY_PARAM = "api_paste_key";
     //above is used for getting paste to fetch
 
-    //logging in, pasting as user
-    public static final String PREFERENCES_USER_API_KEY = "userApiKey";
+    //shared pref keys
     public static final String PREFERENCES_USER_NAME_KEY = "userNameKey";
+    public static final String PREFERENCES_USER_API_KEY = "userApiKey";
+    public static final String PREFERENCES_EXPIRATION_KEY = "expirationKey";
+    public static final String PREFERENCES_PRIVACY_KEY = "privacyKey";
+    public static final String PREFERENCES_SYNTAX_KEY = "syntaxKey";
+    public static final String PREFERENCES_TEXT_SIZE_KEY = "textSizeKey";
+    public static final String PREFERENCES_RESULT_LIMIT_KEY = "resultLimitKey";
+
+
+    //logging in, pasting as user
     public static final String USERNAME_PARAM = "api_user_name";
     public static final String PASSWORD_PARAM = "api_user_password";
     public static final String USER_API_KEY_PARAM = "api_user_key";
@@ -49,6 +57,5 @@ public class Constants {
     //Firebase
     public static final String FIREBASE_CHILD_SAVED_EDITOR_STATE = "savedFromEditor";
     public static final String FIREBASE_CHILD_CLIPBOARD_HISTORY = "clipboardHistory";
-    //TODO: this should probably be an array of things saved/clipboard items,
-    //so that it can be used in the "new paste" menu and maybe eventually in the paste functionality
+    public static final String FIREBASE_CHILD_SETTINGS = "savedSettings";
 }

@@ -1,33 +1,39 @@
 package net.a40two.pext.ui;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import net.a40two.pext.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class SettingsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+import net.a40two.pext.Constants;
+import net.a40two.pext.R;
+import net.a40two.pext.Settings;
+
+public class SettingsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
     Spinner mExpireSpinner;
     Spinner mPrivacySpinner;
     Spinner mSyntaxSpinner;
     Spinner mTextSizeSpinner;
     Spinner mResultLimitSpinner;
+    Button mSaveSettingsButton;
 
-    //these will be used to save spinner positions to firebase/shared prefs
-    //so that they can later be used to load defaults
-    int expireSpinnerPos;
-    int privacySpinnerPos;
-    int syntaxSpinnerPos;
+    //for saving to shared prefs
+    private SharedPreferences mSharedPreferences;
+    private SharedPreferences.Editor mEditor;
 
-    //and here we just want values, as there's no correlating
-    //spinners for these items
-    int textSizeSpinnerVal;
-    int resultLimitSpinnerVal;
+    //for saving to firebase
+    private DatabaseReference mSettingsReference;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,21 +73,72 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         mTextSizeSpinner.setOnItemSelectedListener(this);
         mResultLimitSpinner.setOnItemSelectedListener(this);
 
+        //set spinners to values loaded from settings
+        mExpireSpinner.setSelection(Settings.EXPIRE);
+        mPrivacySpinner.setSelection(Settings.PRIVACY);
+        mSyntaxSpinner.setSelection(Settings.SYNTAX);
+        mTextSizeSpinner.setSelection(getIndex(mTextSizeSpinner, Settings.TEXT_SIZE));
+        mResultLimitSpinner.setSelection(getIndex(mResultLimitSpinner, Settings.RESULT_LIMIT));
+
+        mSaveSettingsButton = (Button) this.findViewById(R.id.save_settings_button);
+        mSaveSettingsButton.setOnClickListener(this);
+
+        mSettingsReference = FirebaseDatabase
+                .getInstance()
+                .getReference()
+                .child(Constants.USER_NAME)
+                .child(Constants.FIREBASE_CHILD_SETTINGS);
+
 
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//        ((TextView) view).setTextColor(Color.RED);
-        if (view == mExpireSpinner) { }
-        if (view == mPrivacySpinner) { }
-        if (view == mSyntaxSpinner) { }
-        if (view == mTextSizeSpinner) { }
-        if (view == mResultLimitSpinner) { }
-    }
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) { }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
+    public void onNothingSelected(AdapterView<?> parent) { }
 
+    @Override
+    public void onClick(View v) {
+        if (v == mSaveSettingsButton) {
+            saveSettings();
+        }
+    }
+
+    private void saveSettings() {
+        //set values in Settings
+        Settings.EXPIRE = mExpireSpinner.getSelectedItemPosition();
+        Settings.PRIVACY = mPrivacySpinner.getSelectedItemPosition();
+        Settings.SYNTAX = mSyntaxSpinner.getSelectedItemPosition();
+        Settings.TEXT_SIZE = Integer.parseInt(mTextSizeSpinner.getSelectedItem().toString());
+        Settings.RESULT_LIMIT = Integer.parseInt(mResultLimitSpinner.getSelectedItem().toString());
+
+        //set values in shared preferences
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mEditor = mSharedPreferences.edit();
+        mEditor.putInt(Constants.PREFERENCES_EXPIRATION_KEY, Settings.EXPIRE).apply();
+        mEditor.putInt(Constants.PREFERENCES_PRIVACY_KEY, Settings.PRIVACY).apply();
+        mEditor.putInt(Constants.PREFERENCES_SYNTAX_KEY, Settings.SYNTAX).apply();
+        mEditor.putInt(Constants.PREFERENCES_TEXT_SIZE_KEY, Settings.TEXT_SIZE).apply();
+        mEditor.putInt(Constants.PREFERENCES_RESULT_LIMIT_KEY, Settings.RESULT_LIMIT).apply();
+
+        //set values in firebase
+        mSettingsReference.child("EXPIRE").setValue(Settings.EXPIRE);
+        mSettingsReference.child("PRIVACY").setValue(Settings.PRIVACY);
+        mSettingsReference.child("SYNTAX").setValue(Settings.SYNTAX);
+        mSettingsReference.child("TEXT_SIZE").setValue(Settings.TEXT_SIZE);
+        mSettingsReference.child("RESULT_LIMIT").setValue(Settings.RESULT_LIMIT);
+    }
+
+    //used to get position of spinner by provided value
+    //useful for text size and result limit
+    private int getIndex(Spinner spinner, int value){
+        int index = 0;
+        for (int i=0;i<spinner.getCount();i++){
+            if (Integer.parseInt(spinner.getItemAtPosition(i).toString()) == value) {
+                index = i;
+            }
+        }
+        return index;
     }
 }
