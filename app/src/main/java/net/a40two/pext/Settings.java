@@ -14,11 +14,6 @@ public class Settings {
     /** color setting */
 //    public static int COLOR = COLOR_CLASSIC;
 
-    /** when search reaches the end of a file, search wrap */
-    public static boolean SEARCHWRAP = false;
-    /** only search for matchin case */
-    public static boolean SEARCHMATCHCASE = false;
-
     /** Text size setting */
     public static int TEXT_SIZE = 12;
 
@@ -85,74 +80,15 @@ public class Settings {
 //                PREFERENCE_AUTO_SAVE_OVERWRITE, false);
 //        COLOR = getStringPreferenceAsInteger(settings, PREFERENCE_COLOR_THEME,
 //                ("" + COLOR_CLASSIC));
-//        SEARCHWRAP = settings.getBoolean(PREFERENCE_SEARCHWRAP, false);
-//        SEARCHMATCHCASE = settings.getBoolean(PREFERENCE_SEARCH_MATCH_CASE,
 //                false);
-//        ENCODING = settings.getString(PREFERENCE_ENCODING, ENC_UTF8);
 //        FLING_TO_SCROLL = settings.getBoolean(PREFERENCE_FLING_TO_SCROLL, true);
 //
 //        BACK_BTN_AS_UNDO = settings.getBoolean(PREFERENCE_BACK_BUTTON_AS_UNDO,
 //                false);
 //        UNDO = settings.getBoolean(PREFERENCE_ALLOW_UNDO, true);
-//        UNDO_MAX_STACK = getStringPreferenceAsInteger(settings,
-//                PREFERENCE_MAX_UNDO_STACK, "25");
-//
-//        USE_HOME_PAGE = settings.getBoolean(PREFERENCE_USE_HOME_PAGE, false);
-//        HOME_PAGE_PATH = settings.getString(PREFERENCE_HOME_PAGE_PATH, "");
-//
-//        RecentFiles.loadRecentFiles(settings.getString(PREFERENCE_RECENTS, ""));
+
 //    }
 
-    /**
-     * Reads a preference stored as a string and returns the numeric value
-     *
-     * @param prefs
-     *            the prefernce to read from
-     * @param key
-     *            the key
-     * @param def
-     *            the default value
-     * @return the value as an int
-//     */
-//    protected static int getStringPreferenceAsInteger(SharedPreferences prefs,
-//                                                      String key, String def) {
-//        String strVal;
-//        int intVal;
-//
-//        strVal = null;
-//        try {
-//            strVal = prefs.getString(key, def);
-//        } catch (Exception e) {
-//            strVal = def;
-//        }
-//
-//        try {
-//            intVal = Integer.parseInt(strVal);
-//        } catch (NumberFormatException e) {
-//            intVal = 0;
-//        }
-//
-//        return intVal;
-//    }
-
-    /**
-     * Save the Home page settings
-     *
-     * @param settings
-     *            the settings to write to
-     */
-//    public static void saveHomePage(SharedPreferences settings) {
-//        Editor editor = settings.edit();
-//        editor.putString(PREFERENCE_HOME_PAGE_PATH, HOME_PAGE_PATH);
-//        editor.commit();
-//
-//    }
-//
-//    public static File getFontFile(Context ctx) {
-//        return new File(ctx.getDir(FONT_FOLDER_NAME, Context.MODE_PRIVATE),
-//                FONT_FILE_NAME);
-//    }
-//
 //    public static Typeface getTypeface(Context ctx) {
 //        File fontFile = getFontFile(ctx);
 //        Typeface res = Typeface.MONOSPACE;

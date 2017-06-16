@@ -2,6 +2,7 @@ package net.a40two.pext.ui.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -18,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Scroller;
 
+import net.a40two.pext.R;
 import net.a40two.pext.Settings;
 
 public class AdvancedEditText extends AppCompatEditText implements
