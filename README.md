@@ -46,6 +46,7 @@ While you don't NEED a [Pastebin](https://www.pastebin.com) account to use this 
 * A brackets button for easier insertion of certain common characters
 * Save/load files from device. This may never actually happen.
 * Some loading indicators
+* Syntax highlighting (https://github.com/nakshay/TextHighlighter ?)
 
 
 ## Known Bugs
