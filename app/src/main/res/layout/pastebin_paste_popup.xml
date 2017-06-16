@@ -11,7 +11,7 @@
 
     <TextView
         android:id="@+id/textViewPaste"
-        android:layout_width="368dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
@@ -35,37 +35,22 @@
 
     <Spinner
         android:id="@+id/expireSpinner"
-        android:layout_width="368dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:padding="0dp"
-        android:paddingBottom="0dp"
-        android:paddingEnd="0dp"
-        android:paddingLeft="0dp"
-        android:paddingRight="0dp"
-        android:paddingStart="0dp"
-        android:paddingTop="0dp"
-        android:scrollbars="horizontal"
+        android:background="@color/colorDivider"
         android:textAlignment="center"
         android:theme="@android:style/Widget.Material.Light.TextView.SpinnerItem"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="@+id/expireLabel"
         app:layout_constraintRight_toRightOf="@+id/expireLabel"
         app:layout_constraintTop_toBottomOf="@+id/expireLabel" />
 
     <Spinner
         android:id="@+id/syntaxSpinner"
-        android:layout_width="368dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:padding="0dp"
-        android:paddingBottom="0dp"
-        android:paddingEnd="0dp"
-        android:paddingLeft="0dp"
-        android:paddingRight="0dp"
-        android:paddingStart="0dp"
-        android:paddingTop="0dp"
-        android:scrollbars="horizontal"
+        android:background="@color/colorDivider"
         android:textAlignment="center"
         app:layout_constraintLeft_toLeftOf="@+id/syntaxLabel"
         app:layout_constraintRight_toRightOf="@+id/syntaxLabel"
@@ -73,17 +58,10 @@
 
     <Spinner
         android:id="@+id/privacySpinner"
-        android:layout_width="368dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:padding="0dp"
-        android:paddingBottom="0dp"
-        android:paddingEnd="0dp"
-        android:paddingLeft="0dp"
-        android:paddingRight="0dp"
-        android:paddingStart="0dp"
-        android:paddingTop="0dp"
-        android:scrollbars="horizontal"
+        android:background="@color/colorDivider"
         android:textAlignment="center"
         app:layout_constraintLeft_toLeftOf="@+id/privacyLabel"
         app:layout_constraintRight_toRightOf="@+id/privacyLabel"
@@ -91,7 +69,7 @@
 
     <Button
         android:id="@+id/submitPasteButton"
-        android:layout_width="368dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@android:color/background_dark"
@@ -105,14 +83,13 @@
         android:text="Submit!"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="@+id/privacySpinner"
         app:layout_constraintRight_toRightOf="@+id/privacySpinner"
         app:layout_constraintTop_toBottomOf="@+id/privacySpinner" />
 
     <EditText
         android:id="@+id/pasteTitleField"
-        android:layout_width="368dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:background="@color/colorTextIcons"
@@ -134,27 +111,19 @@
 
     <TextView
         android:id="@+id/expireLabel"
-        android:layout_width="368dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="9dp"
-        android:padding="0dp"
-        android:paddingBottom="0dp"
-        android:paddingEnd="0dp"
-        android:paddingLeft="0dp"
-        android:paddingRight="0dp"
-        android:paddingStart="0dp"
-        android:paddingTop="0dp"
         android:text="When would you like \n this paste to expire?"
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="@+id/pasteTitleField"
         app:layout_constraintRight_toRightOf="@+id/pasteTitleField"
         app:layout_constraintTop_toBottomOf="@+id/pasteTitleField" />
 
     <TextView
         android:id="@+id/syntaxLabel"
-        android:layout_width="368dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:padding="0dp"
@@ -173,7 +142,7 @@
 
     <TextView
         android:id="@+id/privacyLabel"
-        android:layout_width="368dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:padding="0dp"
@@ -186,7 +155,6 @@
         android:text="What level of privacy \n would you like on this paste?"
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="@+id/syntaxSpinner"
         app:layout_constraintRight_toRightOf="@+id/syntaxSpinner"
         app:layout_constraintTop_toBottomOf="@+id/syntaxSpinner" />

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +17,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.a40two.pext.Constants;
 import net.a40two.pext.R;
+import net.a40two.pext.Settings;
 import net.a40two.pext.adapters.PasteHelper;
 import net.a40two.pext.services.PastebinPasteService;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -29,6 +35,8 @@ import okhttp3.Response;
 public class PastebinPastePopup extends DialogFragment implements AdapterView.OnItemSelectedListener {
     String pasteCallResponse = "";
     Activity activity;
+
+    Spinner mPrivacySpinner;
 
     public PastebinPastePopup() {}
 
@@ -51,9 +59,16 @@ public class PastebinPastePopup extends DialogFragment implements AdapterView.On
         expireAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mExpireSpinner.setAdapter(expireAdapter);
 
-        final Spinner mPrivacySpinner = (Spinner) rootView.findViewById(R.id.privacySpinner);
-        ArrayAdapter<CharSequence> privacyAdapter = ArrayAdapter.createFromResource(getContext(),
+        mPrivacySpinner = (Spinner) rootView.findViewById(R.id.privacySpinner);
+        ArrayAdapter<CharSequence> privacyAdapter;
+        if (!Constants.LOGGED_IN) {
+            //if not logged in, don't show "Private" option
+            privacyAdapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.private_select_not_logged_in, android.R.layout.simple_spinner_item);
+        } else {
+        privacyAdapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.private_select, android.R.layout.simple_spinner_item);
+        }
         privacyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mPrivacySpinner.setAdapter(privacyAdapter);
 
@@ -66,6 +81,11 @@ public class PastebinPastePopup extends DialogFragment implements AdapterView.On
         mSyntaxSpinner.setOnItemSelectedListener(this);
         mPrivacySpinner.setOnItemSelectedListener(this);
         mExpireSpinner.setOnItemSelectedListener(this);
+
+        //set spinners to values from settings
+        mExpireSpinner.setSelection(Settings.EXPIRE);
+        mPrivacySpinner.setSelection(Settings.PRIVACY);
+        mSyntaxSpinner.setSelection(Settings.SYNTAX);
 
         //get the body of the editText so it can be submitted to pastebin
         final String pasteBody = getArguments().getString("body");
@@ -95,16 +115,9 @@ public class PastebinPastePopup extends DialogFragment implements AdapterView.On
 
 
     public void onItemSelected(AdapterView<?> parent, View view,
-                               int pos, long id) {
-        // An item was selected. You can retrieve the selected item using
-        // parent.getItemAtPosition(pos)
-        ((TextView) view).setTextColor(Color.RED);
-    }
+                               int pos, long id) { }
 
-    public void onNothingSelected(AdapterView<?> parent) {
-        // Another interface callback
-        //TODO: can I use this method to set the spinner to the last value set by user?
-    }
+    public void onNothingSelected(AdapterView<?> parent) { }
 
     public void showResultToast() {
         activity.runOnUiThread(new Runnable() {

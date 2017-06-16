@@ -17,6 +17,11 @@
         <item>Private</item>
     </string-array>
 
+    <string-array name="private_select_not_logged_in">
+        <item>Public</item>
+        <item>Unlisted</item>
+    </string-array>
+
 
     <string-array name="syntax_highlight_select">
         <item>None</item>
