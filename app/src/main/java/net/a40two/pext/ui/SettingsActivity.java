@@ -51,7 +51,7 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         expireAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mExpireSpinner.setAdapter(expireAdapter);
 
-        mPrivacySpinner = (Spinner) this.findViewById(R.id.privacySpinner);
+        mPrivacySpinner = (Spinner) this.findViewById(R.id.default_privacy_spinner);
         ArrayAdapter<CharSequence> privacyAdapter;
         if (!Constants.LOGGED_IN) {
             //if not logged in, don't show "Private" option
