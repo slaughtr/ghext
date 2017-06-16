@@ -19,15 +19,12 @@ I have not included _all_ options for syntax highlighting in the app, as many op
 ####NOTE
 While you don't NEED a [Pastebin](https://www.pastebin.com) account to use this app, most features won't work unless you login. Without logging in, you can still submit new pastes and see the list of trending pastes. When logged in, you can see all of your own pastes and have many more options when submitting a paste.
 
+## Settings
+Settings will be saved to your device's Shared Preferences AND to Firebase. The app loads shared preferences intially, and only loads from Firebase when you login. I will eventually change how this works a little, depending on feedback.
+
 ## Screenshots
 
-![main screen](http://40two.net/pext/mainscreen.png)
-![main screen menu](http://40two.net/pext/mainscreenmenu.png)
-![editor](http://40two.net/pext/editor.png)
-![pastebin sending options](http://40two.net/pext/pastebinoptions.png)
-![trending pastes list](http://40two.net/pext/trendingpastes.png)
-![user pastes list](http://40two.net/pext/yourpastes.png)
-
+![some screens](http://40two.net/pext/screens.png)
 
 ## Setup/Installation Requirements
 
