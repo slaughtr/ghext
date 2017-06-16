@@ -3,6 +3,7 @@ package net.a40two.pext.services;
 import android.util.Log;
 
 import net.a40two.pext.Constants;
+import net.a40two.pext.Settings;
 import net.a40two.pext.models.Paste;
 
 import org.json.JSONArray;
@@ -47,10 +48,11 @@ public class PastebinListService {
 
         } else if (type.equals("ownPastes")) {
             String userApiKey = Constants.USER_API_KEY;
+            String resultLimit = Integer.toString(Settings.RESULT_LIMIT);
             RequestBody formBody = new FormBody.Builder()
                     .add(Constants.DEV_API_KEY_PARAM, Constants.DEV_API_KEY)
                     .add(Constants.API_OPTION, "list")
-                    .add(Constants.RESULTS_LIMIT_PARAM, "50") //TODO: make this user-changeable?
+                    .add(Constants.RESULTS_LIMIT_PARAM, resultLimit)
                     .add(Constants.USER_API_KEY_PARAM, userApiKey)
                     .build();
             Request request = new Request.Builder()
