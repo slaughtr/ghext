@@ -39,7 +39,7 @@ import static android.view.View.GONE;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private String[] mMenuItems = new String[] {"My Pastes", "Trending Pastes", "Help", "About"};
+    private String[] mMenuItems = new String[] {"My Pastes", "Trending Pastes", "Help", "About", "Settings"};
     //things for nav drawer
     private ListView mDrawerList;
     private CharSequence mTitle;
@@ -226,6 +226,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (mMenuItems[position] == "Help") {
             startActivity(new Intent(MainActivity.this, HelpActivity.class));
+        }
+        if (mMenuItems[position] == "Settings") {
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
         }
     }
 
