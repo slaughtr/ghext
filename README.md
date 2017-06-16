@@ -29,7 +29,7 @@ Settings will be saved to your device's Shared Preferences AND to Firebase. The 
 ## Setup/Installation Requirements
 
 * _Clone this repo to your local machine_
-* _Open in Android Studio_
+* _Open in Android Studio 3.0_
 * _Run in emulator or on your connected Android device_
 
 ## Missing Features
