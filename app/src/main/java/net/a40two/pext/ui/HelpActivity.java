@@ -2,8 +2,6 @@ package net.a40two.pext.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
 
 import net.a40two.pext.R;
 

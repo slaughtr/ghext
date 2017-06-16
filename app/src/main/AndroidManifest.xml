@@ -4,9 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -25,28 +25,25 @@
         <activity android:name=".ui.AboutActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="net.a40two.pext.ui.MainActivity">
-            </meta-data>
+                android:value="net.a40two.pext.ui.MainActivity" />
         </activity>
         <activity android:name=".ui.EditorActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="net.a40two.pext.ui.MainActivity">
-            </meta-data>
+                android:value="net.a40two.pext.ui.MainActivity" />
         </activity>
         activity>
         <activity android:name=".ui.HelpActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="net.a40two.pext.ui.MainActivity">
-            </meta-data>
+                android:value="net.a40two.pext.ui.MainActivity" />
         </activity>
         <activity android:name=".ui.PastesActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="net.a40two.pext.ui.MainActivity">
-            </meta-data>
+                android:value="net.a40two.pext.ui.MainActivity" />
         </activity>
+        <activity android:name=".ui.SettingsActivity"></activity>
     </application>
 
 </manifest>

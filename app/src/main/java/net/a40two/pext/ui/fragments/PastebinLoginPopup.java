@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import net.a40two.pext.Constants;
 import net.a40two.pext.R;
+import net.a40two.pext.Settings;
 import net.a40two.pext.models.User;
 import net.a40two.pext.services.PastebinLoginService;
 
@@ -95,6 +101,42 @@ public class PastebinLoginPopup extends DialogFragment {
             @Override
             public void run() {
                 Toast.makeText(activity, "You are now logged in as " + user.getUsername(), Toast.LENGTH_LONG).show();
+
+                //on a good login, should pull settings from firebase
+                //and save them to Settings and shared preferences
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Constants.USER_NAME).child("savedSettings");
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    @Override public void onDataChange(DataSnapshot dataSnapshot) {
+                        //TODO: add loading indicator while this value is retrieved
+                        if (dataSnapshot.getValue() != null) {
+                            Settings.EXPIRE = Integer.parseInt(dataSnapshot.child("EXPIRE").getValue().toString());
+                            Settings.PRIVACY = Integer.parseInt(dataSnapshot.child("PRIVACY").getValue().toString());
+                            Settings.SYNTAX = Integer.parseInt(dataSnapshot.child("SYNTAX").getValue().toString());
+                            Settings.TEXT_SIZE = Integer.parseInt(dataSnapshot.child("TEXT_SIZE").getValue().toString());
+                            Settings.RESULT_LIMIT = Integer.parseInt(dataSnapshot.child("RESULT_LIMIT").getValue().toString());
+                            Settings.SHOW_LINE_NUMBERS = (Boolean) dataSnapshot.child("SHOW_LINE_NUMBERS").getValue();
+                            Settings.WORDWRAP = (Boolean) dataSnapshot.child("WORDWRAP").getValue();
+                            Settings.FLING_TO_SCROLL = (Boolean) dataSnapshot.child("FLING_TO_SCROLL").getValue();
+
+                            mEditor.putInt(Constants.PREFERENCES_EXPIRATION_KEY, Settings.EXPIRE).apply();
+                            mEditor.putInt(Constants.PREFERENCES_PRIVACY_KEY, Settings.PRIVACY).apply();
+                            mEditor.putInt(Constants.PREFERENCES_SYNTAX_KEY, Settings.SYNTAX).apply();
+                            mEditor.putInt(Constants.PREFERENCES_TEXT_SIZE_KEY, Settings.TEXT_SIZE).apply();
+                            mEditor.putInt(Constants.PREFERENCES_RESULT_LIMIT_KEY, Settings.RESULT_LIMIT).apply();
+                            mEditor.putBoolean(Constants.PREFERENCES_LINE_NUMBER_KEY, Settings.SHOW_LINE_NUMBERS).apply();
+                            mEditor.putBoolean(Constants.PREFERENCES_WORDWRAP_KEY, Settings.WORDWRAP).apply();
+                            mEditor.putBoolean(Constants.PREFERENCE_FLING_SCROLL_KEY, Settings.FLING_TO_SCROLL).apply();
+
+
+                            Toast.makeText(activity, "Settings loaded from the cloud!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override public void onCancelled(DatabaseError databaseError) {
+                        Toast.makeText(activity, "Error loading settings from the cloud\n"+databaseError.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }

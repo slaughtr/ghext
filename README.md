@@ -19,15 +19,12 @@ I have not included _all_ options for syntax highlighting in the app, as many op
 ####NOTE
 While you don't NEED a [Pastebin](https://www.pastebin.com) account to use this app, most features won't work unless you login. Without logging in, you can still submit new pastes and see the list of trending pastes. When logged in, you can see all of your own pastes and have many more options when submitting a paste.
 
+## Settings
+Settings will be saved to your device's Shared Preferences AND to Firebase. The app loads shared preferences intially, and only loads from Firebase when you login. I will eventually change how this works a little, depending on feedback.
+
 ## Screenshots
 
-![main screen](http://40two.net/pext/mainscreen.png)
-![main screen menu](http://40two.net/pext/mainscreenmenu.png)
-![editor](http://40two.net/pext/editor.png)
-![pastebin sending options](http://40two.net/pext/pastebinoptions.png)
-![trending pastes list](http://40two.net/pext/trendingpastes.png)
-![user pastes list](http://40two.net/pext/yourpastes.png)
-
+![some screens](http://40two.net/pext/screens.png)
 
 ## Setup/Installation Requirements
 
@@ -37,15 +34,16 @@ While you don't NEED a [Pastebin](https://www.pastebin.com) account to use this 
 
 ## Missing Features
 
-* A settings page (the editor has a ton that I'm not taking advantage of)
+* Color options for editor
 * Ability to delete user's own pastes
 * More info in trending/own pastes lists
-* Firebase fine-tuning, especially with the clipboard history
+* Firebase fine-tuning concerning number of items in clipboard history
 * General styling and UI improvements. IE: better colors and positioning of items
 * A few things the [Pastebin API](https://pastebin.com/api) is capable of that I didn't implement, like getting a paste by it's key
 * A brackets button for easier insertion of certain common characters
 * Save/load files from device. This may never actually happen.
 * Some loading indicators
+* Syntax highlighting (https://github.com/nakshay/TextHighlighter ?)
 
 
 ## Known Bugs

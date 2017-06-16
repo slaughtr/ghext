@@ -3,12 +3,9 @@ package net.a40two.pext.ui.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +19,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import net.a40two.pext.Constants;
 import net.a40two.pext.R;
-import net.a40two.pext.ui.EditorActivity;
 
 
 public class PasteFromFirebasePopup extends DialogFragment  {
@@ -59,16 +55,9 @@ public class PasteFromFirebasePopup extends DialogFragment  {
                 TextView mTextView;
 
             @Override protected void populateView(View v, String text, int position) {
-//                String shorterText = "";
                 mTextView = (TextView) v.findViewById(R.id.clipboardHistoryTextView);
 
-//                if(text.length() > 50) {
-                    //if the returned text is too long, shorten it and put an ellipsis
-//                    shorterText = text.substring(0, 51) + "...";
-//                    mTextView.setText(shorterText);
-//                } else {
                 mTextView.setText(text);
-//            }
             }
         };
 
@@ -78,9 +67,6 @@ public class PasteFromFirebasePopup extends DialogFragment  {
             @Override public void onItemClick(AdapterView av, View v, int index, long id) {
                 TextView mTextView = (TextView) v.findViewById(R.id.clipboardHistoryTextView);
                 String textFromFirebase = mTextView.getText().toString();
-//                Log.d("text from firebase", textFromFirebase);
-//                android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-//                android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text From pext", textFromFirebase);
                 listener.clickItemFromFirebase(textFromFirebase);
                 dismiss();
             }

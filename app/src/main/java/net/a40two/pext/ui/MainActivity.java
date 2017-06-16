@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,6 +30,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import net.a40two.pext.Constants;
 import net.a40two.pext.R;
+import net.a40two.pext.Settings;
 import net.a40two.pext.ui.fragments.PastebinLoginPopup;
 
 import butterknife.BindView;
@@ -40,7 +40,7 @@ import static android.view.View.GONE;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private String[] mMenuItems = new String[] {"My Pastes", "Trending Pastes", "Help", "About"};
+    private String[] mMenuItems = new String[] {"My Pastes", "Trending Pastes", "Help", "About", "Settings"};
     //things for nav drawer
     private ListView mDrawerList;
     private CharSequence mTitle;
@@ -80,6 +80,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mUserApiKeyFromPrefs = mSharedPreferences.getString(Constants.PREFERENCES_USER_API_KEY, null);
         mUserNameFromPrefs = mSharedPreferences.getString(Constants.PREFERENCES_USER_NAME_KEY, null);
+
+        //get all the settings from shared preferences and set values in Settings
+        //if they're not there, use default values
+        Settings.EXPIRE = mSharedPreferences.getInt(Constants.PREFERENCES_EXPIRATION_KEY, 0);
+        Settings.PRIVACY = mSharedPreferences.getInt(Constants.PREFERENCES_PRIVACY_KEY, 0);
+        Settings.SYNTAX = mSharedPreferences.getInt(Constants.PREFERENCES_SYNTAX_KEY, 0);
+        Settings.TEXT_SIZE = mSharedPreferences.getInt(Constants.PREFERENCES_TEXT_SIZE_KEY, 12);
+        Settings.RESULT_LIMIT = mSharedPreferences.getInt(Constants.PREFERENCES_RESULT_LIMIT_KEY, 50);
+        Settings.SHOW_LINE_NUMBERS = mSharedPreferences.getBoolean(Constants.PREFERENCES_LINE_NUMBER_KEY, true);
+        Settings.WORDWRAP = mSharedPreferences.getBoolean(Constants.PREFERENCES_WORDWRAP_KEY, true);
+        Settings.FLING_TO_SCROLL = mSharedPreferences.getBoolean(Constants.PREFERENCE_FLING_SCROLL_KEY, true);
 
         if (mUserApiKeyFromPrefs != null) {
             Constants.LOGGED_IN = true;
@@ -227,6 +238,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (mMenuItems[position] == "Help") {
             startActivity(new Intent(MainActivity.this, HelpActivity.class));
+        }
+        if (mMenuItems[position] == "Settings") {
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
         }
     }
 
