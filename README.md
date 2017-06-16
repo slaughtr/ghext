@@ -37,10 +37,10 @@ While you don't NEED a [Pastebin](https://www.pastebin.com) account to use this 
 
 ## Missing Features
 
-* A settings page (the editor has a ton that I'm not taking advantage of)
+* Color options for editor
 * Ability to delete user's own pastes
 * More info in trending/own pastes lists
-* Firebase fine-tuning, especially with the clipboard history
+* Firebase fine-tuning concerning number of items in clipboard history
 * General styling and UI improvements. IE: better colors and positioning of items
 * A few things the [Pastebin API](https://pastebin.com/api) is capable of that I didn't implement, like getting a paste by it's key
 * A brackets button for easier insertion of certain common characters
