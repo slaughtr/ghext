@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import net.a40two.pext.Constants;
 import net.a40two.pext.R;
+import net.a40two.pext.Settings;
 import net.a40two.pext.ui.fragments.PastebinLoginPopup;
 
 import butterknife.BindView;
@@ -79,6 +80,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         mUserApiKeyFromPrefs = mSharedPreferences.getString(Constants.PREFERENCES_USER_API_KEY, null);
         mUserNameFromPrefs = mSharedPreferences.getString(Constants.PREFERENCES_USER_NAME_KEY, null);
+
+        //get all the settings from shared preferences and set values in Settings
+        //if they're not there, use default values
+        Settings.EXPIRE = mSharedPreferences.getInt(Constants.PREFERENCES_EXPIRATION_KEY, 0);
+        Settings.PRIVACY = mSharedPreferences.getInt(Constants.PREFERENCES_PRIVACY_KEY, 0);
+        Settings.SYNTAX = mSharedPreferences.getInt(Constants.PREFERENCES_SYNTAX_KEY, 0);
+        Settings.TEXT_SIZE = mSharedPreferences.getInt(Constants.PREFERENCES_TEXT_SIZE_KEY, 12);
+        Settings.RESULT_LIMIT = mSharedPreferences.getInt(Constants.PREFERENCES_RESULT_LIMIT_KEY, 50);
 
         if (mUserApiKeyFromPrefs != null) {
             Constants.LOGGED_IN = true;

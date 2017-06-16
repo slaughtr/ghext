@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -92,17 +93,12 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
 
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) { }
+    @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) { }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) { }
+    @Override public void onNothingSelected(AdapterView<?> parent) { }
 
-    @Override
-    public void onClick(View v) {
-        if (v == mSaveSettingsButton) {
-            saveSettings();
-        }
+    @Override public void onClick(View v) {
+        if (v == mSaveSettingsButton) { saveSettings(); }
     }
 
     private void saveSettings() {
@@ -128,6 +124,10 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         mSettingsReference.child("SYNTAX").setValue(Settings.SYNTAX);
         mSettingsReference.child("TEXT_SIZE").setValue(Settings.TEXT_SIZE);
         mSettingsReference.child("RESULT_LIMIT").setValue(Settings.RESULT_LIMIT);
+
+        //show a confirmation toast and exit
+        Toast.makeText(this, "Settings saved!", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     //used to get position of spinner by provided value
