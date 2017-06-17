@@ -51,10 +51,11 @@ Settings will be saved to your device's Shared Preferences AND to Firebase (if y
 
 ## Missing Features/TODO
 
-* Logged in text no updating on main activity when first logging in
+* Logged in text not updating on main activity when first logging in
+* Loading indicators
 * Color options for editor
 * Ability to delete user's own pastes
-* More info in trending/own pastes lists
+* Dialog asking to start intent to share paste URL after submitting paste successfully
 * Firebase fine-tuning concerning number of items in clipboard history
 * General styling and UI improvements. IE: better colors and positioning of items
 * A few things the [Pastebin API](https://pastebin.com/api) is capable of that I didn't implement, like getting a paste by it's key
