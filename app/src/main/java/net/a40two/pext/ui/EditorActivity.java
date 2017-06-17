@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -72,6 +73,9 @@ public class EditorActivity extends AppCompatActivity implements PasteFromFireba
 
     @Override public void onStart() {
         super.onStart();
+        //get shared preferences
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         //get intent
         Intent intent = getIntent();
 
@@ -109,7 +113,7 @@ public class EditorActivity extends AppCompatActivity implements PasteFromFireba
                 });
             } else {
                 //set editor body to text form shared prefs
-                mEditText.setText(mSharedPreferences.getString(Constants.PREFERENCES_EDITOR_BODY_KEY, null));
+                    mEditText.setText(mSharedPreferences.getString(Constants.PREFERENCES_EDITOR_BODY_KEY, null));
             }
         }
     }
