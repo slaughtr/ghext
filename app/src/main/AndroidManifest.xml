@@ -3,10 +3,6 @@
     package="net.a40two.pext">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -31,6 +27,12 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.a40two.pext.ui.MainActivity" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/*"/>
+            </intent-filter>
         </activity>
         activity>
         <activity android:name=".ui.HelpActivity">
@@ -43,7 +45,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.a40two.pext.ui.MainActivity" />
         </activity>
-        <activity android:name=".ui.SettingsActivity"></activity>
+        <activity android:name=".ui.SettingsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.a40two.pext.ui.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

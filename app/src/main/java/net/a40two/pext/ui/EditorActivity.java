@@ -4,10 +4,12 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,6 +39,11 @@ public class EditorActivity extends AppCompatActivity implements PasteFromFireba
     private DatabaseReference mEditorStateReference;
     private DatabaseReference mClipboardReference;
 
+    //if user isn't logged in, we'll try to get
+    //the editor state from shared preferences
+    private SharedPreferences mSharedPreferences;
+    private SharedPreferences.Editor mEditor;
+
     public static final String TAG = EditorActivity.class.getSimpleName();
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -45,50 +52,76 @@ public class EditorActivity extends AppCompatActivity implements PasteFromFireba
 
         mEditText = (AdvancedEditText) this.findViewById(R.id.editorAdvancedTextView);
 
-        mEditorStateReference = FirebaseDatabase
-                .getInstance()
-                .getReference()
-                .child(Constants.USER_NAME)
-                .child(Constants.FIREBASE_CHILD_SAVED_EDITOR_STATE);
+        //check if user is logged in before
+        //getting firebase instance, as there's
+        //no point if not
+        if (Constants.LOGGED_IN) {
+            mEditorStateReference = FirebaseDatabase
+                    .getInstance()
+                    .getReference()
+                    .child(Constants.USER_NAME)
+                    .child(Constants.FIREBASE_CHILD_SAVED_EDITOR_STATE);
 
-        mClipboardReference = FirebaseDatabase
-                .getInstance()
-                .getReference()
-                .child(Constants.USER_NAME)
-                .child(Constants.FIREBASE_CHILD_CLIPBOARD_HISTORY);
+            mClipboardReference = FirebaseDatabase
+                    .getInstance()
+                    .getReference()
+                    .child(Constants.USER_NAME)
+                    .child(Constants.FIREBASE_CHILD_CLIPBOARD_HISTORY);
+        }
     }
 
     @Override public void onStart() {
         super.onStart();
-        //get intent with the body of the paste you want to edit,
-        // if it's not null (might be, if  something went wrong),
-        // then set the AdvancedEditText text to that.
+        //get intent
         Intent intent = getIntent();
+
+        //get action and type for checking
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        //get parcel with body sent from edit
         String editPasteBody = Parcels.unwrap(intent.getParcelableExtra("editPasteBody"));
 
+        // if parcelable not null (might be, if opening activity another way),
+        // then set the AdvancedEditText text to that.
         if (editPasteBody != null && editPasteBody.length() > 0) {
             if (!editPasteBody.equals("") || !editPasteBody.equals(" ")) {
                 mEditText.setText(editPasteBody);
             }
+            //handle intents coming from outside the app,
+            //checking that they're the right kind of intent
+        } else if (Intent.ACTION_SEND.equals(action) && type != null && type.startsWith("text/")) {
+                mEditText.setText(intent.getStringExtra(Intent.EXTRA_TEXT));
         } else {
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Constants.USER_NAME).child("savedFromEditor");
-            ref.addListenerForSingleValueEvent(new ValueEventListener() {
-
-                @Override public void onDataChange(DataSnapshot dataSnapshot) {
-                    //TODO: add loading indicator while this value is retrieved
-                    if (dataSnapshot.getValue() != null) {
-                        mEditText.setText(dataSnapshot.getValue().toString());
+            //another logged in check, to be safe
+            if (Constants.LOGGED_IN) {
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Constants.USER_NAME).child("savedFromEditor");
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override public void onDataChange(DataSnapshot dataSnapshot) {
+                        //TODO: add loading indicator while this value is retrieved
+                        if (dataSnapshot.getValue() != null) {
+                            mEditText.setText(dataSnapshot.getValue().toString());
+                        }
                     }
-                }
-
-                @Override public void onCancelled(DatabaseError databaseError) { }
-            });
+                    @Override public void onCancelled(DatabaseError databaseError) {
+                        Toast.makeText(getApplicationContext(), "Error:\n"+databaseError.toString(), Toast.LENGTH_LONG).show();
+                    }
+                });
+            } else {
+                //set editor body to text form shared prefs
+                mEditText.setText(mSharedPreferences.getString(Constants.PREFERENCES_EDITOR_BODY_KEY, null));
+            }
         }
     }
 
+
     @Override public void onStop() {
         super.onStop();
-        saveEditorStateToFirebase(mEditText.getText().toString());
+        if (Constants.LOGGED_IN) {
+            saveEditorStateToFirebase(mEditText.getText().toString());
+        } else {
+            mEditor.putString(Constants.PREFERENCES_EDITOR_BODY_KEY, mEditText.getText().toString());
+        }
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -104,9 +137,13 @@ public class EditorActivity extends AppCompatActivity implements PasteFromFireba
         else if (id == R.id.action_cut) { copyOrCutSelection(true); }
         else if (id == R.id.action_paste) { paste(null); }
         else if (id == R.id.action_paste_history) {
-            FragmentManager fm = getSupportFragmentManager();
-            PasteFromFirebasePopup pffb = new PasteFromFirebasePopup();
-            pffb.show(fm, "Pastebin paste popup");
+            if (Constants.LOGGED_IN) {
+                FragmentManager fm = getSupportFragmentManager();
+                PasteFromFirebasePopup pffb = new PasteFromFirebasePopup();
+                pffb.show(fm, "Pastebin paste popup");
+            } else {
+                Toast.makeText(this, "Sorry, you must be logged in to do this.", Toast.LENGTH_SHORT).show();
+            }
         } else if (id == R.id.action_pastebin) {
             //open popup fragment for pushing to pastebin
             Bundle args = new Bundle();
@@ -116,25 +153,31 @@ public class EditorActivity extends AppCompatActivity implements PasteFromFireba
             PastebinPastePopup ppp = new PastebinPastePopup();
             ppp.setArguments(args);
             ppp.show(fm, "Pastebin paste popup");
-        } else if (id == R.id.action_clear) { mEditText.setText(""); }
+        } else if (id == R.id.action_clear) { mEditText.setText(""); } //run when clicking clear
 
-            return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
     }
 
     private void copyOrCutSelection(boolean cut) {
-
         String copiedString = mEditText.getText().toString();
         int start = mEditText.getSelectionStart();
         int end = mEditText.getSelectionEnd();
-        //do check, since if you start your selection on the right and highlight to the left,
-        // your selectionStart index will be greater than your selectionEnd index and things will break
+        //do check, since if you start your selection
+        // on the right and highlight to the left,
+        // your selectionStart index will be greater than
+        // your selectionEnd index and things will break
         if (mEditText.getSelectionStart() > mEditText.getSelectionEnd()) {
             start = mEditText.getSelectionEnd();
             end = mEditText.getSelectionStart();
         }
-        //do the clipboard dance
+
         copiedString = copiedString.substring(start, end);
-        saveClipboardToFirebase(copiedString);
+
+        //if logged in, save clipboard to firebase
+        //TODO: add check for number of items in firebase?
+        if (Constants.LOGGED_IN) { saveClipboardToFirebase(copiedString); }
+
+        //do the clipboard dance
         android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text From pext", copiedString);
         clipboard.setPrimaryClip(clip);
@@ -152,9 +195,9 @@ public class EditorActivity extends AppCompatActivity implements PasteFromFireba
         //paste clipboard to location TODO: pasting over selection deletes selection?
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         String pasteData = "";
-        if (text != null) {
-            mEditText.getText().insert(mEditText.getSelectionStart(), text);
-        } else if (!(clipboard.hasPrimaryClip())) {
+
+        if (text != null) { mEditText.getText().insert(mEditText.getSelectionStart(), text); }
+        else if (!(clipboard.hasPrimaryClip())) {
             //nothing on the clipboard
             Toast.makeText(this, "Nothing on clipboard to paste!", Toast.LENGTH_SHORT).show();
         } else if (!(clipboard.getPrimaryClipDescription().hasMimeType(MIMETYPE_TEXT_PLAIN))) {
@@ -163,7 +206,6 @@ public class EditorActivity extends AppCompatActivity implements PasteFromFireba
         } else {
             //the clipboard contains plain text.
             ClipData.Item item = clipboard.getPrimaryClip().getItemAt(0);
-            // Gets the clipboard as a string.
             pasteData = item.getText().toString();
         }
         //put paste at current cursor selection

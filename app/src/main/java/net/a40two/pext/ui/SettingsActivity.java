@@ -15,6 +15,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -33,6 +36,9 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
     Switch mWrapSwitch;
     Switch mFlingScrollSwitch;
 
+    //ads
+    private AdView mAdView;
+
     //for saving to shared prefs
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mEditor;
@@ -44,7 +50,14 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        //set all the spinners
+        //initialize test ads
+        MobileAds.initialize(getApplicationContext(),
+                "ca-app-pub-3940256099942544~3347511713");
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        //set all the spinners and adapters
         mExpireSpinner = (Spinner) this.findViewById(R.id.default_expiration_spinner);
         ArrayAdapter<CharSequence> expireAdapter = ArrayAdapter.createFromResource(this,
                 R.array.expire_date_select, android.R.layout.simple_spinner_item);
@@ -106,13 +119,14 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         mFlingScrollSwitch = (Switch) this.findViewById(R.id.fling_to_scroll_switch);
         mFlingScrollSwitch.setChecked(Settings.FLING_TO_SCROLL);
 
-        mSettingsReference = FirebaseDatabase
-                .getInstance()
-                .getReference()
-                .child(Constants.USER_NAME)
-                .child(Constants.FIREBASE_CHILD_SETTINGS);
-
-
+        //no need to get firebase if not logged in
+        if (Constants.LOGGED_IN) {
+            mSettingsReference = FirebaseDatabase
+                    .getInstance()
+                    .getReference()
+                    .child(Constants.USER_NAME)
+                    .child(Constants.FIREBASE_CHILD_SETTINGS);
+        }
     }
 
     @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) { }
@@ -146,16 +160,17 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
         mEditor.putBoolean(Constants.PREFERENCES_WORDWRAP_KEY, Settings.WORDWRAP).apply();
         mEditor.putBoolean(Constants.PREFERENCE_FLING_SCROLL_KEY, Settings.FLING_TO_SCROLL).apply();
 
-        //set values in firebase
-        mSettingsReference.child("EXPIRE").setValue(Settings.EXPIRE);
-        mSettingsReference.child("PRIVACY").setValue(Settings.PRIVACY);
-        mSettingsReference.child("SYNTAX").setValue(Settings.SYNTAX);
-        mSettingsReference.child("TEXT_SIZE").setValue(Settings.TEXT_SIZE);
-        mSettingsReference.child("RESULT_LIMIT").setValue(Settings.RESULT_LIMIT);
-        mSettingsReference.child("SHOW_LINE_NUMBERS").setValue(Settings.SHOW_LINE_NUMBERS);
-        mSettingsReference.child("WORDWRAP").setValue(Settings.WORDWRAP);
-        mSettingsReference.child("FLING_TO_SCROLL").setValue(Settings.FLING_TO_SCROLL);
-
+        //set values in firebase if logged in
+        if (Constants.LOGGED_IN) {
+            mSettingsReference.child("EXPIRE").setValue(Settings.EXPIRE);
+            mSettingsReference.child("PRIVACY").setValue(Settings.PRIVACY);
+            mSettingsReference.child("SYNTAX").setValue(Settings.SYNTAX);
+            mSettingsReference.child("TEXT_SIZE").setValue(Settings.TEXT_SIZE);
+            mSettingsReference.child("RESULT_LIMIT").setValue(Settings.RESULT_LIMIT);
+            mSettingsReference.child("SHOW_LINE_NUMBERS").setValue(Settings.SHOW_LINE_NUMBERS);
+            mSettingsReference.child("WORDWRAP").setValue(Settings.WORDWRAP);
+            mSettingsReference.child("FLING_TO_SCROLL").setValue(Settings.FLING_TO_SCROLL);
+        }
         //show a confirmation toast and exit
         Toast.makeText(this, "Settings saved!", Toast.LENGTH_SHORT).show();
         finish();

@@ -32,6 +32,7 @@ public class Constants {
     //shared pref keys
     public static final String PREFERENCES_USER_NAME_KEY = "userNameKey";
     public static final String PREFERENCES_USER_API_KEY = "userApiKey";
+    public static final String PREFERENCES_EDITOR_BODY_KEY = "editorBodyKey";
     public static final String PREFERENCES_EXPIRATION_KEY = "expirationKey";
     public static final String PREFERENCES_PRIVACY_KEY = "privacyKey";
     public static final String PREFERENCES_SYNTAX_KEY = "syntaxKey";

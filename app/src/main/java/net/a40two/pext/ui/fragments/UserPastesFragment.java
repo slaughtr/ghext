@@ -43,7 +43,7 @@ public class UserPastesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.trending_pastes_list, container, false);
+        View view = inflater.inflate(R.layout.paste_list, container, false);
         ButterKnife.bind(this, view);
         mRecyclerView.setAdapter(new PasteListAdapter(getContext(), mPastes));
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +30,7 @@ public class PasteListAdapter extends RecyclerView.Adapter<PasteListAdapter.Past
     }
 
     @Override public PasteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.trending_pastes_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.paste_list_item, parent, false);
         PasteViewHolder pvh = new PasteViewHolder(view);
         return pvh;
     }
@@ -47,6 +46,7 @@ public class PasteListAdapter extends RecyclerView.Adapter<PasteListAdapter.Past
         @BindView(R.id.trendingListTitleTextView) TextView mTitleTextView;
         @BindView(R.id.trendingListBodyTextView) TextView mBodyTextView;
         @BindView(R.id.openInEditorFAB) FloatingActionButton mOpenInEditorFAB;
+        @BindView(R.id.extra_info_text_view) TextView mExtraInfoTextView;
 
         public PasteViewHolder(View itemView) {
             super(itemView);
@@ -57,8 +57,20 @@ public class PasteListAdapter extends RecyclerView.Adapter<PasteListAdapter.Past
         }
 
         public void bindPaste(Paste paste) {
+            //get dates as human readable
+            String postedDate = new java.text.SimpleDateFormat("MM/dd/yy HH:mma").format(new java.util.Date (Long.parseLong(paste.getDate())*1000));
+            String expireDate;
+            //if paste never expires, it'll return 0
+            //which would be confusing to the user
+            if (!paste.getExpires().equals("0")) {
+                expireDate = new java.text.SimpleDateFormat("MM/dd/yy HH:mma").format(new java.util.Date(Long.parseLong(paste.getExpires()) * 1000));
+            } else {
+                expireDate = "Never";
+            }
+            String extraInfo = "Hits: "+paste.getHits()+" | Posted: "+postedDate+" | Expires: "+expireDate;
             mTitleTextView.setText(paste.getTitle());
             mBodyTextView.setText(paste.getBody());
+            mExtraInfoTextView.setText(extraInfo);
 
         }
 
