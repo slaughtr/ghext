@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -66,6 +67,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //get firebase auth
         mAuth = FirebaseAuth.getInstance();
+
+        //initialize ads
+//        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
 
         ButterKnife.bind(this);
 

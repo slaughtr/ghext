@@ -15,6 +15,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -33,6 +36,9 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
     Switch mWrapSwitch;
     Switch mFlingScrollSwitch;
 
+    //ads
+    private AdView mAdView;
+
     //for saving to shared prefs
     private SharedPreferences mSharedPreferences;
     private SharedPreferences.Editor mEditor;
@@ -43,6 +49,13 @@ public class SettingsActivity extends AppCompatActivity implements AdapterView.O
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        //initialize ads
+        MobileAds.initialize(getApplicationContext(),
+                "ca-app-pub-3940256099942544~3347511713");
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         //set all the spinners
         mExpireSpinner = (Spinner) this.findViewById(R.id.default_expiration_spinner);
