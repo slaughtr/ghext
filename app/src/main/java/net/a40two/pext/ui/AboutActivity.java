@@ -9,6 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 import net.a40two.pext.Constants;
 import net.a40two.pext.R;
 
@@ -21,10 +25,19 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
     @BindView(R.id.bitcoin_button) Button myBitcoinButton;
     @BindView(R.id.linkedin_button) Button myLinkedinButton;
 
+    //ads
+    private AdView mAdView;
+
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
+        //initialize ads
+        MobileAds.initialize(getApplicationContext(),
+                "ca-app-pub-3940256099942544~3347511713");
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         ButterKnife.bind(this);
 
         myGithubButton.setOnClickListener(this);
