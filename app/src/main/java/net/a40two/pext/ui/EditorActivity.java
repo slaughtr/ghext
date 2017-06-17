@@ -4,10 +4,12 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -61,30 +63,38 @@ public class EditorActivity extends AppCompatActivity implements PasteFromFireba
     @Override public void onStart() {
         super.onStart();
         //get intent with the body of the paste you want to edit,
-        // if it's not null (might be, if  something went wrong),
-        // then set the AdvancedEditText text to that.
+
         Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+
         String editPasteBody = Parcels.unwrap(intent.getParcelableExtra("editPasteBody"));
 
+        // if parcelable not null (might be, if opening activity another way),
+        // then set the AdvancedEditText text to that.
         if (editPasteBody != null && editPasteBody.length() > 0) {
             if (!editPasteBody.equals("") || !editPasteBody.equals(" ")) {
                 mEditText.setText(editPasteBody);
             }
+            //handle intents coming from outside the app
+        } else if (Intent.ACTION_SEND.equals(action) && type != null && type.startsWith("text/")) {
+                Log.d("yay a a a a y", "you did it right");
+                mEditText.setText(intent.getStringExtra(Intent.EXTRA_TEXT));
         } else {
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Constants.USER_NAME).child("savedFromEditor");
             ref.addListenerForSingleValueEvent(new ValueEventListener() {
-
                 @Override public void onDataChange(DataSnapshot dataSnapshot) {
                     //TODO: add loading indicator while this value is retrieved
                     if (dataSnapshot.getValue() != null) {
                         mEditText.setText(dataSnapshot.getValue().toString());
                     }
                 }
-
                 @Override public void onCancelled(DatabaseError databaseError) { }
             });
         }
     }
+
 
     @Override public void onStop() {
         super.onStop();
@@ -118,7 +128,7 @@ public class EditorActivity extends AppCompatActivity implements PasteFromFireba
             ppp.show(fm, "Pastebin paste popup");
         } else if (id == R.id.action_clear) { mEditText.setText(""); }
 
-            return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
     }
 
     private void copyOrCutSelection(boolean cut) {
