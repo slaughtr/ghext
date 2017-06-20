@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -51,6 +52,9 @@ public class EditorActivity extends AppCompatActivity implements PasteFromFireba
         setContentView(R.layout.activity_editor);
 
         mEditText = (AdvancedEditText) this.findViewById(R.id.editorAdvancedTextView);
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mEditor = mSharedPreferences.edit();
 
         //check if user is logged in before
         //getting firebase instance, as there's

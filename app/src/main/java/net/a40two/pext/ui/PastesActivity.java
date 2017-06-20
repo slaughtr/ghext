@@ -10,17 +10,12 @@ import android.view.MenuInflater;
 
 import net.a40two.pext.R;
 import net.a40two.pext.models.Paste;
-import net.a40two.pext.services.PastebinListService;
 import net.a40two.pext.ui.fragments.TrendingPastesFragment;
 import net.a40two.pext.ui.fragments.UserPastesFragment;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
 
 public class PastesActivity extends AppCompatActivity {
 
@@ -37,10 +32,10 @@ public class PastesActivity extends AppCompatActivity {
         if (fragToLoad.equals("")) {
             //TODO: send user back home, toast that there was a problem
         } else if (fragToLoad.equals("trending")) {
-            getTrendingPastes();
+            loadTrendingFragment();
             setTitle("Today's Trending Pastes");
         } else if (fragToLoad.equals("ownPastes")) {
-            getOwnPastes();
+            loadOwnFragment();
             setTitle("Your Pastes");
 
         }
@@ -52,40 +47,9 @@ public class PastesActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-
-    private void getTrendingPastes() {
-        final PastebinListService pblService = new PastebinListService();
-
-        pblService.buildListUrl("trending", new Callback() {
-
-            @Override public void onFailure(Call call, IOException e) { e.printStackTrace(); }
-
-            @Override public void onResponse(Call call, Response response) throws IOException {
-
-                mPastes = pblService.processResults("trending", response);
-                    loadTrendingFragment();
-            }
-        });
-    }
-
     private void loadTrendingFragment() {
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction().setTransition(FragmentTransaction.TRANSIT_ENTER_MASK).replace(R.id.fragmentHolder, TrendingPastesFragment.newInstance(mPastes)).commit();
-    }
-
-    private void getOwnPastes() {
-        final PastebinListService pblService = new PastebinListService();
-
-        pblService.buildListUrl("ownPastes", new Callback() {
-
-            @Override public void onFailure(Call call, IOException e) { e.printStackTrace(); }
-
-            @Override public void onResponse(Call call, Response response) throws IOException {
-
-                mPastes = pblService.processResults("ownPastes", response);
-                loadOwnFragment();
-            }
-        });
     }
 
     private void loadOwnFragment() {
