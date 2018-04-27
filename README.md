@@ -1,7 +1,9 @@
 pext
 ======
 
-#### By [Dallas Slaughter](https://www.linkedin.com/in/dallas-slaughter) -  [email](mailto:dslaughtr@gmail.com)
+# *THIS PROJECT IS 'ABANDONED' AND UP FOR GRABS FOR ANYONE WHO WANTS TO MESS WITH IT - SEE ISSUES*
+
+
 
 
 **pext** is a text editor with Pastebin integration. It is meant to simplifly sharing code snippets and other text-based items on the go. It allows a user to login to Pastebin, submit text to Pastebin, and see a list of their own pastes and trending pastes.
